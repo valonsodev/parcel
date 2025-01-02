@@ -46,7 +46,10 @@ fun HomeView(
             modifier = Modifier
                 .padding(innerPadding)
         ) {
-            if (parcels.isEmpty()) Text("You currently do not have any parcels.")
+            if (parcels.isEmpty()) Text(
+                "You currently do not have any parcels.",
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
 
             LazyColumn {
                 itemsIndexed(parcels) { _, parcel ->
