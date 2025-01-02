@@ -24,8 +24,8 @@ interface ParcelDao {
     fun getAll(): Flow<List<Parcel>>
 
     @Insert
-    fun insert(parcel: Parcel)
+    suspend fun insert(parcel: Parcel): Long
 
     @Delete
-    fun delete(parcel: Parcel)
+    suspend fun delete(parcel: Parcel)
 }
