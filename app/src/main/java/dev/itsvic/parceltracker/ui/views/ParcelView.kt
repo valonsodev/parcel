@@ -67,18 +67,21 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPresse
                 )
             }
 
-            Text(
-                "Current status",
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 14.sp,
-                modifier = Modifier.padding(bottom = 6.dp)
-            )
-            Text(
-                parcel.currentStatus,
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold,
-            )
-            if (parcel.history.isNotEmpty()) Text(parcel.history[0].description)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    "Current status",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 14.sp
+                )
+                Text(
+                    parcel.currentStatus,
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                )
+                if (parcel.history.isNotEmpty()) Text(parcel.history[0].description)
+            }
 
             Text(
                 "Package history",
