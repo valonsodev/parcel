@@ -20,9 +20,12 @@ data class ParcelHistoryItem(
 )
 
 enum class Service {
+    UNDEFINED,
+
     DHL,
     GLS,
 
+    // Do not use or show in parcel creation menu
     EXAMPLE,
 }
 
