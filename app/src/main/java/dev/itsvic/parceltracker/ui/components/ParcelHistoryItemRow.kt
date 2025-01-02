@@ -12,12 +12,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
 @Composable
-fun ParcelHistoryItemView(item: ParcelHistoryItem) {
+fun ParcelHistoryItemRow(item: ParcelHistoryItem) {
     Column {
         Text(
             item.description,
@@ -34,10 +35,9 @@ fun ParcelHistoryItemView(item: ParcelHistoryItem) {
     }
 }
 
-@Preview
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun ParcelHistoryItemViewPreview() {
+@PreviewLightDark
+private fun ParcelHistoryItemRowPreview() {
     val exampleItem = ParcelHistoryItem(
         "The package got lost. Whoops!",
         "2025-01-01 12:00:00",
@@ -46,7 +46,7 @@ private fun ParcelHistoryItemViewPreview() {
 
     ParcelTrackerTheme {
         Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-            ParcelHistoryItemView(
+            ParcelHistoryItemRow(
                 exampleItem
             )
         }

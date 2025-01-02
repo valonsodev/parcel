@@ -1,4 +1,4 @@
-package dev.itsvic.parceltracker.ui.components
+package dev.itsvic.parceltracker.ui.views
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -15,14 +15,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewDynamicColors
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.api.Parcel
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.api.Service
+import dev.itsvic.parceltracker.ui.components.ParcelHistoryItemRow
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,16 +77,15 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service) {
 
             LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 items(parcel.history) { item ->
-                    ParcelHistoryItemView(item)
+                    ParcelHistoryItemRow(item)
                 }
             }
         }
     }
 }
 
-@Preview(showSystemUi = true)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showSystemUi = true)
 @Composable
+@PreviewLightDark
 private fun ParcelViewPreview() {
     val parcel = Parcel(
         "EXMPL0001",

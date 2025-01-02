@@ -4,14 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
+import dev.itsvic.parceltracker.ui.views.HomeView
+import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,29 +18,28 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ParcelTrackerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                ParcelAppNavigation()
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+@Serializable
+object HomePage
+@Serializable
+object ParcelPage
+@Serializable
+object AddParcelPage
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    ParcelTrackerTheme {
-        Greeting("Android")
+fun ParcelAppNavigation() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = HomePage) {
+        composable<HomePage> { HomeView(
+            onNavigateToAddParcel = { navController.navigate(route = AddParcelPage) }
+        ) }
+        composable<ParcelPage> {  }
+        composable<AddParcelPage> {  }
     }
 }
