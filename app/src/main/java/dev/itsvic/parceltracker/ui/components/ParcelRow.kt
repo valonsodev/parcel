@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +14,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.api.Service
+import dev.itsvic.parceltracker.api.serviceToHumanString
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
@@ -30,7 +30,7 @@ fun ParcelRow(parcel: Parcel, onClick: () -> Unit) {
             Text(parcel.humanName, color = MaterialTheme.colorScheme.onBackground)
 
             Text(
-                "${parcel.service}: ${parcel.parcelId}",
+                "${serviceToHumanString[parcel.service]}: ${parcel.parcelId}",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

@@ -3,6 +3,8 @@ package dev.itsvic.parceltracker.api
 import com.squareup.moshi.JsonClass
 import okhttp3.Request
 import okio.IOException
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 // Reverse-engineered from their private API. Pretty basic at least
 
@@ -29,11 +31,18 @@ fun getGLSParcel(id: String, postalCode: String?): Parcel? {
             val history = resp.history.map { item ->
                 ParcelHistoryItem(
                     item.evtDscr,
-                    "${item.date} ${item.time}",
+                    LocalDateTime.parse("${item.date}T${item.time}", DateTimeFormatter.ISO_DATE_TIME),
                     if (item.address.city != "") "${item.address.city}, ${item.address.countryName}" else item.address.countryName
                 )
             }
-            val parcel = Parcel(id, history, resp.progressBar.statusText)
+            val parcel = Parcel(id, history, when (resp.progressBar.statusInfo) {
+                "PREADVICE" -> Status.Preadvice
+                "INTRANSIT" -> Status.InTransit
+                "INWAREHOUSE" -> Status.InWarehouse
+                "INDELIVERY" -> Status.OutForDelivery
+                "DELIVERED" -> Status.Delivered
+                else -> Status.Unknown
+            })
             return parcel
         }
     }
@@ -64,6 +73,6 @@ internal data class GLSHistoryAddress(
 
 @JsonClass(generateAdapter = true)
 internal data class GLSProgress(
-    val statusText: String,
+    val statusInfo: String,
 )
 

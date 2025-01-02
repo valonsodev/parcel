@@ -18,15 +18,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.api.Parcel
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.api.Service
+import dev.itsvic.parceltracker.api.Status
+import dev.itsvic.parceltracker.api.serviceToHumanString
+import dev.itsvic.parceltracker.api.statusToHumanString
 import dev.itsvic.parceltracker.ui.components.ParcelHistoryItemRow
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,11 +57,13 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPresse
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    service.toString(),
-                    fontSize = 13.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                serviceToHumanString[service]?.let {
+                    Text(
+                        it,
+                        fontSize = 13.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
 
                 Text(
                     parcel.id,
@@ -75,10 +80,12 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPresse
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 14.sp
                 )
-                Text(
-                    parcel.currentStatus,
-                    style = MaterialTheme.typography.headlineLarge
-                )
+                statusToHumanString[parcel.currentStatus]?.let {
+                    Text(
+                        it,
+                        style = MaterialTheme.typography.headlineLarge
+                    )
+                }
                 if (parcel.history.isNotEmpty()) Text(parcel.history[0].description)
             }
 
@@ -106,26 +113,26 @@ private fun ParcelViewPreview() {
         listOf(
             ParcelHistoryItem(
                 "The package got lost. Whoops!",
-                "2025-01-01 12:00:00",
+                LocalDateTime.of(2025, 1, 1, 12, 0, 0),
                 "Warsaw, Poland"
             ),
             ParcelHistoryItem(
                 "Arrived at local warehouse",
-                "2025-01-01 10:00:00",
+                LocalDateTime.of(2025, 1, 1, 10, 0, 0),
                 "Warsaw, Poland"
             ),
             ParcelHistoryItem(
                 "En route to local warehouse",
-                "2024-12-01 12:00:00",
+                LocalDateTime.of(2024, 12, 1, 12, 0, 0),
                 "Netherlands"
             ),
             ParcelHistoryItem(
                 "Label created",
-                "2024-12-01 12:00:00",
+                LocalDateTime.of(2024, 12, 1, 12, 0, 0),
                 "Netherlands"
             ),
         ),
-        "Lost"
+        Status.DeliveryFailure
     )
     ParcelTrackerTheme {
         ParcelView(parcel, "My precious package", Service.EXAMPLE, onBackPressed = {})

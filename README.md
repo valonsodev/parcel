@@ -6,3 +6,4 @@ Parcel is an app that lets you track your parcels from various providers with ea
 
 ## Supported services
 - GLS
+- Poczta Polska

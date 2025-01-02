@@ -23,7 +23,7 @@ fun getDHLParcel(trackingNumber: String): Parcel? {
 
         if (shipment != null) {
             // TODO: parse parcel history
-            val parcel = Parcel(shipment.id, emptyList(), "")
+            val parcel = Parcel(shipment.id, emptyList(), Status.Unknown)
             return parcel
         }
     }
