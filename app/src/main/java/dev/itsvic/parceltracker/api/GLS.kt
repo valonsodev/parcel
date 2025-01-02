@@ -1,0 +1,69 @@
+package dev.itsvic.parceltracker.api
+
+import com.squareup.moshi.JsonClass
+import okhttp3.Request
+import okio.IOException
+
+// Reverse-engineered from their private API. Pretty basic at least
+
+// rstt029 - no post code, basic information
+// rstt028 - post code, full information
+
+// TODO: should respect system language
+private const val API_BASE = "https://gls-group.com/app/service/open/rest/EN/en"
+private val glsJsonAdapter = api_moshi.adapter(GLSResponse::class.java)
+
+fun getGLSParcel(id: String, postalCode: String?): Parcel? {
+    if (postalCode == null) throw NotImplementedError("Needs post codes for now")
+
+    val request = Request.Builder()
+        .url("$API_BASE/rstt028/$id?postalCode=$postalCode")
+        .build()
+
+    api_client.newCall(request).execute().use { response ->
+        if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+        val resp = glsJsonAdapter.fromJson(response.body!!.source())
+
+        if (resp != null) {
+            val history = resp.history.map { item ->
+                ParcelHistoryItem(
+                    item.evtDscr,
+                    "${item.date} ${item.time}",
+                    if (item.address.city != "") "${item.address.city}, ${item.address.countryName}" else item.address.countryName
+                )
+            }
+            val parcel = Parcel(id, history, resp.progressBar.statusText)
+            return parcel
+        }
+    }
+
+    return null
+}
+
+@JsonClass(generateAdapter = true)
+internal data class GLSResponse(
+    val history: List<GLSHistoryItem>,
+    val progressBar: GLSProgress,
+)
+
+@JsonClass(generateAdapter = true)
+internal data class GLSHistoryItem(
+    val time: String,
+    val date: String,
+    val evtDscr: String,
+    val address: GLSHistoryAddress,
+)
+
+@JsonClass(generateAdapter = true)
+internal data class GLSHistoryAddress(
+    val city: String,
+    val countryName: String,
+    val countryCode: String,
+)
+
+@JsonClass(generateAdapter = true)
+internal data class GLSProgress(
+    val statusText: String,
+)
+
