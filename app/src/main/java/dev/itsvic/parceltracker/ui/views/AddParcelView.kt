@@ -155,7 +155,6 @@ fun AddParcelView(
                     Button(onClick = {
                         onCompleted(
                             Parcel(
-                                id = -1,
                                 humanName = humanName,
                                 parcelId = trackingId,
                                 service = service,

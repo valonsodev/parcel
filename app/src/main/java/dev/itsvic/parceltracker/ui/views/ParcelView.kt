@@ -78,7 +78,7 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPresse
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
             )
-            Text(parcel.history[0].description)
+            if (parcel.history.isNotEmpty()) Text(parcel.history[0].description)
 
             Text(
                 "Package history",

@@ -23,17 +23,18 @@ import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 fun ParcelRow(parcel: Parcel, onClick: () -> Unit) {
     Column(
         modifier = Modifier
-            .padding(16.dp, 12.dp)
             .clickable(onClick = onClick)
             .fillMaxWidth()
     ) {
-        Text(parcel.humanName, color = MaterialTheme.colorScheme.onBackground)
+        Column(modifier = Modifier.padding(16.dp, 12.dp)) {
+            Text(parcel.humanName, color = MaterialTheme.colorScheme.onBackground)
 
-        Text(
-            "${parcel.service}: ${parcel.parcelId}",
-            fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+            Text(
+                "${parcel.service}: ${parcel.parcelId}",
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }
 

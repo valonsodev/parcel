@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Entity
 data class Parcel(
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val humanName: String,
     val parcelId: String,
     val postalCode: String?,
@@ -22,6 +22,9 @@ data class Parcel(
 interface ParcelDao {
     @Query("SELECT * FROM parcel")
     fun getAll(): Flow<List<Parcel>>
+
+    @Query("SELECT * FROM parcel WHERE id=:id LIMIT 1")
+    fun getById(id: Int): Flow<Parcel>
 
     @Insert
     suspend fun insert(parcel: Parcel): Long

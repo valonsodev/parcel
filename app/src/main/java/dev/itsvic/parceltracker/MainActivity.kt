@@ -4,29 +4,31 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import androidx.room.Room
+import dev.itsvic.parceltracker.api.Service
+import dev.itsvic.parceltracker.api.Parcel as APIParcel
 import dev.itsvic.parceltracker.db.AppDatabase
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import dev.itsvic.parceltracker.ui.views.AddParcelView
 import dev.itsvic.parceltracker.ui.views.HomeView
+import dev.itsvic.parceltracker.ui.views.ParcelView
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
@@ -71,22 +73,41 @@ fun ParcelAppNavigation(db: AppDatabase) {
             HomeView(
                 parcels = parcels.value,
                 onNavigateToAddParcel = { navController.navigate(route = AddParcelPage) },
-                onNavigateToParcel = {},
+                onNavigateToParcel = { navController.navigate(route = ParcelPage(it.id)) },
             )
         }
-        composable<ParcelPage> { }
+        composable<ParcelPage> { backStackEntry ->
+            val route: ParcelPage = backStackEntry.toRoute()
+            val parcelDb = db.parcelDao().getById(route.parcelDbId).collectAsState(null)
+
+            // TODO: fetch APIParcel
+            ParcelView(
+                APIParcel(parcelDb.value?.parcelId ?: "", emptyList(), "Placeholder"),
+                parcelDb.value?.humanName ?: "",
+                parcelDb.value?.service ?: Service.UNDEFINED,
+                onBackPressed = { navController.popBackStack() }
+            )
+        }
         composable<AddParcelPage> {
+            var addFinished by remember { mutableStateOf(Pair(false, 0)) }
+
             AddParcelView(
                 onBackPressed = { navController.popBackStack() },
                 onCompleted = {
                     scope.launch(Dispatchers.IO) {
                         val id = db.parcelDao().insert(it)
-                        navController.navigate(route = ParcelPage(id.toInt())) {
-                            popUpTo(HomePage)
-                        }
+                        addFinished = Pair(true, id.toInt())
                     }
                 },
             )
+
+            LaunchedEffect(addFinished) {
+                if (addFinished.first) {
+                    navController.navigate(route = ParcelPage(addFinished.second)) {
+                        popUpTo(HomePage)
+                    }
+                }
+            }
         }
     }
 }
