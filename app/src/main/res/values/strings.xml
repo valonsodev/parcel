@@ -1,3 +1,35 @@
 <resources>
     <string name="app_name">Parcel</string>
+
+    <string name="status_preadvice">Not sent yet</string>
+    <string name="status_in_transit">In transit</string>
+    <string name="status_in_warehouse">Arrived at warehouse</string>
+    <string name="status_customs">Arrived at customs</string>
+    <string name="status_out_for_delivery">Out for delivery</string>
+    <string name="status_delivery_failure">Failed to deliver</string>
+    <string name="status_delivered">Delivered</string>
+    <string name="status_awaiting_pickup">Awaiting pickup</string>
+    <string name="status_picked_up">Picked up</string>
+    <string name="status_unknown">Unknown status code</string>
+
+    <string name="service_undefined">Undefined</string>
+    <string name="service_example">Example Post</string>
+    <string name="service_gls" translatable="false">GLS</string>
+    <string name="service_dhl" translatable="false">DHL</string>
+    <string name="service_polish_post">Polish Post</string>
+
+    <string name="add_a_parcel">Add a parcel</string>
+    <string name="go_back">Go back</string>
+    <string name="parcel_name">Name</string>
+    <string name="tracking_id">Tracking ID</string>
+    <string name="delivery_service">Delivery service</string>
+    <string name="specify_a_postal_code">Specify a postal code</string>
+    <string name="postal_code">Postal code</string>
+    <string name="add_parcel">Add parcel</string>
+    <string name="specify_postal_code_flavor_text">Some parcels require a postal code to view full details.</string>
+
+    <string name="no_parcels_flavor">You currently do not have any parcels.</string>
+
+    <string name="current_status">Current status</string>
+    <string name="parcel_history">Parcel history</string>
 </resources>

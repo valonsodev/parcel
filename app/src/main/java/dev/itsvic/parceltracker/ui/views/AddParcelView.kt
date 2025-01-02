@@ -29,9 +29,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.api.Service
 import dev.itsvic.parceltracker.api.serviceOptions
 import dev.itsvic.parceltracker.api.serviceToHumanString
@@ -55,11 +58,11 @@ fun AddParcelView(
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Add a parcel")
+                    Text(stringResource(R.string.add_a_parcel))
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Go back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.go_back))
                     }
                 }
             )
@@ -75,14 +78,14 @@ fun AddParcelView(
                 OutlinedTextField(
                     value = humanName,
                     onValueChange = { humanName = it },
-                    label = { Text("Name") },
+                    label = { Text(stringResource(R.string.parcel_name)) },
                     modifier = Modifier.fillMaxWidth(),
                 )
 
                 OutlinedTextField(
                     value = trackingId,
                     onValueChange = { trackingId = it },
-                    label = { Text("Tracking ID") },
+                    label = { Text(stringResource(R.string.tracking_id)) },
                     modifier = Modifier.fillMaxWidth(),
                 )
 
@@ -98,7 +101,7 @@ fun AddParcelView(
                             .menuAnchor(MenuAnchorType.PrimaryNotEditable)
                             .fillMaxWidth(),
                         readOnly = true,
-                        label = { Text("Delivery service") },
+                        label = { Text(stringResource(R.string.delivery_service)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
                         colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                     )
@@ -108,7 +111,7 @@ fun AddParcelView(
                         onDismissRequest = { expanded = false }) {
                         serviceOptions.forEach { option ->
                             DropdownMenuItem(
-                                text = { Text(serviceToHumanString[option]!!) },
+                                text = { Text(stringResource(serviceToHumanString[option]!!)) },
                                 onClick = {
                                     service = option
                                     expanded = false
@@ -124,17 +127,19 @@ fun AddParcelView(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column {
-                        Text("Specify a postal code")
+                    Column(modifier = Modifier.fillMaxWidth(0.8f)) {
+                        Text(stringResource(R.string.specify_a_postal_code))
                         // TODO: cleaner line breaks how?
                         Text(
-                            "Some parcels require a postal code to\nview full details.",
-                            fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant
+                            stringResource(R.string.specify_postal_code_flavor_text),
+                            fontSize = 14.sp,
+                            lineHeight = 21.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     Checkbox(
                         checked = needsPostalCode,
-                        onCheckedChange = { needsPostalCode = it }
+                        onCheckedChange = { needsPostalCode = it },
                     )
                 }
 
@@ -142,7 +147,7 @@ fun AddParcelView(
                     OutlinedTextField(
                         value = postalCode,
                         onValueChange = { postalCode = it },
-                        label = { Text("Postal code") },
+                        label = { Text(stringResource(R.string.postal_code)) },
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
@@ -161,7 +166,7 @@ fun AddParcelView(
                             )
                         )
                     }) {
-                        Text("Add parcel")
+                        Text(stringResource(R.string.add_parcel))
                     }
                 }
             }
@@ -171,6 +176,7 @@ fun AddParcelView(
 
 @Composable
 @PreviewLightDark
+@Preview(locale = "pl", name = "Polish")
 fun AddParcelViewPreview() {
     ParcelTrackerTheme {
         AddParcelView(

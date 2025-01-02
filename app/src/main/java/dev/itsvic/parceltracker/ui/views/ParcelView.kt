@@ -18,9 +18,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.api.Parcel
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.api.Service
@@ -59,7 +62,7 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPresse
             ) {
                 serviceToHumanString[service]?.let {
                     Text(
-                        it,
+                        LocalContext.current.getString(it),
                         fontSize = 13.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -76,13 +79,13 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPresse
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    "Current status",
+                    stringResource(R.string.current_status),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 14.sp
                 )
                 statusToHumanString[parcel.currentStatus]?.let {
                     Text(
-                        it,
+                        LocalContext.current.getString(it),
                         style = MaterialTheme.typography.headlineLarge
                     )
                 }
@@ -90,7 +93,7 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPresse
             }
 
             Text(
-                "Package history",
+                stringResource(R.string.parcel_history),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 14.sp,
                 modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)

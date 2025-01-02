@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Parcel</string>
+
+    <string name="status_preadvice">Jeszcze nie wysłana</string>
+    <string name="status_in_transit">W tranzycie</string>
+    <string name="status_in_warehouse">Dotarła do magazynu</string>
+    <string name="status_customs">Dotarła do odprawy celnej</string>
+    <string name="status_out_for_delivery">Wysłana do doręczenia</string>
+    <string name="status_delivery_failure">Nie udało się dostarczyć</string>
+    <string name="status_delivered">Dostarczona</string>
+    <string name="status_awaiting_pickup">Oczekiwanie na odbiór</string>
+    <string name="status_picked_up">Odebrana</string>
+    <string name="status_unknown">Nieznany kod statusu</string>
+
+    <string name="service_undefined">Niezdefiniowana</string>
+    <string name="service_example">Przykładowa poczta</string>
+    <string name="service_polish_post">Poczta Polska</string>
+
+    <string name="add_a_parcel">Dodaj paczkę</string>
+    <string name="postal_code">Kod pocztowy</string>
+    <string name="add_parcel">Dodaj paczkę</string>
+    <string name="go_back">Wróć</string>
+    <string name="parcel_name">Nazwa</string>
+    <string name="tracking_id">Identyfikator śledzenia</string>
+    <string name="delivery_service">Usługa dostawy</string>
+    <string name="specify_a_postal_code">Podaj kod pocztowy</string>
+    <string name="specify_postal_code_flavor_text">Niektóre paczki potrzebują kodu pocztowego do wyświetlenia pełnych szczegółów.</string>
+
+    <string name="no_parcels_flavor">Obecnie nie masz żadnych paczek.</string>
+    <string name="current_status">Obecny status</string>
+    <string name="parcel_history">Historia paczki</string>
+</resources>

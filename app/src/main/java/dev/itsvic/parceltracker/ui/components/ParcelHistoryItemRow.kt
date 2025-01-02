@@ -32,7 +32,7 @@ fun ParcelHistoryItemRow(item: ParcelHistoryItem) {
                 item.location,
                 fontSize = 13.sp,
                 lineHeight = 19.5f.sp,
-                textAlign = TextAlign.Right,
+                textAlign = TextAlign.End,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }

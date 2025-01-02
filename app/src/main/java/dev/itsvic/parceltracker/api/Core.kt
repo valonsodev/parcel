@@ -1,6 +1,7 @@
 package dev.itsvic.parceltracker.api
 
 import com.squareup.moshi.Moshi
+import dev.itsvic.parceltracker.R
 import okhttp3.OkHttpClient
 import java.time.LocalDateTime
 
@@ -29,11 +30,11 @@ enum class Service {
 }
 
 val serviceToHumanString = mapOf(
-    Service.UNDEFINED to "Undefined",
-    Service.GLS to "GLS",
-    Service.DHL to "DHL",
-    Service.POLISH_POST to "Poczta Polska",
-    Service.EXAMPLE to "Example Post"
+    Service.UNDEFINED to R.string.service_undefined,
+    Service.GLS to R.string.service_gls,
+    Service.DHL to R.string.service_dhl,
+    Service.POLISH_POST to R.string.service_polish_post,
+    Service.EXAMPLE to R.string.service_example
 )
 
 enum class Status {
@@ -50,16 +51,16 @@ enum class Status {
 }
 
 val statusToHumanString = mapOf(
-    Status.Preadvice to "Preadvice",
-    Status.InTransit to "In transit",
-    Status.InWarehouse to "Arrived at warehouse",
-    Status.Customs to "Arrived at customs",
-    Status.OutForDelivery to "Out for delivery",
-    Status.DeliveryFailure to "Failed to deliver",
-    Status.Delivered to "Delivered",
-    Status.AwaitingPickup to "Awaiting pickup",
-    Status.PickedUp to "Picked up",
-    Status.Unknown to "Unknown status code"
+    Status.Preadvice to R.string.status_preadvice,
+    Status.InTransit to R.string.status_in_transit,
+    Status.InWarehouse to R.string.status_in_warehouse,
+    Status.Customs to R.string.status_customs,
+    Status.OutForDelivery to R.string.status_out_for_delivery,
+    Status.DeliveryFailure to R.string.status_delivery_failure,
+    Status.Delivered to R.string.status_delivered,
+    Status.AwaitingPickup to R.string.status_awaiting_pickup,
+    Status.PickedUp to R.string.status_picked_up,
+    Status.Unknown to R.string.status_unknown
 )
 
 val serviceOptions = listOf(
