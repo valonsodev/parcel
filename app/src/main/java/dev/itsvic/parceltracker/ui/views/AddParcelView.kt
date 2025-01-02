@@ -95,7 +95,9 @@ fun AddParcelView(
                     onExpandedChange = { expanded = it },
                 ) {
                     OutlinedTextField(
-                        value = if (service == Service.UNDEFINED) "" else service.toString(),
+                        value = if (service == Service.UNDEFINED) "" else stringResource(
+                            serviceToHumanString[service]!!
+                        ),
                         onValueChange = {},
                         modifier = Modifier
                             .menuAnchor(MenuAnchorType.PrimaryNotEditable)
