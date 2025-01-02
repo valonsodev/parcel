@@ -21,13 +21,15 @@ data class ParcelHistoryItem(
 
 enum class Service {
     UNDEFINED,
-
     DHL,
     GLS,
-
-    // Do not use or show in parcel creation menu
     EXAMPLE,
 }
+
+val serviceOptions = listOf(
+    // Service.DHL, // unfinished
+    Service.GLS,
+)
 
 fun getParcel(id: String, postCode: String?, service: Service): Parcel? {
     return when (service) {

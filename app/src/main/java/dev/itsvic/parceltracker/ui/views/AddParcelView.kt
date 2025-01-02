@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.api.Service
+import dev.itsvic.parceltracker.api.serviceOptions
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
@@ -47,11 +48,6 @@ fun AddParcelView(
     var postalCode by remember { mutableStateOf("") }
     var service by remember { mutableStateOf(Service.UNDEFINED) }
     var expanded by remember { mutableStateOf(false) }
-
-    val serviceOptions = listOf(
-        Service.DHL,
-        Service.GLS,
-    )
 
     Scaffold(
         topBar = {
