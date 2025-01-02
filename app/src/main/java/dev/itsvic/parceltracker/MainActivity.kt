@@ -73,28 +73,30 @@ fun ParcelAppNavigation(db: AppDatabase) {
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
 
+    val animDuration = 300
+
     NavHost(
         navController = navController,
         startDestination = HomePage,
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,
-                animationSpec = tween(500),
+                animationSpec = tween(animDuration),
                 initialOffset = { it / 4 }
-            ) + fadeIn(tween(500))
+            ) + fadeIn(tween(animDuration))
         },
         exitTransition = {
-            fadeOut(tween(500)) + scaleOut(tween(500), 0.9f)
+            fadeOut(tween(animDuration)) + scaleOut(tween(500), 0.9f)
         },
         popEnterTransition = {
-            fadeIn(tween(500)) + scaleIn(tween(500), 0.9f)
+            fadeIn(tween(animDuration)) + scaleIn(tween(500), 0.9f)
         },
         popExitTransition = {
             slideOutOfContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Start,
-                animationSpec = tween(500),
+                animationSpec = tween(animDuration),
                 targetOffset = { -it / 4 }
-            ) + fadeOut(tween(500))
+            ) + fadeOut(tween(animDuration))
         },
     ) {
         composable<HomePage> {

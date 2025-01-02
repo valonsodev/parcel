@@ -1,5 +1,6 @@
 package dev.itsvic.parceltracker.ui.views
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.api.Service
 import dev.itsvic.parceltracker.api.serviceOptions
+import dev.itsvic.parceltracker.api.serviceToHumanString
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
@@ -106,7 +108,7 @@ fun AddParcelView(
                         onDismissRequest = { expanded = false }) {
                         serviceOptions.forEach { option ->
                             DropdownMenuItem(
-                                text = { Text(option.toString()) },
+                                text = { Text(serviceToHumanString[option]!!) },
                                 onClick = {
                                     service = option
                                     expanded = false
@@ -136,13 +138,14 @@ fun AddParcelView(
                     )
                 }
 
-                if (needsPostalCode)
+                AnimatedVisibility(needsPostalCode) {
                     OutlinedTextField(
                         value = postalCode,
                         onValueChange = { postalCode = it },
                         label = { Text("Postal code") },
                         modifier = Modifier.fillMaxWidth(),
                     )
+                }
 
                 Row(
                     horizontalArrangement = Arrangement.End,
