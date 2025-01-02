@@ -5,10 +5,15 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -26,11 +31,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.room.Room
-import dev.itsvic.parceltracker.api.Service
 import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.api.Parcel as APIParcel
 import dev.itsvic.parceltracker.db.AppDatabase
-import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import dev.itsvic.parceltracker.ui.views.AddParcelView
 import dev.itsvic.parceltracker.ui.views.HomeView
@@ -73,6 +76,26 @@ fun ParcelAppNavigation(db: AppDatabase) {
     NavHost(
         navController = navController,
         startDestination = HomePage,
+        enterTransition = {
+            slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(500),
+                initialOffset = { it / 4 }
+            ) + fadeIn(tween(500))
+        },
+        exitTransition = {
+            fadeOut(tween(500)) + scaleOut(tween(500), 0.9f)
+        },
+        popEnterTransition = {
+            fadeIn(tween(500)) + scaleIn(tween(500), 0.9f)
+        },
+        popExitTransition = {
+            slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(500),
+                targetOffset = { -it / 4 }
+            ) + fadeOut(tween(500))
+        },
     ) {
         composable<HomePage> {
             val parcels = db.parcelDao().getAll().collectAsState(initial = emptyList())
@@ -103,7 +126,8 @@ fun ParcelAppNavigation(db: AppDatabase) {
 
             if (apiParcel == null)
                 Box(
-                    modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.background)
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
