@@ -77,8 +77,7 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPresse
                 )
                 Text(
                     parcel.currentStatus,
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineLarge
                 )
                 if (parcel.history.isNotEmpty()) Text(parcel.history[0].description)
             }
