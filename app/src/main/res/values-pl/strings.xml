@@ -30,4 +30,8 @@
     <string name="no_parcels_flavor">Obecnie nie masz żadnych paczek.</string>
     <string name="current_status">Obecny status</string>
     <string name="parcel_history">Historia paczki</string>
+    <string name="human_name_error_text">Nazwa nie może być pusta.</string>
+    <string name="tracking_id_error_text">Identyfikator śledzenia nie może być pusty.</string>
+    <string name="service_error_text">Musisz wybrać serwis.</string>
+    <string name="postal_code_error_text">Kod pocztowy nie może być pusty.</string>
 </resources>
