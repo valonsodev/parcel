@@ -92,6 +92,5 @@ internal data class DHLEventLocation(
 @JsonClass(generateAdapter = true)
 internal data class DHLAddress(
     val addressLocality: String,
-    val countryCode: String,
     val postalCode: String?,
 )
