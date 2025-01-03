@@ -72,10 +72,6 @@ internal data class PolishPostRequest(
 internal data class PolishPostResponse(
     val mailInfo: PolishPostParcel,
     val mailStatus: Int,
-
-    /**
-     * Parcel ID
-     */
     val number: String,
 )
 

@@ -64,7 +64,7 @@ val statusToHumanString = mapOf(
 )
 
 val serviceOptions = listOf(
-    // Service.DHL, // unfinished
+    Service.DHL,
     Service.GLS,
     Service.POLISH_POST,
 )
