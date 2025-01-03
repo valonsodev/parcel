@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter
 private const val API_BASE = "https://gls-group.com/app/service/open/rest/EN/en"
 private val glsJsonAdapter = api_moshi.adapter(GLSResponse::class.java)
 
-fun getGLSParcel(id: String, postalCode: String?): Parcel? {
+internal fun getGLSParcel(id: String, postalCode: String?): Parcel? {
     if (postalCode == null) throw NotImplementedError("Needs post codes for now")
 
     val request = Request.Builder()

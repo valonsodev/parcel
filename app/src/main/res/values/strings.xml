@@ -38,4 +38,7 @@
     <string name="postal_code_error_text">Postal code must not be blank.</string>
     <string name="status_network_failure">Network failure</string>
     <string name="network_failure_detail">Your device may be offline, the service\'s servers may be offline, or the details you have entered are incorrect.</string>
+    <string name="settings">Settings</string>
+    <string name="demo_mode_detail">Shows example parcels for demo purposes. Does not affect user data.</string>
+    <string name="demo_mode">Demo mode</string>
 </resources>

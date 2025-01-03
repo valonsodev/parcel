@@ -76,6 +76,8 @@ fun getParcel(id: String, postCode: String?, service: Service): Parcel? {
         Service.DHL -> getDHLParcel(id)
         Service.GLS -> getGLSParcel(id, postCode)
         Service.POLISH_POST -> getPolishPostParcel(id)
+        // to be used only in demo mode.
+        Service.EXAMPLE -> getExampleParcel(id)
         else -> throw NotImplementedError("Service $service has no fetch implementation yet")
     }
 }

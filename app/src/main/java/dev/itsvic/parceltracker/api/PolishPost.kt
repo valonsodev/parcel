@@ -16,7 +16,7 @@ private const val API_KEY =
 private val ppReqAdapter = api_moshi.adapter(PolishPostRequest::class.java)
 private val ppRespAdapter = api_moshi.adapter(PolishPostResponse::class.java)
 
-fun getPolishPostParcel(id: String): Parcel? {
+internal fun getPolishPostParcel(id: String): Parcel? {
     val ppReq = PolishPostRequest(id, "EN", true)
     val body = ppReqAdapter.toJson(ppReq).toRequestBody("application/json".toMediaTypeOrNull())
 

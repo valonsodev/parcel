@@ -6,9 +6,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,6 +33,7 @@ fun HomeView(
     parcels: List<Parcel>,
     onNavigateToAddParcel: () -> Unit,
     onNavigateToParcel: (Parcel) -> Unit,
+    onNavigateToSettings: () -> Unit,
 ) {
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -40,7 +43,13 @@ fun HomeView(
             LargeTopAppBar(
                 title = {
                     Text(stringResource(R.string.app_name))
-                }, scrollBehavior = scrollBehavior
+                },
+                scrollBehavior = scrollBehavior,
+                actions = {
+                    IconButton(onClick = onNavigateToSettings) {
+                        Icon(Icons.Filled.Settings, stringResource(R.string.settings))
+                    }
+                },
             )
         },
         floatingActionButton = {
@@ -84,6 +93,7 @@ fun HomeViewPreview() {
             ),
             onNavigateToAddParcel = {},
             onNavigateToParcel = {},
+            onNavigateToSettings = {},
         )
     }
 }

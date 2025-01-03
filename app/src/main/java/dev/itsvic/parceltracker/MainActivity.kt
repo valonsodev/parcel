@@ -2,6 +2,7 @@ package dev.itsvic.parceltracker
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -19,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,11 +39,14 @@ import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.api.Parcel as APIParcel
 import dev.itsvic.parceltracker.db.AppDatabase
+import dev.itsvic.parceltracker.db.demoModeParcels
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import dev.itsvic.parceltracker.ui.views.AddParcelView
 import dev.itsvic.parceltracker.ui.views.HomeView
 import dev.itsvic.parceltracker.ui.views.ParcelView
+import dev.itsvic.parceltracker.ui.views.SettingsView
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import okio.IOException
@@ -68,6 +73,9 @@ class MainActivity : ComponentActivity() {
 object HomePage
 
 @Serializable
+object SettingsPage
+
+@Serializable
 data class ParcelPage(val parcelDbId: Int)
 
 @Serializable
@@ -77,6 +85,8 @@ object AddParcelPage
 fun ParcelAppNavigation(db: AppDatabase) {
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val demoMode = context.dataStore.data.map { it[DEMO_MODE] ?: false }.collectAsState(false)
 
     val animDuration = 300
 
@@ -105,19 +115,32 @@ fun ParcelAppNavigation(db: AppDatabase) {
         },
     ) {
         composable<HomePage> {
-            val parcels = db.parcelDao().getAll().collectAsState(initial = emptyList())
+            val parcels = if (demoMode.value)
+                derivedStateOf { demoModeParcels }
+            else
+                db.parcelDao().getAll().collectAsState(initial = emptyList())
 
             HomeView(
                 parcels = parcels.value,
                 onNavigateToAddParcel = { navController.navigate(route = AddParcelPage) },
                 onNavigateToParcel = { navController.navigate(route = ParcelPage(it.id)) },
+                onNavigateToSettings = { navController.navigate(route = SettingsPage) },
             )
         }
+
+        composable<SettingsPage> {
+            SettingsView(
+                onBackPressed = { navController.popBackStack() }
+            )
+        }
+
         composable<ParcelPage> { backStackEntry ->
             val route: ParcelPage = backStackEntry.toRoute()
-            val parcelDb = db.parcelDao().getById(route.parcelDbId).collectAsState(null)
+            val parcelDb = if (demoMode.value)
+                derivedStateOf { demoModeParcels[route.parcelDbId] }
+            else
+                db.parcelDao().getById(route.parcelDbId).collectAsState(null)
             var apiParcel: APIParcel? by remember { mutableStateOf(null) }
-            val context = LocalContext.current
 
             LaunchedEffect(parcelDb.value) {
                 if (parcelDb.value != null) {
@@ -132,11 +155,13 @@ fun ParcelAppNavigation(db: AppDatabase) {
                             Log.w("MainActivity", "Failed fetch: $e")
                             apiParcel = APIParcel(
                                 parcelDb.value!!.parcelId,
-                                listOf(ParcelHistoryItem(
-                                    context.getString(R.string.network_failure_detail),
-                                    LocalDateTime.now(),
-                                    ""
-                                )),
+                                listOf(
+                                    ParcelHistoryItem(
+                                        context.getString(R.string.network_failure_detail),
+                                        LocalDateTime.now(),
+                                        ""
+                                    )
+                                ),
                                 Status.NetworkFailure
                             )
                         }
@@ -161,12 +186,21 @@ fun ParcelAppNavigation(db: AppDatabase) {
                     onBackPressed = { navController.popBackStack() }
                 )
         }
+
         composable<AddParcelPage> {
             var addFinished by remember { mutableStateOf(Pair(false, 0)) }
 
             AddParcelView(
                 onBackPressed = { navController.popBackStack() },
                 onCompleted = {
+                    if (demoMode.value) {
+                        Toast.makeText(
+                            context,
+                            "Action not allowed in demo mode",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@AddParcelView
+                    }
                     scope.launch(Dispatchers.IO) {
                         val id = db.parcelDao().insert(it)
                         addFinished = Pair(true, id.toInt())

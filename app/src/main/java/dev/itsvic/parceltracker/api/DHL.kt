@@ -13,7 +13,7 @@ private const val API_KEY = "VzYp08GaeA2esfeCPBLtzHkLShfRTk28"
 
 private val dhlJsonAdapter = api_moshi.adapter(DHLResponse::class.java)
 
-fun getDHLParcel(trackingNumber: String): Parcel? {
+internal fun getDHLParcel(trackingNumber: String): Parcel? {
     val request = Request.Builder()
         .url("$API_URL?trackingNumber=$trackingNumber")
         .header("DHL-API-Key", API_KEY)

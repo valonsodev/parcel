@@ -12,6 +12,12 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
+val versionMajor = 0
+val versionMinor = 2
+val versionPatch = 0
+val appVersionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
+val appVersionName = "$versionMajor.$versionMinor.$versionPatch"
+
 android {
     namespace = "dev.itsvic.parceltracker"
     compileSdk = 34
@@ -20,8 +26,8 @@ android {
         applicationId = "dev.itsvic.parceltracker"
         minSdk = 29
         targetSdk = 34
-        versionCode = 200
-        versionName = "0.2.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -56,6 +62,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -78,6 +85,7 @@ dependencies {
 
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    implementation(libs.androidx.datastore.preferences)
     ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
