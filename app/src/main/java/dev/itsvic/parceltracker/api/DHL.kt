@@ -6,10 +6,10 @@ import okio.IOException
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-private const val API_URL = "https://api-test.dhl.com/track/shipments"
+private const val API_URL = "https://api-eu.dhl.com/track/shipments"
 
-// TODO: find a good way to store secrets outside of Git
-private const val API_KEY = "demo-key"
+// please don't take it for yourself, make one instead for free - https://developer.dhl.com/
+private const val API_KEY = "VzYp08GaeA2esfeCPBLtzHkLShfRTk28"
 
 private val dhlJsonAdapter = api_moshi.adapter(DHLResponse::class.java)
 
@@ -29,11 +29,16 @@ fun getDHLParcel(trackingNumber: String): Parcel? {
                 "unknown" -> Status.Unknown
                 "pre-transit" -> Status.Preadvice
                 "transit" -> when (shipment.status.status) {
-                    // DHL uses a "transit" status code for this. stupid
+                    // DHL uses a "transit" status code for different statues
+                    "447" -> Status.Customs // ARRIVED AT CUSTOMS
+                    "506" -> Status.Customs // HELD AT CUSTOMS
+                    "449" -> Status.Customs // CLEARED CUSTOMS
+                    "576" -> Status.InWarehouse // PROCESSED AT LOCAL DISTRIBUTION CENTER
+                    "577" -> Status.OutForDelivery // DEPARTED FROM LOCAL DISTRIBUTION CENTER
                     "OUT FOR DELIVERY" -> Status.OutForDelivery
                     else -> Status.InTransit
                 }
-
+                "failure" -> Status.DeliveryFailure
                 "delivered" -> Status.Delivered
                 else -> Status.Unknown
             }
@@ -42,7 +47,11 @@ fun getDHLParcel(trackingNumber: String): Parcel? {
                 ParcelHistoryItem(
                     it.description ?: it.status,
                     LocalDateTime.parse(it.timestamp, DateTimeFormatter.ISO_DATE_TIME),
-                    if (it.location == null) "Unknown location" else "${it.location.address.postalCode} ${it.location.address.addressLocality}"
+                    if (it.location == null) "Unknown location"
+                    else
+                        if (it.location.address.postalCode != null)
+                            "${it.location.address.postalCode} ${it.location.address.addressLocality}"
+                        else it.location.address.addressLocality
                 )
             }
 
@@ -84,5 +93,5 @@ internal data class DHLEventLocation(
 internal data class DHLAddress(
     val addressLocality: String,
     val countryCode: String,
-    val postalCode: String,
+    val postalCode: String?,
 )
