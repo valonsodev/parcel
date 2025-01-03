@@ -14,7 +14,7 @@ room {
 
 val versionMajor = 0
 val versionMinor = 2
-val versionPatch = 0
+val versionPatch = 1
 val appVersionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
 val appVersionName = "$versionMajor.$versionMinor.$versionPatch"
 
