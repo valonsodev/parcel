@@ -16,8 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -37,18 +39,24 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPressed: () -> Unit) {
-    Scaffold(topBar = {
-        MediumTopAppBar(
-            title = {
-                Text(humanName)
-            },
-            navigationIcon = {
-                IconButton(onClick = onBackPressed) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, "Go back")
-                }
-            }
-        )
-    }) { innerPadding ->
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
+    Scaffold(
+        topBar = {
+            MediumTopAppBar(
+                title = {
+                    Text(humanName)
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackPressed) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Go back")
+                    }
+                },
+                scrollBehavior = scrollBehavior,
+            )
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -99,7 +107,9 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPresse
                 modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
             )
 
-            LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
                 items(parcel.history) { item ->
                     ParcelHistoryItemRow(item)
                 }

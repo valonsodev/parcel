@@ -12,8 +12,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -30,17 +32,23 @@ fun HomeView(
     onNavigateToAddParcel: () -> Unit,
     onNavigateToParcel: (Parcel) -> Unit,
 ) {
+    val scrollBehavior =
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
     Scaffold(
         topBar = {
-            LargeTopAppBar(title = {
-                Text(stringResource(R.string.app_name))
-            })
+            LargeTopAppBar(
+                title = {
+                    Text(stringResource(R.string.app_name))
+                }, scrollBehavior = scrollBehavior
+            )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onNavigateToAddParcel) {
                 Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_a_parcel))
             }
-        }
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
         Column(
             modifier = Modifier
