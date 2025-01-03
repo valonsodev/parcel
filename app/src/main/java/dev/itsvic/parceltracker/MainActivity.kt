@@ -26,11 +26,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.room.Room
+import dev.itsvic.parceltracker.api.ParcelHistoryItem
+import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.api.Parcel as APIParcel
 import dev.itsvic.parceltracker.db.AppDatabase
@@ -41,6 +44,8 @@ import dev.itsvic.parceltracker.ui.views.ParcelView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import okio.IOException
+import java.time.LocalDateTime
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,16 +117,29 @@ fun ParcelAppNavigation(db: AppDatabase) {
             val route: ParcelPage = backStackEntry.toRoute()
             val parcelDb = db.parcelDao().getById(route.parcelDbId).collectAsState(null)
             var apiParcel: APIParcel? by remember { mutableStateOf(null) }
+            val context = LocalContext.current
 
             LaunchedEffect(parcelDb.value) {
                 if (parcelDb.value != null) {
                     launch(Dispatchers.IO) {
-                        apiParcel = getParcel(
-                            parcelDb.value!!.parcelId,
-                            parcelDb.value!!.postalCode,
-                            parcelDb.value!!.service
-                        )
-                        Log.i("MainActivity", "DB: $parcelDb, API: $apiParcel")
+                        try {
+                            apiParcel = getParcel(
+                                parcelDb.value!!.parcelId,
+                                parcelDb.value!!.postalCode,
+                                parcelDb.value!!.service
+                            )
+                        } catch (e: IOException) {
+                            Log.w("MainActivity", "Failed fetch: $e")
+                            apiParcel = APIParcel(
+                                parcelDb.value!!.parcelId,
+                                listOf(ParcelHistoryItem(
+                                    context.getString(R.string.network_failure_detail),
+                                    LocalDateTime.now(),
+                                    ""
+                                )),
+                                Status.NetworkFailure
+                            )
+                        }
                     }
                 }
             }

@@ -34,4 +34,6 @@
     <string name="tracking_id_error_text">Identyfikator śledzenia nie może być pusty.</string>
     <string name="service_error_text">Musisz wybrać serwis.</string>
     <string name="postal_code_error_text">Kod pocztowy nie może być pusty.</string>
+    <string name="status_network_failure">Awaria sieci</string>
+    <string name="network_failure_detail">Twoje urządzenie może być offline, serwery usługi mogą być offline lub wprowadzone dane są nieprawidłowe.</string>
 </resources>

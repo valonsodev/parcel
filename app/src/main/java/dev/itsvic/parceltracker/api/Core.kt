@@ -48,6 +48,7 @@ enum class Status {
     AwaitingPickup,
     PickedUp,
     Unknown,
+    NetworkFailure,
 }
 
 val statusToHumanString = mapOf(
@@ -60,7 +61,8 @@ val statusToHumanString = mapOf(
     Status.Delivered to R.string.status_delivered,
     Status.AwaitingPickup to R.string.status_awaiting_pickup,
     Status.PickedUp to R.string.status_picked_up,
-    Status.Unknown to R.string.status_unknown
+    Status.Unknown to R.string.status_unknown,
+    Status.NetworkFailure to R.string.status_network_failure,
 )
 
 val serviceOptions = listOf(
