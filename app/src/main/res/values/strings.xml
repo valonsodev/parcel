@@ -40,8 +40,9 @@
     <string name="network_failure_detail">Your device may be offline, the service\'s servers may be offline, or the details you have entered are incorrect.</string>
     <string name="settings">Settings</string>
     <string name="demo_mode_detail">Shows example parcels for demo purposes. Does not affect user data.</string>
-    <string name="demo_mode">Demo mode</string>
     <string name="parcel_doesnt_exist_detail">This parcel does not exist. Make sure the parcel details are correct.</string>
     <string name="more_options">More options</string>
     <string name="delete">Delete</string>
+    <string name="demo_mode">Demo mode</string>
+    <string name="demo_mode_action_block">Action not allowed in demo mode</string>
 </resources>

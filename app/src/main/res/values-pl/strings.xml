@@ -14,7 +14,7 @@
     <string name="status_unknown">Nieznany kod statusu</string>
 
     <string name="service_undefined">Niezdefiniowana</string>
-    <string name="service_example">Przykładowa poczta</string>
+    <string name="service_example">Poczta Pokazowa</string>
     <string name="service_polish_post">Poczta Polska</string>
 
     <string name="add_a_parcel">Dodaj paczkę</string>
@@ -32,8 +32,15 @@
     <string name="parcel_history">Historia paczki</string>
     <string name="human_name_error_text">Nazwa nie może być pusta.</string>
     <string name="tracking_id_error_text">Identyfikator śledzenia nie może być pusty.</string>
-    <string name="service_error_text">Musisz wybrać serwis.</string>
-    <string name="postal_code_error_text">Kod pocztowy nie może być pusty.</string>
+    <string name="service_error_text">Musisz wybrać serwis.</string>
+    <string name="postal_code_error_text">Kod pocztowy nie może być pusty.</string>
     <string name="status_network_failure">Awaria sieci</string>
     <string name="network_failure_detail">Twoje urządzenie może być offline, serwery usługi mogą być offline lub wprowadzone dane są nieprawidłowe.</string>
+    <string name="settings">Ustawienia</string>
+    <string name="demo_mode_detail">Pokazuje przykładowe paczki w celach demonstracyjnych. Nie wpływa na dane użytkownika.</string>
+    <string name="delete">Usuń</string>
+    <string name="demo_mode">Tryb pokazowy</string>
+    <string name="parcel_doesnt_exist_detail">Ta paczka nie istnieje. Upewnij się, że dane przesyłki są prawidłowe.</string>
+    <string name="more_options">Więcej opcji</string>
+    <string name="demo_mode_action_block">Akcja niedozwolona w trybie pokazowym</string>
 </resources>

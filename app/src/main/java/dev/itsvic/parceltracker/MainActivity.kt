@@ -202,6 +202,15 @@ fun ParcelAppNavigation(db: AppDatabase) {
                     parcelDb.value!!.service,
                     onBackPressed = { navController.popBackStack() },
                     onDelete = {
+                        if (demoMode.value) {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.demo_mode_action_block),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@ParcelView
+                        }
+
                         scope.launch(Dispatchers.IO) {
                             db.parcelDao().delete(parcelDb.value!!)
                             scope.launch {
@@ -219,7 +228,7 @@ fun ParcelAppNavigation(db: AppDatabase) {
                     if (demoMode.value) {
                         Toast.makeText(
                             context,
-                            "Action not allowed in demo mode",
+                            context.getString(R.string.demo_mode_action_block),
                             Toast.LENGTH_SHORT
                         ).show()
                         return@AddParcelView
