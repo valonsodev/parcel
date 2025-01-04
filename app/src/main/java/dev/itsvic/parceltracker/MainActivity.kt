@@ -186,7 +186,7 @@ fun ParcelAppNavigation(db: AppDatabase) {
                 }
             }
 
-            if (apiParcel == null)
+            if (apiParcel == null || parcelDb.value == null)
                 Box(
                     modifier = Modifier
                         .background(color = MaterialTheme.colorScheme.background)
@@ -200,13 +200,19 @@ fun ParcelAppNavigation(db: AppDatabase) {
                     apiParcel!!,
                     parcelDb.value!!.humanName,
                     parcelDb.value!!.service,
-                    onBackPressed = { navController.popBackStack() }
+                    onBackPressed = { navController.popBackStack() },
+                    onDelete = {
+                        scope.launch(Dispatchers.IO) {
+                            db.parcelDao().delete(parcelDb.value!!)
+                            scope.launch {
+                                navController.popBackStack(HomePage, false)
+                            }
+                        }
+                    },
                 )
         }
 
         composable<AddParcelPage> {
-            var addFinished by remember { mutableStateOf(Pair(false, 0)) }
-
             AddParcelView(
                 onBackPressed = { navController.popBackStack() },
                 onCompleted = {
@@ -218,20 +224,17 @@ fun ParcelAppNavigation(db: AppDatabase) {
                         ).show()
                         return@AddParcelView
                     }
+
                     scope.launch(Dispatchers.IO) {
                         val id = db.parcelDao().insert(it)
-                        addFinished = Pair(true, id.toInt())
+                        scope.launch {
+                            navController.navigate(route = ParcelPage(id.toInt())) {
+                                popUpTo(HomePage)
+                            }
+                        }
                     }
                 },
             )
-
-            LaunchedEffect(addFinished) {
-                if (addFinished.first) {
-                    navController.navigate(route = ParcelPage(addFinished.second)) {
-                        popUpTo(HomePage)
-                    }
-                }
-            }
         }
     }
 }

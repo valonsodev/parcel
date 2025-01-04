@@ -9,6 +9,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,6 +23,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -38,8 +47,15 @@ import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPressed: () -> Unit) {
+fun ParcelView(
+    parcel: Parcel,
+    humanName: String,
+    service: Service,
+    onBackPressed: () -> Unit,
+    onDelete: () -> Unit,
+) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    var expanded by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -50,6 +66,23 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPresse
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Go back")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { expanded = !expanded }) {
+                        Icon(Icons.Filled.MoreVert, stringResource(R.string.more_options))
+                    }
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false },
+                    ) {
+                        DropdownMenuItem(
+                            leadingIcon = {
+                                Icon(Icons.Filled.Delete, stringResource(R.string.delete))
+                            },
+                            text = { Text(stringResource(R.string.delete)) },
+                            onClick = onDelete,
+                        )
                     }
                 },
                 scrollBehavior = scrollBehavior,
@@ -108,7 +141,7 @@ fun ParcelView(parcel: Parcel, humanName: String, service: Service, onBackPresse
             )
 
             LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 items(parcel.history) { item ->
                     ParcelHistoryItemRow(item)
@@ -148,6 +181,12 @@ private fun ParcelViewPreview() {
         Status.DeliveryFailure
     )
     ParcelTrackerTheme {
-        ParcelView(parcel, "My precious package", Service.EXAMPLE, onBackPressed = {})
+        ParcelView(
+            parcel,
+            "My precious package",
+            Service.EXAMPLE,
+            onBackPressed = {},
+            onDelete = {},
+        )
     }
 }

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
@@ -21,13 +22,20 @@ import java.time.format.FormatStyle
 
 @Composable
 fun ParcelHistoryItemRow(item: ParcelHistoryItem) {
-    Column {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         Text(
             item.description,
             color = MaterialTheme.colorScheme.onBackground
         )
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(item.time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)), fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                item.time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)),
+                fontSize = 13.sp,
+                lineHeight = 19.5f.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
             Text(
                 item.location,
                 fontSize = 13.sp,
