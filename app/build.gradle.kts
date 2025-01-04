@@ -10,13 +10,13 @@ plugins {
 
 val versionMajor = 0
 val versionMinor = 2
-val versionPatch = 1
-val versionBuild = 1  // Hidden from the user unless RC
-val isReleaseCandidate = false
+val versionPatch = 2
+val versionBuild = 0  // Hidden from the user unless suffix defined
+val versionSuffix = ""
 val appVersionCode = ((versionMajor * 100 + versionMinor) * 100 + versionPatch) * 1000 + versionBuild
 val appVersionName =
-    if (isReleaseCandidate)
-        "$versionMajor.$versionMinor.$versionPatch RC$versionBuild"
+    if (versionSuffix.isNotBlank())
+        "$versionMajor.$versionMinor.$versionPatch $versionSuffix$versionBuild"
     else
         "$versionMajor.$versionMinor.$versionPatch"
 
