@@ -8,15 +8,21 @@ plugins {
     kotlin("plugin.serialization") version "2.0.21"
 }
 
-room {
-    schemaDirectory("$projectDir/schemas")
-}
-
 val versionMajor = 0
 val versionMinor = 2
 val versionPatch = 1
-val appVersionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
-val appVersionName = "$versionMajor.$versionMinor.$versionPatch"
+val versionBuild = 1  // Hidden from the user unless RC
+val isReleaseCandidate = false
+val appVersionCode = ((versionMajor * 100 + versionMinor) * 100 + versionPatch) * 1000 + versionBuild
+val appVersionName =
+    if (isReleaseCandidate)
+        "$versionMajor.$versionMinor.$versionPatch RC$versionBuild"
+    else
+        "$versionMajor.$versionMinor.$versionPatch"
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
 
 android {
     namespace = "dev.itsvic.parceltracker"
