@@ -41,4 +41,5 @@
     <string name="settings">Settings</string>
     <string name="demo_mode_detail">Shows example parcels for demo purposes. Does not affect user data.</string>
     <string name="demo_mode">Demo mode</string>
+    <string name="parcel_doesnt_exist_detail">This parcel does not exist. Make sure the parcel details are correct.</string>
 </resources>

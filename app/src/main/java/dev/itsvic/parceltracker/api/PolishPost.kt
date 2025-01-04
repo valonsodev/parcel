@@ -16,7 +16,7 @@ private const val API_KEY =
 private val ppReqAdapter = api_moshi.adapter(PolishPostRequest::class.java)
 private val ppRespAdapter = api_moshi.adapter(PolishPostResponse::class.java)
 
-internal fun getPolishPostParcel(id: String): Parcel? {
+internal fun getPolishPostParcel(id: String): Parcel {
     val ppReq = PolishPostRequest(id, "EN", true)
     val body = ppReqAdapter.toJson(ppReq).toRequestBody("application/json".toMediaTypeOrNull())
 
@@ -32,6 +32,7 @@ internal fun getPolishPostParcel(id: String): Parcel? {
         val resp = ppRespAdapter.fromJson(response.body!!.source())
 
         if (resp != null) {
+            if (resp.mailInfo == null || resp.mailStatus == -1) throw ParcelNonExistentException()
             val history = resp.mailInfo.events.reversed().map { item ->
                 ParcelHistoryItem(
                     item.name,
@@ -58,7 +59,7 @@ internal fun getPolishPostParcel(id: String): Parcel? {
         }
     }
 
-    return null
+    throw ParcelNonExistentException()
 }
 
 @JsonClass(generateAdapter = true)
@@ -70,7 +71,7 @@ internal data class PolishPostRequest(
 
 @JsonClass(generateAdapter = true)
 internal data class PolishPostResponse(
-    val mailInfo: PolishPostParcel,
+    val mailInfo: PolishPostParcel?,
     val mailStatus: Int,
     val number: String,
 )

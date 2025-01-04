@@ -15,14 +15,16 @@ import java.time.format.DateTimeFormatter
 private const val API_BASE = "https://gls-group.com/app/service/open/rest/EN/en"
 private val glsJsonAdapter = api_moshi.adapter(GLSResponse::class.java)
 
-internal fun getGLSParcel(id: String, postalCode: String?): Parcel? {
-    if (postalCode == null) throw NotImplementedError("Needs post codes for now")
+internal fun getGLSParcel(id: String, postalCode: String?): Parcel {
+    // just throw an IOException for now until we implement the rstt029 API
+    if (postalCode == null) throw IOException("Needs post codes for now")
 
     val request = Request.Builder()
         .url("$API_BASE/rstt028/$id?postalCode=$postalCode")
         .build()
 
     api_client.newCall(request).execute().use { response ->
+        if (response.code == 404) throw ParcelNonExistentException()
         if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
         val resp = glsJsonAdapter.fromJson(response.body!!.source())
@@ -47,7 +49,7 @@ internal fun getGLSParcel(id: String, postalCode: String?): Parcel? {
         }
     }
 
-    return null
+    throw ParcelNonExistentException()
 }
 
 @JsonClass(generateAdapter = true)

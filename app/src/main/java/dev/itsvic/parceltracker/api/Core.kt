@@ -81,3 +81,5 @@ fun getParcel(id: String, postCode: String?, service: Service): Parcel? {
         else -> throw NotImplementedError("Service $service has no fetch implementation yet")
     }
 }
+
+class ParcelNonExistentException: Exception("Parcel does not exist in delivery service API")

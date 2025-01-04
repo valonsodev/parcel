@@ -19,6 +19,7 @@ internal fun getDHLParcel(trackingNumber: String): Parcel? {
         .header("DHL-API-Key", API_KEY)
         .build()
     api_client.newCall(request).execute().use { response ->
+        if (response.code == 400 || response.code == 404) throw ParcelNonExistentException()
         if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
         val resp = dhlJsonAdapter.fromJson(response.body!!.source())

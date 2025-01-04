@@ -35,6 +35,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.room.Room
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
+import dev.itsvic.parceltracker.api.ParcelNonExistentException
 import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.api.Parcel as APIParcel
@@ -158,6 +159,22 @@ fun ParcelAppNavigation(db: AppDatabase) {
                                 listOf(
                                     ParcelHistoryItem(
                                         context.getString(R.string.network_failure_detail),
+                                        LocalDateTime.now(),
+                                        ""
+                                    )
+                                ),
+                                Status.NetworkFailure
+                            )
+                        } catch (e: ParcelNonExistentException) {
+                            Log.w(
+                                "MainActivity",
+                                "Parcel $parcelDb doesn't exist. This shouldn't happen"
+                            )
+                            apiParcel = APIParcel(
+                                parcelDb.value!!.parcelId,
+                                listOf(
+                                    ParcelHistoryItem(
+                                        context.getString(R.string.parcel_doesnt_exist_detail),
                                         LocalDateTime.now(),
                                         ""
                                     )
