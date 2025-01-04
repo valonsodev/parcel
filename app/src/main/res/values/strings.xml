@@ -45,4 +45,5 @@
     <string name="delete">Delete</string>
     <string name="demo_mode">Demo mode</string>
     <string name="demo_mode_action_block">Action not allowed in demo mode</string>
+    <string name="settings_experimental">Experimental</string>
 </resources>

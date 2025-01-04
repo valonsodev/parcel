@@ -64,6 +64,13 @@ fun SettingsView(
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
+
+            Text(
+                stringResource(R.string.settings_experimental),
+                modifier = Modifier.padding(16.dp, 2.dp),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
             Row(
                 modifier = Modifier
                     .clickable { setDemoMode(demoMode.value.not()) }
