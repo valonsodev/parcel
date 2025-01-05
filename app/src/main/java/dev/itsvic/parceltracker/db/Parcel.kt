@@ -23,6 +23,9 @@ interface ParcelDao {
     @Query("SELECT * FROM parcel")
     fun getAll(): Flow<List<Parcel>>
 
+    @Query("SELECT * FROM parcel")
+    suspend fun getAllAsync(): List<Parcel>
+
     @Query("SELECT * FROM parcel WHERE id=:id LIMIT 1")
     fun getById(id: Int): Flow<Parcel>
 

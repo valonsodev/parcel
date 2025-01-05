@@ -26,12 +26,12 @@ room {
 
 android {
     namespace = "dev.itsvic.parceltracker"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "dev.itsvic.parceltracker"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = appVersionCode
         versionName = appVersionName
 
@@ -88,13 +88,16 @@ dependencies {
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.navigation.dynamicFeaturesFragment)
     implementation(libs.kotlinx.serialization.json)
-
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
+    implementation(libs.work.runtime)
+    implementation(libs.work.runtime.ktx)
+
     ksp(libs.room.compiler)
+    ksp(libs.moshi.kotlin.codegen)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -103,6 +106,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    ksp(libs.moshi.kotlin.codegen)
 }

@@ -10,6 +10,7 @@ class ParcelApplication : Application() {
         db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "parcel-tracker")
             .build()
 
+        applicationContext.enqueueNotificationWorker()
     }
 
     companion object {
