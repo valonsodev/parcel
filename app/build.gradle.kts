@@ -9,8 +9,8 @@ plugins {
 }
 
 val versionMajor = 0
-val versionMinor = 2
-val versionPatch = 2
+val versionMinor = 3
+val versionPatch = 0
 val versionBuild = 0  // Hidden from the user unless suffix defined
 val versionSuffix = ""
 val appVersionCode = ((versionMajor * 100 + versionMinor) * 100 + versionPatch) * 1000 + versionBuild
