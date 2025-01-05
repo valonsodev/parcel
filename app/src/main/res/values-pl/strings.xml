@@ -44,4 +44,6 @@
     <string name="demo_mode_action_block">Akcja niedozwolona w trybie pokazowym</string>
     <string name="settings_experimental">Eksperymentalne</string>
     <string name="status_no_data">Brak danych</string>
+    <string name="channel_name">Wydarzenia paczkowe</string>
+    <string name="channel_description">Powiadomienia o aktualnym statusie paczki</string>
 </resources>
