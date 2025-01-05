@@ -8,3 +8,4 @@ Parcel is an app that lets you track your parcels from various providers with ea
 - DHL
 - GLS
 - Poczta Polska (Polish Post)
+- Evri
