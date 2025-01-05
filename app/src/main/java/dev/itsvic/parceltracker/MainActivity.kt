@@ -33,13 +33,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import androidx.room.Room
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.api.ParcelNonExistentException
 import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.api.Parcel as APIParcel
-import dev.itsvic.parceltracker.db.AppDatabase
 import dev.itsvic.parceltracker.db.demoModeParcels
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import dev.itsvic.parceltracker.ui.views.AddParcelView
@@ -55,15 +53,12 @@ import java.time.LocalDateTime
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        val db = Room.databaseBuilder(applicationContext, AppDatabase::class.java, "parcel-tracker")
-            .build()
-
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             ParcelTrackerTheme {
                 Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-                    ParcelAppNavigation(db)
+                    ParcelAppNavigation()
                 }
             }
         }
@@ -83,7 +78,8 @@ data class ParcelPage(val parcelDbId: Int)
 object AddParcelPage
 
 @Composable
-fun ParcelAppNavigation(db: AppDatabase) {
+fun ParcelAppNavigation() {
+    val db = ParcelApplication.db
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
