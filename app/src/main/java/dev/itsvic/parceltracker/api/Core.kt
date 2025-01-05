@@ -26,6 +26,8 @@ enum class Service {
     DHL,
     GLS,
     POLISH_POST,
+    EVRI,
+
     EXAMPLE,
 }
 
@@ -34,7 +36,8 @@ val serviceToHumanString = mapOf(
     Service.GLS to R.string.service_gls,
     Service.DHL to R.string.service_dhl,
     Service.POLISH_POST to R.string.service_polish_post,
-    Service.EXAMPLE to R.string.service_example
+    Service.EVRI to R.string.service_evri,
+    Service.EXAMPLE to R.string.service_example,
 )
 
 enum class Status {
@@ -49,6 +52,7 @@ enum class Status {
     PickedUp,
     Unknown,
     NetworkFailure,
+    NoData,
 }
 
 val statusToHumanString = mapOf(
@@ -63,19 +67,23 @@ val statusToHumanString = mapOf(
     Status.PickedUp to R.string.status_picked_up,
     Status.Unknown to R.string.status_unknown,
     Status.NetworkFailure to R.string.status_network_failure,
+    Status.NoData to R.string.status_no_data,
 )
 
 val serviceOptions = listOf(
     Service.DHL,
     Service.GLS,
     Service.POLISH_POST,
+    Service.EVRI,
 )
 
-fun getParcel(id: String, postCode: String?, service: Service): Parcel? {
+suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
     return when (service) {
         Service.DHL -> getDHLParcel(id)
         Service.GLS -> getGLSParcel(id, postCode)
         Service.POLISH_POST -> getPolishPostParcel(id)
+        Service.EVRI -> getEvriParcel(id)
+
         // to be used only in demo mode.
         Service.EXAMPLE -> getExampleParcel(id)
         else -> throw NotImplementedError("Service $service has no fetch implementation yet")

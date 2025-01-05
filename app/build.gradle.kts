@@ -92,6 +92,8 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.retrofit)
+    implementation(libs.converter.moshi)
     ksp(libs.room.compiler)
 
     testImplementation(libs.junit)

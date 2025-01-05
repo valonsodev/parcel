@@ -1,7 +1,5 @@
 package dev.itsvic.parceltracker.ui.views
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,23 +34,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.R
-import dev.itsvic.parceltracker.api.ParcelNonExistentException
 import dev.itsvic.parceltracker.api.Service
-import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.api.serviceOptions
 import dev.itsvic.parceltracker.api.serviceToHumanString
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okio.IOException
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,7 +54,6 @@ fun AddParcelView(
     onBackPressed: () -> Unit,
     onCompleted: (Parcel) -> Unit,
 ) {
-    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
     var humanName by remember { mutableStateOf("") }
@@ -89,24 +82,6 @@ fun AddParcelView(
         }
 
         if (!success) return false
-
-        try {
-            getParcel(trackingId, if (needsPostalCode) postalCode else null, service)
-        } catch (e: IOException) {
-             // network exception
-            Log.w("AddParcelView", "Network exception during validation: $e")
-            coroutineScope.launch {
-                Toast.makeText(context, R.string.network_failure_detail, Toast.LENGTH_LONG).show()
-            }
-            return false
-        } catch (e: ParcelNonExistentException) {
-            coroutineScope.launch {
-                Toast.makeText(context, R.string.parcel_doesnt_exist_detail, Toast.LENGTH_LONG)
-                    .show()
-            }
-            return false
-        }
-
         return true
     }
 

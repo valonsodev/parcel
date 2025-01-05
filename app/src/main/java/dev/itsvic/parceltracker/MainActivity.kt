@@ -166,10 +166,6 @@ fun ParcelAppNavigation(db: AppDatabase) {
                                 Status.NetworkFailure
                             )
                         } catch (e: ParcelNonExistentException) {
-                            Log.w(
-                                "MainActivity",
-                                "Parcel $parcelDb doesn't exist. This shouldn't happen"
-                            )
                             apiParcel = APIParcel(
                                 parcelDb.value!!.parcelId,
                                 listOf(
@@ -179,7 +175,7 @@ fun ParcelAppNavigation(db: AppDatabase) {
                                         ""
                                     )
                                 ),
-                                Status.NetworkFailure
+                                Status.NoData
                             )
                         }
                     }

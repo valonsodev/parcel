@@ -43,6 +43,7 @@ private val exampleParcels = mapOf(
     ),
 )
 
-internal fun getExampleParcel(id: String): Parcel? {
-    return exampleParcels[id]
+internal fun getExampleParcel(id: String): Parcel {
+    if (!exampleParcels.containsKey(id)) throw ParcelNonExistentException()
+    return exampleParcels[id]!!
 }
