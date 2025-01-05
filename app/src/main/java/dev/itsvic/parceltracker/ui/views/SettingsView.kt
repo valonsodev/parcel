@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +33,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import dev.itsvic.parceltracker.BuildConfig
 import dev.itsvic.parceltracker.DEMO_MODE
+import dev.itsvic.parceltracker.api.ParcelHistoryItem
+import dev.itsvic.parceltracker.api.Service
+import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.dataStore
+import dev.itsvic.parceltracker.db.Parcel
+import dev.itsvic.parceltracker.sendNotification
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,6 +78,7 @@ fun SettingsView(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+
             Row(
                 modifier = Modifier
                     .clickable { setDemoMode(demoMode.value.not()) }
@@ -87,6 +95,25 @@ fun SettingsView(
                     )
                 }
                 Switch(checked = demoMode.value, onCheckedChange = { setDemoMode(it) })
+            }
+
+            FilledTonalButton(
+                onClick = {
+                    context.sendNotification(
+                        Parcel(0xf100f, "Cool stuff", "", null, Service.EXAMPLE),
+                        Status.OutForDelivery,
+                        ParcelHistoryItem(
+                            "The courier has picked up the package",
+                            LocalDateTime.now(),
+                            ""
+                        )
+                    )
+                },
+                modifier = Modifier
+                    .padding(16.dp, 12.dp)
+                    .fillMaxWidth()
+            ) {
+                Text("Send test notification")
             }
 
             Text(

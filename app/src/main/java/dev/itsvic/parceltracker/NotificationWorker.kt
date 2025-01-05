@@ -2,8 +2,10 @@ package dev.itsvic.parceltracker
 
 import android.content.Context
 import android.util.Log
+import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
@@ -30,7 +32,7 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
             for (parcelWithStatus in parcels) {
                 val parcel = parcelWithStatus.parcel
                 val oldStatus = parcelWithStatus.status
-                // fetch
+
                 Log.d("NotificationWorker", "Fetching parcel status for $parcel")
                 val apiParcel = try {
                     getParcel(parcel.parcelId, parcel.postalCode, parcel.service)
@@ -41,19 +43,34 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
 
                 val lastChange = apiParcel.history.first().time.atZone(zone).toInstant()
 
-                if (oldStatus == null) {
-                    Log.d(
-                        "NotificationWorker",
-                        "Parcel did not have a status before, will only add one."
-                    )
-                    statusDao.insert(ParcelStatus(parcel.id, apiParcel.currentStatus, lastChange))
-                } else if (oldStatus.lastChange != lastChange) {
-                    Log.d(
-                        "NotificationWorker",
-                        "Parcel has had updates since then, push a notification!"
-                    )
-                } else {
-                    Log.d("NotificationWorker", "Parcel has not had any updates yet.")
+                when {
+                    oldStatus == null -> {
+                        Log.d(
+                            "NotificationWorker",
+                            "Parcel did not have a status before, will only add one."
+                        )
+                        statusDao.insert(
+                            ParcelStatus(
+                                parcel.id,
+                                apiParcel.currentStatus,
+                                lastChange
+                            )
+                        )
+                    }
+
+                    oldStatus.lastChange != lastChange -> {
+                        Log.d(
+                            "NotificationWorker",
+                            "Parcel has had updates since then, push a notification!"
+                        )
+                        applicationContext.sendNotification(
+                            parcel,
+                            apiParcel.currentStatus,
+                            apiParcel.history.first()
+                        )
+                    }
+
+                    else -> Log.d("NotificationWorker", "Parcel has not had any updates yet.")
                 }
             }
         }
@@ -62,8 +79,20 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
     }
 }
 
-fun Context.enqueueNotificationWorker() {
+fun Context.enqueueNotificationWorker(
+    unmeteredOnly: Boolean = false
+) {
+    val constraints = Constraints.Builder()
+        .setRequiredNetworkType(
+            if (unmeteredOnly)
+                NetworkType.UNMETERED
+            else
+                NetworkType.CONNECTED
+        )
+        .build()
+
     val request = PeriodicWorkRequestBuilder<NotificationWorker>(15, TimeUnit.MINUTES)
+        .setConstraints(constraints)
         .build()
 
     WorkManager.getInstance(this)
