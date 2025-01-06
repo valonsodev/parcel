@@ -28,13 +28,12 @@ private val exampleParcels = mapOf(
     ),
     "7301626157" to Parcel(
         "7301626157", listOf(
-            historyItem("Picked up", 1),
-            historyItem("Awaiting pickup at parcel locker", 3),
+            historyItem("Awaiting pickup at parcel locker", 2),
             historyItem("Out for delivery", 5),
             historyItem("Arrived at local warehouse", 24),
             historyItem("In transit", 48),
             historyItem("Label created", 96),
-        ), Status.PickedUp
+        ), Status.AwaitingPickup
     ),
     "6171197286" to Parcel(
         "6171197286", listOf(

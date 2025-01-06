@@ -2,32 +2,73 @@ package dev.itsvic.parceltracker.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.api.Service
+import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.api.serviceToHumanString
+import dev.itsvic.parceltracker.api.statusToHumanString
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
 // TODO: show the parcel status. requires a fetch so not doing it yet
 @Composable
-fun ParcelRow(parcel: Parcel, onClick: () -> Unit) {
-    Column(
+fun ParcelRow(parcel: Parcel, status: Status?, onClick: () -> Unit) {
+    Row(
         modifier = Modifier
             .clickable(onClick = onClick)
             .fillMaxWidth()
+            .padding(16.dp, 12.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Column(modifier = Modifier.padding(16.dp, 12.dp)) {
+        if (status != null)
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primaryContainer),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painterResource(
+                        when (status) {
+                            Status.Preadvice -> R.drawable.outline_other_admission_24
+                            Status.InTransit -> R.drawable.outline_local_shipping_24
+                            Status.InWarehouse -> R.drawable.outline_warehouse_24
+                            Status.Customs -> R.drawable.outline_search_24
+                            Status.OutForDelivery -> R.drawable.outline_local_shipping_24
+                            Status.DeliveryFailure -> R.drawable.outline_error_24
+                            Status.AwaitingPickup -> R.drawable.outline_pin_drop_24
+                            Status.Delivered, Status.PickedUp -> R.drawable.outline_check_24
+                            else -> R.drawable.outline_question_mark_24
+                        }
+                    ),
+                    stringResource(statusToHumanString[status]!!),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+        Column {
             Text(parcel.humanName, color = MaterialTheme.colorScheme.onBackground)
 
             Text(
@@ -46,6 +87,7 @@ fun ParcelRowPreview() {
         Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
             ParcelRow(
                 Parcel(0, "My precious package", "EXMPL0001", null, Service.EXAMPLE),
+                status = Status.InTransit,
                 onClick = {},
             )
         }

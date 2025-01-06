@@ -179,7 +179,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
             val parcels = if (demoMode.value)
                 derivedStateOf { demoModeParcels }
             else
-                db.parcelDao().getAll().collectAsState(initial = emptyList())
+                db.parcelDao().getAllWithStatus().collectAsState(initial = emptyList())
 
             HomeView(
                 parcels = parcels.value,
@@ -198,7 +198,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
         composable<ParcelPage> { backStackEntry ->
             val route: ParcelPage = backStackEntry.toRoute()
             val parcelDb = if (demoMode.value)
-                derivedStateOf { demoModeParcels[route.parcelDbId] }
+                derivedStateOf { demoModeParcels[route.parcelDbId].parcel }
             else
                 db.parcelDao().getById(route.parcelDbId).collectAsState(null)
             var apiParcel: APIParcel? by remember { mutableStateOf(null) }

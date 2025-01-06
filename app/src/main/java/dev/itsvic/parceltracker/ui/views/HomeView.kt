@@ -23,14 +23,18 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.api.Service
+import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.db.Parcel
+import dev.itsvic.parceltracker.db.ParcelStatus
+import dev.itsvic.parceltracker.db.ParcelWithStatus
 import dev.itsvic.parceltracker.ui.components.ParcelRow
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
+import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeView(
-    parcels: List<Parcel>,
+    parcels: List<ParcelWithStatus>,
     onNavigateToAddParcel: () -> Unit,
     onNavigateToParcel: (Parcel) -> Unit,
     onNavigateToSettings: () -> Unit,
@@ -70,7 +74,10 @@ fun HomeView(
 
             LazyColumn {
                 itemsIndexed(parcels) { _, parcel ->
-                    ParcelRow(parcel) { onNavigateToParcel(parcel) }
+                    ParcelRow(
+                        parcel.parcel,
+                        parcel.status?.status
+                    ) { onNavigateToParcel(parcel.parcel) }
                 }
             }
         }
@@ -83,12 +90,17 @@ fun HomeViewPreview() {
     ParcelTrackerTheme {
         HomeView(
             parcels = listOf(
-                Parcel(
-                    0,
-                    "My precious package",
-                    "EXMPL0001",
-                    null,
-                    Service.EXAMPLE
+                ParcelWithStatus(
+                    Parcel(
+                        0,
+                        "My precious package",
+                        "EXMPL0001",
+                        null,
+                        Service.EXAMPLE
+                    ),
+                    ParcelStatus(
+                        0, Status.InTransit, Instant.now()
+                    )
                 )
             ),
             onNavigateToAddParcel = {},
