@@ -11,7 +11,7 @@ plugins {
 val versionMajor = 0
 val versionMinor = 3
 val versionPatch = 1
-val versionBuild = 0  // Hidden from the user
+val versionBuild = 1  // Hidden from the user
 
 val versionSuffix = ""
 
