@@ -12,6 +12,8 @@ import androidx.work.WorkerParameters
 import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.db.ParcelStatus
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.time.ZoneId
 import java.util.concurrent.TimeUnit
@@ -78,9 +80,9 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
     }
 }
 
-fun Context.enqueueNotificationWorker(
-    unmeteredOnly: Boolean = false
-) {
+suspend fun Context.enqueueNotificationWorker() {
+    val unmeteredOnly = applicationContext.dataStore.data.map { it[UNMETERED_ONLY] ?: false }.first()
+
     val constraints = Constraints.Builder()
         .setRequiredNetworkType(
             if (unmeteredOnly)

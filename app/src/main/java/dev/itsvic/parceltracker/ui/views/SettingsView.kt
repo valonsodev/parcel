@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,11 +34,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import dev.itsvic.parceltracker.BuildConfig
 import dev.itsvic.parceltracker.DEMO_MODE
+import dev.itsvic.parceltracker.UNMETERED_ONLY
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.api.Service
 import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.dataStore
 import dev.itsvic.parceltracker.db.Parcel
+import dev.itsvic.parceltracker.enqueueNotificationWorker
 import dev.itsvic.parceltracker.sendNotification
 import java.time.LocalDateTime
 
@@ -47,12 +50,21 @@ fun SettingsView(
     onBackPressed: () -> Unit,
 ) {
     val context = LocalContext.current
-    val demoMode = context.dataStore.data.map { it[DEMO_MODE] ?: false }.collectAsState(false)
+    val demoMode by context.dataStore.data.map { it[DEMO_MODE] ?: false }.collectAsState(false)
+    val unmeteredOnly by context.dataStore.data.map { it[UNMETERED_ONLY] ?: false }.collectAsState(false)
     val coroutineScope = rememberCoroutineScope()
 
     val setDemoMode: (Boolean) -> Unit = { value ->
         coroutineScope.launch {
             context.dataStore.edit { it[DEMO_MODE] = value }
+        }
+    }
+
+    val setUnmeteredOnly: (Boolean) -> Unit = { value ->
+        coroutineScope.launch {
+            context.dataStore.edit { it[UNMETERED_ONLY] = value }
+            // reschedule notification worker to update constraints
+            context.enqueueNotificationWorker()
         }
     }
 
@@ -71,17 +83,34 @@ fun SettingsView(
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
+            Row(
+                modifier = Modifier
+                    .clickable { setUnmeteredOnly(unmeteredOnly.not()) }
+                    .padding(16.dp, 12.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(modifier = Modifier.fillMaxWidth(0.8f)) {
+                    Text(stringResource(R.string.unmetered_only_setting))
+                    Text(
+                        stringResource(R.string.unmetered_only_setting_detail),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                Switch(checked = unmeteredOnly, onCheckedChange = { setUnmeteredOnly(it) })
+            }
 
             Text(
                 stringResource(R.string.settings_experimental),
-                modifier = Modifier.padding(16.dp, 2.dp),
+                modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 2.dp),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             Row(
                 modifier = Modifier
-                    .clickable { setDemoMode(demoMode.value.not()) }
+                    .clickable { setDemoMode(demoMode.not()) }
                     .padding(16.dp, 12.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -94,7 +123,7 @@ fun SettingsView(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
-                Switch(checked = demoMode.value, onCheckedChange = { setDemoMode(it) })
+                Switch(checked = demoMode, onCheckedChange = { setDemoMode(it) })
             }
 
             FilledTonalButton(

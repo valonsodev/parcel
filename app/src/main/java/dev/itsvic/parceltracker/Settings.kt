@@ -8,3 +8,4 @@ import androidx.datastore.preferences.preferencesDataStore
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 val DEMO_MODE = booleanPreferencesKey("demoMode")
+val UNMETERED_ONLY = booleanPreferencesKey("unmeteredOnly")

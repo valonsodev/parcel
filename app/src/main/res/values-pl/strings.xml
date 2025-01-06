@@ -46,4 +46,6 @@
     <string name="status_no_data">Brak danych</string>
     <string name="channel_name">Wydarzenia paczkowe</string>
     <string name="channel_description">Powiadomienia o aktualnym statusie paczki</string>
+    <string name="unmetered_only_setting">Aktualizuj tylko w sieciach bez limitu</string>
+    <string name="unmetered_only_setting_detail">Jeśli ta opcja jest włączona, Parcel będzie szukać aktualizacji przesyłek tylko w przypadku połączeń nielimitowanych, takich jak domowe Wi-Fi.</string>
 </resources>
