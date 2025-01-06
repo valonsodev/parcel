@@ -81,7 +81,7 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
 }
 
 suspend fun Context.enqueueNotificationWorker() {
-    val unmeteredOnly = applicationContext.dataStore.data.map { it[UNMETERED_ONLY] ?: false }.first()
+    val unmeteredOnly = this.dataStore.data.map { it[UNMETERED_ONLY] ?: false }.first()
 
     val constraints = Constraints.Builder()
         .setRequiredNetworkType(
