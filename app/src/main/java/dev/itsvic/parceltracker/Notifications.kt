@@ -3,8 +3,10 @@ package dev.itsvic.parceltracker
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -19,12 +21,20 @@ const val CHANNEL_ID = "ParcelTrackerEvents"
 fun Context.sendNotification(parcel: Parcel, status: Status, event: ParcelHistoryItem) {
     val context = this
     val statusString = getString(statusToHumanString[status]!!)
+
+    val intent = Intent(this, MainActivity::class.java).apply {
+        putExtra("openParcel", parcel.id)
+        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+    }
+    val pendingIntent = PendingIntent.getActivity(this, 0, intent,
+        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+
     val builder = NotificationCompat.Builder(this, CHANNEL_ID)
         .setSmallIcon(R.drawable.package_2)
         .setContentTitle("${parcel.humanName}: $statusString")
         .setContentText(event.description)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-        // TODO: intent to open the full parcel view
+        .setContentIntent(pendingIntent)
         .setAutoCancel(true)
 
     with(NotificationManagerCompat.from(this)) {

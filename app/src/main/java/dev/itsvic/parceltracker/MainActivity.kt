@@ -1,6 +1,7 @@
 package dev.itsvic.parceltracker
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -24,9 +25,11 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -65,13 +68,28 @@ class MainActivity : ComponentActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             handleNotificationPermissionStuff()
 
+        parcelToOpen = mutableIntStateOf(
+            intent.getIntExtra("openParcel", -1)
+        )
+
         setContent {
+            val parcelToOpen by MainActivity.parcelToOpen
+
             ParcelTrackerTheme {
                 Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-                    ParcelAppNavigation()
+                    ParcelAppNavigation(parcelToOpen)
                 }
             }
         }
+    }
+
+    companion object {
+        lateinit var parcelToOpen: MutableIntState
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        parcelToOpen.intValue = intent.getIntExtra("openParcel", -1)
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -115,12 +133,21 @@ data class ParcelPage(val parcelDbId: Int)
 object AddParcelPage
 
 @Composable
-fun ParcelAppNavigation() {
+fun ParcelAppNavigation(parcelToOpen: Int) {
     val db = ParcelApplication.db
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val demoMode = context.dataStore.data.map { it[DEMO_MODE] ?: false }.collectAsState(false)
+
+    Log.d("IntentStuff", "parcel to open: $parcelToOpen")
+    LaunchedEffect(parcelToOpen) {
+        if (parcelToOpen != -1) {
+            navController.navigate(route = ParcelPage(parcelToOpen)) {
+                popUpTo(HomePage)
+            }
+        }
+    }
 
     val animDuration = 300
 
