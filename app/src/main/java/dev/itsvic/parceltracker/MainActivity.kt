@@ -140,7 +140,6 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
     val context = LocalContext.current
     val demoMode = context.dataStore.data.map { it[DEMO_MODE] ?: false }.collectAsState(false)
 
-    Log.d("IntentStuff", "parcel to open: $parcelToOpen")
     LaunchedEffect(parcelToOpen) {
         if (parcelToOpen != -1) {
             navController.navigate(route = ParcelPage(parcelToOpen)) {

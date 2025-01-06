@@ -7,6 +7,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import dev.itsvic.parceltracker.api.getParcel
@@ -14,9 +15,11 @@ import dev.itsvic.parceltracker.db.ParcelStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.guava.await
 import kotlinx.coroutines.withContext
 import java.time.ZoneId
 import java.util.concurrent.TimeUnit
+
 
 class NotificationWorker(context: Context, params: WorkerParameters) :
     CoroutineWorker(context, params) {
@@ -80,6 +83,8 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
     }
 }
 
+private const val WORK_NAME = "ParcelTrackerNotificationWorker"
+
 suspend fun Context.enqueueNotificationWorker() {
     val unmeteredOnly = this.dataStore.data.map { it[UNMETERED_ONLY] ?: false }.first()
 
@@ -98,8 +103,19 @@ suspend fun Context.enqueueNotificationWorker() {
 
     WorkManager.getInstance(this)
         .enqueueUniquePeriodicWork(
-            "ParcelTrackerNotificationWorker",
+            WORK_NAME,
             ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
             request
         )
+}
+
+suspend fun Context.enqueueWorkerIfNotQueued() {
+    val wm = WorkManager.getInstance(this)
+    val info = wm.getWorkInfosForUniqueWork(WORK_NAME).await().first()
+    if (info.state != WorkInfo.State.ENQUEUED
+        && info.state != WorkInfo.State.RUNNING) {
+        this.enqueueNotificationWorker()
+    } else {
+        Log.d("NotificationWorker", "Already enqueued/running, not doing it again")
+    }
 }

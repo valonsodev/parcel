@@ -13,10 +13,7 @@ class ParcelApplication : Application() {
             .build()
 
         applicationContext.createNotificationChannel()
-
-        MainScope().launch {
-            applicationContext.enqueueNotificationWorker()
-        }
+        MainScope().launch { applicationContext.enqueueWorkerIfNotQueued() }
     }
 
     companion object {

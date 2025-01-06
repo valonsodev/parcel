@@ -97,6 +97,7 @@ dependencies {
     implementation(libs.converter.moshi)
     implementation(libs.work.runtime)
     implementation(libs.work.runtime.ktx)
+    implementation(libs.kotlinx.coroutines.guava)
 
     ksp(libs.room.compiler)
     ksp(libs.moshi.kotlin.codegen)
