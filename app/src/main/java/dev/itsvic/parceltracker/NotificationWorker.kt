@@ -50,11 +50,7 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
                             "Parcel did not have a status before, will only add one."
                         )
                         statusDao.insert(
-                            ParcelStatus(
-                                parcel.id,
-                                apiParcel.currentStatus,
-                                lastChange
-                            )
+                            ParcelStatus(parcel.id, apiParcel.currentStatus, lastChange)
                         )
                     }
 
@@ -67,6 +63,9 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
                             parcel,
                             apiParcel.currentStatus,
                             apiParcel.history.first()
+                        )
+                        statusDao.update(
+                            ParcelStatus(parcel.id, apiParcel.currentStatus, lastChange)
                         )
                     }
 
