@@ -111,9 +111,10 @@ suspend fun Context.enqueueNotificationWorker() {
 
 suspend fun Context.enqueueWorkerIfNotQueued() {
     val wm = WorkManager.getInstance(this)
-    val info = wm.getWorkInfosForUniqueWork(WORK_NAME).await().first()
-    if (info.state != WorkInfo.State.ENQUEUED
-        && info.state != WorkInfo.State.RUNNING) {
+    val infos = wm.getWorkInfosForUniqueWork(WORK_NAME).await()
+    if (infos.isEmpty() ||
+        (infos.first().state != WorkInfo.State.ENQUEUED
+        && infos.first().state != WorkInfo.State.RUNNING)) {
         this.enqueueNotificationWorker()
     } else {
         Log.d("NotificationWorker", "Already enqueued/running, not doing it again")
