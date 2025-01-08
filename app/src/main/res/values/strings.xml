@@ -52,4 +52,7 @@
     <string name="channel_description">Notifications about the current status of the parcel</string>
     <string name="unmetered_only_setting">Update only on unmetered networks</string>
     <string name="unmetered_only_setting_detail">If enabled, Parcel will look for parcel updates only on unmetered connections, such as your home Wi-Fi.</string>
+    <string name="edit_parcel">Edit parcel</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
 </resources>

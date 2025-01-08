@@ -46,12 +46,13 @@ import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.api.ParcelNonExistentException
 import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.api.getParcel
+import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.db.ParcelStatus
 import dev.itsvic.parceltracker.db.ParcelWithStatus
 import dev.itsvic.parceltracker.api.Parcel as APIParcel
 import dev.itsvic.parceltracker.db.demoModeParcels
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
-import dev.itsvic.parceltracker.ui.views.AddParcelView
+import dev.itsvic.parceltracker.ui.views.AddEditParcelView
 import dev.itsvic.parceltracker.ui.views.HomeView
 import dev.itsvic.parceltracker.ui.views.ParcelView
 import dev.itsvic.parceltracker.ui.views.SettingsView
@@ -135,6 +136,9 @@ data class ParcelPage(val parcelDbId: Int)
 @Serializable
 object AddParcelPage
 
+@Serializable
+data class EditParcelPage(val parcelDbId: Int)
+
 @Composable
 fun ParcelAppNavigation(parcelToOpen: Int) {
     val db = ParcelApplication.db
@@ -205,23 +209,24 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                 db.parcelDao().getWithStatusById(route.parcelDbId).collectAsState(null)
             var apiParcel: APIParcel? by remember { mutableStateOf(null) }
 
-            val parcelDb = parcelWithStatus?.parcel
+            val dbParcel = parcelWithStatus?.parcel
 
             LaunchedEffect(parcelWithStatus) {
-                if (parcelDb != null) {
+                if (dbParcel != null) {
                     launch(Dispatchers.IO) {
                         try {
                             apiParcel = getParcel(
-                                parcelDb.parcelId,
-                                parcelDb.postalCode,
-                                parcelDb.service
+                                dbParcel.parcelId,
+                                dbParcel.postalCode,
+                                dbParcel.service
                             )
 
                             // update parcel status
                             val zone = ZoneId.systemDefault()
-                            val lastChange = apiParcel!!.history.first().time.atZone(zone).toInstant()
+                            val lastChange =
+                                apiParcel!!.history.first().time.atZone(zone).toInstant()
                             val status = ParcelStatus(
-                                parcelDb.id,
+                                dbParcel.id,
                                 apiParcel!!.currentStatus,
                                 lastChange,
                             )
@@ -233,7 +238,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                         } catch (e: IOException) {
                             Log.w("MainActivity", "Failed fetch: $e")
                             apiParcel = APIParcel(
-                                parcelDb.parcelId,
+                                dbParcel.parcelId,
                                 listOf(
                                     ParcelHistoryItem(
                                         context.getString(R.string.network_failure_detail),
@@ -245,7 +250,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                             )
                         } catch (e: ParcelNonExistentException) {
                             apiParcel = APIParcel(
-                                parcelDb.parcelId,
+                                dbParcel.parcelId,
                                 listOf(
                                     ParcelHistoryItem(
                                         context.getString(R.string.parcel_doesnt_exist_detail),
@@ -260,7 +265,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                 }
             }
 
-            if (apiParcel == null || parcelDb == null)
+            if (apiParcel == null || dbParcel == null)
                 Box(
                     modifier = Modifier
                         .background(color = MaterialTheme.colorScheme.background)
@@ -272,9 +277,10 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
             else
                 ParcelView(
                     apiParcel!!,
-                    parcelDb.humanName,
-                    parcelDb.service,
+                    dbParcel.humanName,
+                    dbParcel.service,
                     onBackPressed = { navController.popBackStack() },
+                    onEdit = { navController.navigate(EditParcelPage(dbParcel.id)) },
                     onDelete = {
                         if (demoMode.value) {
                             Toast.makeText(
@@ -286,7 +292,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                         }
 
                         scope.launch(Dispatchers.IO) {
-                            db.parcelDao().delete(parcelDb)
+                            db.parcelDao().delete(dbParcel)
                             scope.launch {
                                 navController.popBackStack(HomePage, false)
                             }
@@ -296,7 +302,8 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
         }
 
         composable<AddParcelPage> {
-            AddParcelView(
+            AddEditParcelView(
+                null,
                 onBackPressed = { navController.popBackStack() },
                 onCompleted = {
                     if (demoMode.value) {
@@ -305,7 +312,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                             context.getString(R.string.demo_mode_action_block),
                             Toast.LENGTH_SHORT
                         ).show()
-                        return@AddParcelView
+                        return@AddEditParcelView
                     }
 
                     scope.launch(Dispatchers.IO) {
@@ -314,6 +321,46 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                             navController.navigate(route = ParcelPage(id.toInt())) {
                                 popUpTo(HomePage)
                             }
+                        }
+                    }
+                },
+            )
+        }
+
+        composable<EditParcelPage> { backStackEntry ->
+            val route: EditParcelPage = backStackEntry.toRoute()
+            val parcel: Parcel? by if (demoMode.value)
+                derivedStateOf { demoModeParcels[route.parcelDbId].parcel }
+            else
+                db.parcelDao().getById(route.parcelDbId).collectAsState(null)
+
+            if (parcel == null)
+                return@composable Box(
+                    modifier = Modifier
+                        .background(color = MaterialTheme.colorScheme.background)
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+
+            AddEditParcelView(
+                parcel,
+                onBackPressed = { navController.popBackStack() },
+                onCompleted = {
+                    if (demoMode.value) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.demo_mode_action_block),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@AddEditParcelView
+                    }
+
+                    scope.launch(Dispatchers.IO) {
+                        db.parcelDao().update(it)
+                        scope.launch {
+                            navController.popBackStack()
                         }
                     }
                 },

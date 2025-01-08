@@ -29,13 +29,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,25 +43,24 @@ import dev.itsvic.parceltracker.api.serviceOptions
 import dev.itsvic.parceltracker.api.serviceToHumanString
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddParcelView(
+fun AddEditParcelView(
+    parcel: Parcel?,
     onBackPressed: () -> Unit,
     onCompleted: (Parcel) -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
+    val isEdit = parcel != null
 
-    var humanName by remember { mutableStateOf("") }
+    var humanName by remember { mutableStateOf(parcel?.humanName ?: "") }
     var nameError by remember { mutableStateOf(false) }
-    var trackingId by remember { mutableStateOf("") }
+    var trackingId by remember { mutableStateOf(parcel?.parcelId ?: "") }
     var idError by remember { mutableStateOf(false) }
-    var needsPostalCode by remember { mutableStateOf(false) }
-    var postalCode by remember { mutableStateOf("") }
+    var needsPostalCode by remember { mutableStateOf(parcel?.postalCode != null) }
+    var postalCode by remember { mutableStateOf(parcel?.postalCode ?: "") }
     var postalCodeError by remember { mutableStateOf(false) }
-    var service by remember { mutableStateOf(Service.UNDEFINED) }
+    var service by remember { mutableStateOf(parcel?.service ?: Service.UNDEFINED) }
     var serviceError by remember { mutableStateOf(false) }
 
     fun validateInputs(): Boolean {
@@ -93,7 +90,9 @@ fun AddParcelView(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(stringResource(R.string.add_a_parcel))
+                    Text(
+                        stringResource(if (isEdit) R.string.edit_parcel else R.string.add_a_parcel)
+                    )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackPressed) {
@@ -221,25 +220,25 @@ fun AddParcelView(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Button(onClick = {
-                        coroutineScope.launch(Dispatchers.IO) {
-                            val isOk = validateInputs()
-                            if (isOk) {
-                                // data valid, pass it along
-                                onCompleted(
-                                    Parcel(
-                                        humanName = humanName,
-                                        parcelId = trackingId,
-                                        service = service,
-                                        postalCode = if (needsPostalCode) postalCode else null
-                                    )
+                        val isOk = validateInputs()
+                        if (isOk) {
+                            // data valid, pass it along
+                            onCompleted(
+                                Parcel(
+                                    id = parcel?.id ?: 0,
+                                    humanName = humanName,
+                                    parcelId = trackingId,
+                                    service = service,
+                                    postalCode = if (needsPostalCode) postalCode else null
                                 )
-                            }
+                            )
                         }
                     }) {
-                        Text(stringResource(R.string.add_parcel))
+                        Text(
+                            stringResource(if (isEdit) R.string.save else R.string.add_parcel)
+                        )
                     }
                 }
-
             }
         }
     }
@@ -247,10 +246,22 @@ fun AddParcelView(
 
 @Composable
 @PreviewLightDark
-@Preview(locale = "pl", name = "Polish")
-fun AddParcelViewPreview() {
+fun AddParcelPreview() {
     ParcelTrackerTheme {
-        AddParcelView(
+        AddEditParcelView(
+            null,
+            onBackPressed = {},
+            onCompleted = {},
+        )
+    }
+}
+
+@Composable
+@PreviewLightDark
+fun EditParcelPreview() {
+    ParcelTrackerTheme {
+        AddEditParcelView(
+            Parcel(0, "Test", "Test", null, Service.EXAMPLE),
             onBackPressed = {},
             onCompleted = {},
         )

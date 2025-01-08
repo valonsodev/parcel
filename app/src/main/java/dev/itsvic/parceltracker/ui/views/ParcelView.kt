@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -51,6 +52,7 @@ fun ParcelView(
     humanName: String,
     service: Service,
     onBackPressed: () -> Unit,
+    onEdit: () -> Unit,
     onDelete: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -75,6 +77,13 @@ fun ParcelView(
                         expanded = expanded,
                         onDismissRequest = { expanded = false },
                     ) {
+                        DropdownMenuItem(
+                            leadingIcon = {
+                                Icon(Icons.Filled.Edit, stringResource(R.string.edit))
+                            },
+                            text = { Text(stringResource(R.string.edit)) },
+                            onClick = { expanded = false; onEdit() },
+                        )
                         DropdownMenuItem(
                             leadingIcon = {
                                 Icon(Icons.Filled.Delete, stringResource(R.string.delete))
@@ -170,6 +179,7 @@ private fun ParcelViewPreview() {
             "My precious package",
             Service.EXAMPLE,
             onBackPressed = {},
+            onEdit = {},
             onDelete = {},
         )
     }
