@@ -33,7 +33,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.api.Parcel
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
@@ -93,18 +92,18 @@ fun ParcelView(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(16.dp, 0.dp)
+                .padding(16.dp, 0.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             Row(
                 modifier = Modifier
-                    .padding(bottom = 14.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 serviceToHumanString[service]?.let {
                     Text(
                         LocalContext.current.getString(it),
-                        fontSize = 13.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
@@ -112,38 +111,21 @@ fun ParcelView(
                 SelectionContainer {
                     Text(
                         parcel.id,
-                        fontSize = 13.sp,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
 
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            statusToHumanString[parcel.currentStatus]?.let {
                 Text(
-                    stringResource(R.string.current_status),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 14.sp
+                    LocalContext.current.getString(it),
+                    style = MaterialTheme.typography.headlineLarge
                 )
-                statusToHumanString[parcel.currentStatus]?.let {
-                    Text(
-                        LocalContext.current.getString(it),
-                        style = MaterialTheme.typography.headlineLarge
-                    )
-                }
-                if (parcel.history.isNotEmpty()) Text(parcel.history[0].description)
             }
 
-            Text(
-                stringResource(R.string.parcel_history),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 14.sp,
-                modifier = Modifier.padding(top = 24.dp, bottom = 8.dp)
-            )
-
             LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(20.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
                 items(parcel.history) { item ->
                     ParcelHistoryItemRow(item)
