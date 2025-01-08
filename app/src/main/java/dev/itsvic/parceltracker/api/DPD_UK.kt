@@ -25,7 +25,6 @@ internal suspend fun getDpdUkParcel(trackingId: String, postcode: String?): Parc
 
     if (urlResp.code() == 404) throw ParcelNonExistentException()
     Log.d("DpdUk", "$urlResp")
-//    val id = urlResp.headers()["Location"]!!.substring(32)
     val id = urlResp.raw().request.url.pathSegments.last()
     Log.d("DpdUk", "id=$id")
 
