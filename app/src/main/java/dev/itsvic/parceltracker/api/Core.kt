@@ -1,5 +1,6 @@
 package dev.itsvic.parceltracker.api
 
+import android.util.Log
 import com.squareup.moshi.Moshi
 import dev.itsvic.parceltracker.R
 import okhttp3.OkHttpClient
@@ -91,3 +92,8 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
 }
 
 class ParcelNonExistentException: Exception("Parcel does not exist in delivery service API")
+
+internal fun logUnknownStatus(service: String, data: String): Status {
+    Log.d("APICore", "Unknown status reported by $service: $data")
+    return Status.Unknown
+}

@@ -48,7 +48,7 @@ internal suspend fun getEvriParcel(trackingId: String): Parcel {
         "3" -> Status.InTransit
         "4_COURIER" -> Status.OutForDelivery
         "5_COURIER" -> Status.Delivered
-        else -> Status.Unknown
+        else -> logUnknownStatus("Evri", parcel.trackingEvents.first().trackingStage.trackingStageCode)
     }
 
     return Parcel(trackingId, history, status)

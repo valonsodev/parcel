@@ -52,7 +52,7 @@ internal fun getPolishPostParcel(id: String): Parcel {
                 "P_OWU" -> Status.PickedUp
                 // Post-delivery customs declaration(?)
                 "P_ROZL_CEL" -> Status.Delivered
-                else -> Status.Unknown
+                else -> logUnknownStatus("Polish Post", resp.mailInfo.events.last().code)
             }
 
             return Parcel(resp.number, history, status)

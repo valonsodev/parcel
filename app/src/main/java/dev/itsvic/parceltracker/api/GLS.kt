@@ -43,7 +43,7 @@ internal fun getGLSParcel(id: String, postalCode: String?): Parcel {
                 "INWAREHOUSE" -> Status.InWarehouse
                 "INDELIVERY" -> Status.OutForDelivery
                 "DELIVERED" -> Status.Delivered
-                else -> Status.Unknown
+                else -> logUnknownStatus("GLS", resp.progressBar.statusInfo)
             })
             return parcel
         }

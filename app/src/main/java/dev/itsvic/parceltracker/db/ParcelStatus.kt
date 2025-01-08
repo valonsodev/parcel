@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
+import androidx.room.Query
 import androidx.room.Update
 import dev.itsvic.parceltracker.api.Status
 import java.time.Instant
@@ -17,6 +18,9 @@ data class ParcelStatus(
 
 @Dao
 interface ParcelStatusDao {
+    @Query("SELECT * FROM ParcelStatus WHERE parcelId=:parcelId")
+    suspend fun get(parcelId: Int): ParcelStatus
+
     @Insert
     suspend fun insert(status: ParcelStatus)
 

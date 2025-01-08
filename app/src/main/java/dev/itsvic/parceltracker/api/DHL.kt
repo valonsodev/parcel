@@ -41,7 +41,7 @@ internal fun getDHLParcel(trackingNumber: String): Parcel {
                 }
                 "failure" -> Status.DeliveryFailure
                 "delivered" -> Status.Delivered
-                else -> Status.Unknown
+                else -> logUnknownStatus("DHL", shipment.status.statusCode)
             }
 
             val history = shipment.events.map {
