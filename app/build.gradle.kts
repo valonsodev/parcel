@@ -8,12 +8,12 @@ plugins {
     kotlin("plugin.serialization") version "2.0.21"
 }
 
-val versionMajor = 0
-val versionMinor = 3
-val versionPatch = 1
-val versionBuild = 2  // Hidden from the user
+val versionMajor = 1
+val versionMinor = 0
+val versionPatch = 0
+val versionBuild = 0  // Hidden from the user
 
-val versionSuffix = ""
+val versionSuffix = "Alpha 1"
 
 val appVersionCode = ((versionMajor * 100 + versionMinor) * 100 + versionPatch) * 1000 + versionBuild
 val appVersionName =

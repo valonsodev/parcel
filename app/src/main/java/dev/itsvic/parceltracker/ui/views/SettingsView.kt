@@ -51,7 +51,8 @@ fun SettingsView(
 ) {
     val context = LocalContext.current
     val demoMode by context.dataStore.data.map { it[DEMO_MODE] ?: false }.collectAsState(false)
-    val unmeteredOnly by context.dataStore.data.map { it[UNMETERED_ONLY] ?: false }.collectAsState(false)
+    val unmeteredOnly by context.dataStore.data.map { it[UNMETERED_ONLY] ?: false }
+        .collectAsState(false)
     val coroutineScope = rememberCoroutineScope()
 
     val setDemoMode: (Boolean) -> Unit = { value ->
@@ -126,24 +127,25 @@ fun SettingsView(
                 Switch(checked = demoMode, onCheckedChange = { setDemoMode(it) })
             }
 
-            FilledTonalButton(
-                onClick = {
-                    context.sendNotification(
-                        Parcel(0xf100f, "Cool stuff", "", null, Service.EXAMPLE),
-                        Status.OutForDelivery,
-                        ParcelHistoryItem(
-                            "The courier has picked up the package",
-                            LocalDateTime.now(),
-                            ""
+            if (BuildConfig.DEBUG)
+                FilledTonalButton(
+                    onClick = {
+                        context.sendNotification(
+                            Parcel(0xf100f, "Cool stuff", "", null, Service.EXAMPLE),
+                            Status.OutForDelivery,
+                            ParcelHistoryItem(
+                                "The courier has picked up the package",
+                                LocalDateTime.now(),
+                                ""
+                            )
                         )
-                    )
-                },
-                modifier = Modifier
-                    .padding(16.dp, 12.dp)
-                    .fillMaxWidth()
-            ) {
-                Text("Send test notification")
-            }
+                    },
+                    modifier = Modifier
+                        .padding(16.dp, 12.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text("Send test notification")
+                }
 
             Text(
                 "Parcel ${BuildConfig.VERSION_NAME}",

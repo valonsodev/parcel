@@ -145,7 +145,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val demoMode = context.dataStore.data.map { it[DEMO_MODE] ?: false }.collectAsState(false)
+    val demoMode by context.dataStore.data.map { it[DEMO_MODE] ?: false }.collectAsState(false)
 
     LaunchedEffect(parcelToOpen) {
         if (parcelToOpen != -1) {
@@ -182,7 +182,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
         },
     ) {
         composable<HomePage> {
-            val parcels = if (demoMode.value)
+            val parcels = if (demoMode)
                 derivedStateOf { demoModeParcels }
             else
                 db.parcelDao().getAllWithStatus().collectAsState(initial = emptyList())
@@ -203,7 +203,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
 
         composable<ParcelPage> { backStackEntry ->
             val route: ParcelPage = backStackEntry.toRoute()
-            val parcelWithStatus: ParcelWithStatus? by if (demoMode.value)
+            val parcelWithStatus: ParcelWithStatus? by if (demoMode)
                 derivedStateOf { demoModeParcels[route.parcelDbId] }
             else
                 db.parcelDao().getWithStatusById(route.parcelDbId).collectAsState(null)
@@ -221,19 +221,21 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                                 dbParcel.service
                             )
 
-                            // update parcel status
-                            val zone = ZoneId.systemDefault()
-                            val lastChange =
-                                apiParcel!!.history.first().time.atZone(zone).toInstant()
-                            val status = ParcelStatus(
-                                dbParcel.id,
-                                apiParcel!!.currentStatus,
-                                lastChange,
-                            )
-                            if (parcelWithStatus?.status == null) {
-                                db.parcelStatusDao().insert(status)
-                            } else {
-                                db.parcelStatusDao().update(status)
+                            if (!demoMode) {
+                                // update parcel status
+                                val zone = ZoneId.systemDefault()
+                                val lastChange =
+                                    apiParcel!!.history.first().time.atZone(zone).toInstant()
+                                val status = ParcelStatus(
+                                    dbParcel.id,
+                                    apiParcel!!.currentStatus,
+                                    lastChange,
+                                )
+                                if (parcelWithStatus?.status == null) {
+                                    db.parcelStatusDao().insert(status)
+                                } else {
+                                    db.parcelStatusDao().update(status)
+                                }
                             }
                         } catch (e: IOException) {
                             Log.w("MainActivity", "Failed fetch: $e")
@@ -282,7 +284,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                     onBackPressed = { navController.popBackStack() },
                     onEdit = { navController.navigate(EditParcelPage(dbParcel.id)) },
                     onDelete = {
-                        if (demoMode.value) {
+                        if (demoMode) {
                             Toast.makeText(
                                 context,
                                 context.getString(R.string.demo_mode_action_block),
@@ -306,7 +308,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                 null,
                 onBackPressed = { navController.popBackStack() },
                 onCompleted = {
-                    if (demoMode.value) {
+                    if (demoMode) {
                         Toast.makeText(
                             context,
                             context.getString(R.string.demo_mode_action_block),
@@ -329,7 +331,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
 
         composable<EditParcelPage> { backStackEntry ->
             val route: EditParcelPage = backStackEntry.toRoute()
-            val parcel: Parcel? by if (demoMode.value)
+            val parcel: Parcel? by if (demoMode)
                 derivedStateOf { demoModeParcels[route.parcelDbId].parcel }
             else
                 db.parcelDao().getById(route.parcelDbId).collectAsState(null)
@@ -348,7 +350,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                 parcel,
                 onBackPressed = { navController.popBackStack() },
                 onCompleted = {
-                    if (demoMode.value) {
+                    if (demoMode) {
                         Toast.makeText(
                             context,
                             context.getString(R.string.demo_mode_action_block),
