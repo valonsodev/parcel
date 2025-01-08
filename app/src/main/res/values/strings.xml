@@ -55,4 +55,5 @@
     <string name="edit_parcel">Edit parcel</string>
     <string name="save">Save</string>
     <string name="edit">Edit</string>
+    <string name="service_dpd_uk" translatable="false">DPD UK</string>
 </resources>
