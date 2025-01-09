@@ -52,7 +52,7 @@ internal suspend fun getPacketaParcel(trackingId: String): Parcel {
         // guesswork from the enum found in packeta web tracker code
         "1" -> Status.InWarehouse // WAITING_FOR_DELIVERY
         "2" -> Status.AwaitingPickup // READY_FOR_PICKUP
-        "3" -> Status.PickedUp // ISSUED_AND_ACCOUNTED
+        "3" -> Status.Delivered // ISSUED_AND_ACCOUNTED
         "21" -> Status.Unknown // LOST_OR_UNKNOWN
         "31" -> Status.InTransit // ON_THE_WAY
         "997" -> Status.InTransit // TO_BE_PROCESSED
