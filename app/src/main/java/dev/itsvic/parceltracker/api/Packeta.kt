@@ -35,16 +35,15 @@ internal suspend fun getPacketaParcel(trackingId: String): Parcel {
     }
 
     val history = resp.item.trackingDetails.reversed().map {
-        val locationRegex = Regex("(.*\\.)(?: (.*))?")
-        val match = locationRegex.find(it.text)!!.destructured.toList()
         ParcelHistoryItem(
-            match[0],
+            it.text,
             LocalDateTime.parse(
                 it.time.replace(' ', 'T'),
                 DateTimeFormatter.ISO_DATE_TIME
             ),
-            // location is optional, might not always exist
-            if (match.size == 2) match[1] else ""
+            // location is not its own field, and regex is unreliable
+            // as addresses are just tacked on the end with inconsistent formatting
+            ""
         )
     }
 
