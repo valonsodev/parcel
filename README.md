@@ -16,5 +16,8 @@ United Kingdom:
 - Evri
 
 Europe:
-- Packeta (CZ)
+- Packeta
 - Poczta Polska (PL)
+- Sameday Bulgaria
+- Sameday Hungary
+- Sameday Romania

@@ -51,4 +51,8 @@
     <string name="edit_parcel">Edytuj paczkę</string>
     <string name="save">Zapisz</string>
     <string name="edit">Edytuj</string>
+    <string name="service_dpd_uk">DPD Wielka Brytania</string>
+    <string name="service_sameday_hu">Sameday Węgry</string>
+    <string name="service_sameday_ro">Sameday Rumunia</string>
+    <string name="service_sameday_bg">Sameday Bułgaria</string>
 </resources>

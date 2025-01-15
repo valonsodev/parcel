@@ -46,4 +46,8 @@
     <string name="edit_parcel">Csomag szerkesztése</string>
     <string name="save">Mentés</string>
     <string name="edit">Szerkesztés</string>
+    <string name="service_dpd_uk">DPD Egyesült Királyság</string>
+    <string name="service_sameday_hu">Sameday Magyarország</string>
+    <string name="service_sameday_ro">Sameday Románia</string>
+    <string name="service_sameday_bg">Sameday Bulgária</string>
 </resources>

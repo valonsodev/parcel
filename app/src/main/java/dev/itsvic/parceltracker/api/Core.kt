@@ -30,6 +30,9 @@ enum class Service {
     EVRI,
     DPD_UK,
     PACKETA,
+    SAMEDAY_BG,
+    SAMEDAY_HU,
+    SAMEDAY_RO,
 
     EXAMPLE,
 }
@@ -37,10 +40,15 @@ enum class Service {
 val serviceOptions = listOf(
     Service.DHL,
     Service.GLS,
-    Service.POLISH_POST,
-    Service.EVRI,
+
     Service.DPD_UK,
+    Service.EVRI,
+
     Service.PACKETA,
+    Service.POLISH_POST,
+    Service.SAMEDAY_BG,
+    Service.SAMEDAY_HU,
+    Service.SAMEDAY_RO,
 )
 
 val serviceToHumanString = mapOf(
@@ -51,6 +59,10 @@ val serviceToHumanString = mapOf(
     Service.EVRI to R.string.service_evri,
     Service.DPD_UK to R.string.service_dpd_uk,
     Service.PACKETA to R.string.service_packeta,
+
+    Service.SAMEDAY_BG to R.string.service_sameday_bg,
+    Service.SAMEDAY_HU to R.string.service_sameday_hu,
+    Service.SAMEDAY_RO to R.string.service_sameday_ro,
 
     Service.EXAMPLE to R.string.service_example,
 )
@@ -93,6 +105,9 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
         Service.EVRI -> getEvriParcel(id)
         Service.DPD_UK -> getDpdUkParcel(id, postCode)
         Service.PACKETA -> getPacketaParcel(id)
+        Service.SAMEDAY_BG -> getSamedayParcel("bg", id)
+        Service.SAMEDAY_HU -> getSamedayParcel("hu", id)
+        Service.SAMEDAY_RO -> getSamedayParcel("ro", id)
 
         // to be used only in demo mode.
         Service.EXAMPLE -> getExampleParcel(id)
