@@ -1,7 +1,6 @@
 package dev.itsvic.parceltracker.ui.views
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -98,47 +97,48 @@ fun ParcelView(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
-        Column(
+
+        LazyColumn(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(16.dp, 0.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+            verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                serviceToHumanString[service]?.let {
-                    Text(
-                        LocalContext.current.getString(it),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    serviceToHumanString[service]?.let {
+                        Text(
+                            LocalContext.current.getString(it),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
 
-                SelectionContainer {
-                    Text(
-                        parcel.id,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    SelectionContainer {
+                        Text(
+                            parcel.id,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
 
             statusToHumanString[parcel.currentStatus]?.let {
-                Text(
-                    LocalContext.current.getString(it),
-                    style = MaterialTheme.typography.headlineLarge
-                )
+                item {
+                    Text(
+                        LocalContext.current.getString(it),
+                        style = MaterialTheme.typography.headlineLarge
+                    )
+                }
             }
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-            ) {
-                items(parcel.history) { item ->
-                    ParcelHistoryItemRow(item)
-                }
+            items(parcel.history) { item ->
+                ParcelHistoryItemRow(item)
             }
         }
     }

@@ -1,6 +1,5 @@
 package dev.itsvic.parceltracker.ui.views
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -63,22 +62,22 @@ fun HomeView(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .padding(innerPadding)
         ) {
-            if (parcels.isEmpty()) Text(
-                stringResource(R.string.no_parcels_flavor),
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
+            if (parcels.isEmpty()) item {
+                Text(
+                    stringResource(R.string.no_parcels_flavor),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
 
-            LazyColumn {
-                itemsIndexed(parcels) { _, parcel ->
-                    ParcelRow(
-                        parcel.parcel,
-                        parcel.status?.status
-                    ) { onNavigateToParcel(parcel.parcel) }
-                }
+            itemsIndexed(parcels) { _, parcel ->
+                ParcelRow(
+                    parcel.parcel,
+                    parcel.status?.status
+                ) { onNavigateToParcel(parcel.parcel) }
             }
         }
     }
