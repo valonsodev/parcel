@@ -65,11 +65,9 @@ val serviceOptions = listOf(
 )
 
 private val serviceToHumanString = mapOf(
-    Service.UNDEFINED to R.string.service_undefined,
     Service.DHL to R.string.service_dhl,
     Service.POLISH_POST to R.string.service_polish_post,
     Service.EVRI to R.string.service_evri,
-    Service.DPD_UK to R.string.service_dpd_uk,
     Service.PACKETA to R.string.service_packeta,
 
     Service.SAMEDAY_BG to R.string.service_sameday_bg,
@@ -117,7 +115,6 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
         Service.DHL -> getDHLParcel(id)
         Service.POLISH_POST -> getPolishPostParcel(id)
         Service.EVRI -> getEvriParcel(id)
-        Service.DPD_UK -> getDpdUkParcel(id, postCode)
         Service.PACKETA -> getPacketaParcel(id)
         Service.SAMEDAY_BG -> getSamedayParcel("bg", id)
         Service.SAMEDAY_HU -> getSamedayParcel("hu", id)
@@ -129,6 +126,7 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
 
 fun getDeliveryService(service: Service): DeliveryService? {
     return when (service) {
+        Service.DPD_UK -> DpdUkDeliveryService
         Service.GLS -> GLSDeliveryService
         Service.EXAMPLE -> ExampleDeliveryService
         else -> null
