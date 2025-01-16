@@ -111,7 +111,6 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
         Service.DHL -> getDHLParcel(id)
         Service.POLISH_POST -> getPolishPostParcel(id)
         Service.EVRI -> getEvriParcel(id)
-        Service.PACKETA -> getPacketaParcel(id)
 
         else -> throw NotImplementedError("Service $service has no fetch implementation yet")
     }
@@ -121,6 +120,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
     return when (service) {
         Service.DPD_UK -> DpdUkDeliveryService
         Service.GLS -> GLSDeliveryService
+        Service.PACKETA -> PacketaDeliveryService
         Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
         Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
         Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
