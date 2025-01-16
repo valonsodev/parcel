@@ -11,32 +11,27 @@ import java.time.LocalDateTime
 
 enum class Service {
     UNDEFINED,
+    EXAMPLE,
+
+    // International
     DHL,
     GLS,
-    POLISH_POST,
-    EVRI,
+
+    // United Kingdom
     DPD_UK,
+    EVRI,
+
+    // Europe
     PACKETA,
+    POLISH_POST,
     SAMEDAY_BG,
     SAMEDAY_HU,
     SAMEDAY_RO,
-
-    EXAMPLE,
 }
 
-val serviceOptions = listOf(
-    Service.DHL,
-    Service.GLS,
-
-    Service.DPD_UK,
-    Service.EVRI,
-
-    Service.PACKETA,
-    Service.POLISH_POST,
-    Service.SAMEDAY_BG,
-    Service.SAMEDAY_HU,
-    Service.SAMEDAY_RO,
-)
+val serviceOptions =
+    Service.entries.filter { return@filter it != Service.UNDEFINED && it != Service.EXAMPLE }
+        .toList()
 
 fun getDeliveryService(service: Service): DeliveryService? {
     return when (service) {
