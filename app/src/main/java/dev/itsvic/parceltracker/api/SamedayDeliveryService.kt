@@ -52,7 +52,7 @@ open class SamedayDeliveryService(region: String, override val nameResource: Int
     }
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.sameday.${region}/api/public")
+        .baseUrl("https://api.sameday.${region}/api/public/")
         .client(api_client)
         .addConverterFactory(api_factory)
         .build()

@@ -61,7 +61,7 @@ object GLSDeliveryService : DeliveryService {
         .build()
     private val service = retrofit.create(API::class.java)
 
-    internal interface API {
+    private interface API {
         @GET("EU/{locale}/rstt028/{id}")
         suspend fun getExtendedParcel(
             @Path("locale") locale: String,

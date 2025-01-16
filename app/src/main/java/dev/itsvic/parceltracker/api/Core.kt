@@ -9,32 +9,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.time.LocalDateTime
 
-internal val api_client = OkHttpClient.Builder()
-    .addInterceptor(
-        HttpLoggingInterceptor {
-            Log.d("OkHttp", it)
-        }.setLevel(
-            if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
-            else HttpLoggingInterceptor.Level.BASIC
-        )
-    )
-    .build()
-internal val api_moshi: Moshi = Moshi.Builder().build()
-internal val api_factory = MoshiConverterFactory.create(api_moshi)
-
-// TODO: fill out with more data
-data class Parcel(
-    val id: String,
-    val history: List<ParcelHistoryItem>,
-    val currentStatus: Status,
-)
-
-data class ParcelHistoryItem(
-    val description: String,
-    val time: LocalDateTime,
-    val location: String,
-)
-
 enum class Service {
     UNDEFINED,
     DHL,
@@ -64,8 +38,50 @@ val serviceOptions = listOf(
     Service.SAMEDAY_RO,
 )
 
-private val serviceToHumanString = mapOf(
-    Service.POLISH_POST to R.string.service_polish_post,
+fun getDeliveryService(service: Service): DeliveryService? {
+    return when (service) {
+        Service.DHL -> DhlDeliveryService
+        Service.GLS -> GLSDeliveryService
+
+        Service.DPD_UK -> DpdUkDeliveryService
+        Service.EVRI -> EvriDeliveryService
+
+        Service.PACKETA -> PacketaDeliveryService
+        Service.POLISH_POST -> PolishPostDelieryService
+        Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
+        Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
+        Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
+
+        Service.EXAMPLE -> ExampleDeliveryService
+        else -> null
+    }
+}
+
+internal val api_client = OkHttpClient.Builder()
+    .addInterceptor(
+        HttpLoggingInterceptor {
+            Log.d("OkHttp", it)
+        }.setLevel(
+            if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+            else HttpLoggingInterceptor.Level.BASIC
+        )
+    )
+    .build()
+
+internal val api_moshi: Moshi = Moshi.Builder().build()
+internal val api_factory = MoshiConverterFactory.create(api_moshi)
+
+// TODO: fill out with more data
+data class Parcel(
+    val id: String,
+    val history: List<ParcelHistoryItem>,
+    val currentStatus: Status,
+)
+
+data class ParcelHistoryItem(
+    val description: String,
+    val time: LocalDateTime,
+    val location: String,
 )
 
 enum class Status(val nameResource: Int) {
@@ -89,33 +105,11 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
         return it.getParcel(id, postCode)
     }
 
-    return when (service) {
-        Service.POLISH_POST -> getPolishPostParcel(id)
-
-        else -> throw NotImplementedError("Service $service has no fetch implementation yet")
-    }
-}
-
-fun getDeliveryService(service: Service): DeliveryService? {
-    return when (service) {
-        Service.DHL -> DhlDeliveryService
-        Service.DPD_UK -> DpdUkDeliveryService
-        Service.EVRI -> EvriDeliveryService
-        Service.GLS -> GLSDeliveryService
-        Service.PACKETA -> PacketaDeliveryService
-        Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
-        Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
-        Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
-
-        Service.EXAMPLE -> ExampleDeliveryService
-        else -> null
-    }
+    throw NotImplementedError("Service $service has no DeliveryService object")
 }
 
 fun getDeliveryServiceName(service: Service): Int? {
-    // get DeliveryService abstraction. if missing, use the old hardcoded list
-    getDeliveryService(service)?.let { return it.nameResource }
-    return serviceToHumanString[service]
+    return getDeliveryService(service)?.nameResource
 }
 
 interface DeliveryService {
