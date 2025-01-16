@@ -2,12 +2,25 @@ package dev.itsvic.parceltracker.api
 
 import android.util.Log
 import com.squareup.moshi.Moshi
+import dev.itsvic.parceltracker.BuildConfig
 import dev.itsvic.parceltracker.R
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.time.LocalDateTime
 
-val api_client = OkHttpClient()
-val api_moshi: Moshi = Moshi.Builder().build()
+internal val api_client = OkHttpClient.Builder()
+    .addInterceptor(
+        HttpLoggingInterceptor {
+            Log.d("OkHttp", it)
+        }.setLevel(
+            if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+            else HttpLoggingInterceptor.Level.BASIC
+        )
+    )
+    .build()
+internal val api_moshi: Moshi = Moshi.Builder().build()
+internal val api_factory = MoshiConverterFactory.create(api_moshi)
 
 // TODO: fill out with more data
 data class Parcel(
@@ -53,7 +66,6 @@ val serviceOptions = listOf(
 
 private val serviceToHumanString = mapOf(
     Service.UNDEFINED to R.string.service_undefined,
-    Service.GLS to R.string.service_gls,
     Service.DHL to R.string.service_dhl,
     Service.POLISH_POST to R.string.service_polish_post,
     Service.EVRI to R.string.service_evri,
@@ -63,8 +75,6 @@ private val serviceToHumanString = mapOf(
     Service.SAMEDAY_BG to R.string.service_sameday_bg,
     Service.SAMEDAY_HU to R.string.service_sameday_hu,
     Service.SAMEDAY_RO to R.string.service_sameday_ro,
-
-    Service.EXAMPLE to R.string.service_example,
 )
 
 enum class Status {
@@ -105,7 +115,6 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
 
     return when (service) {
         Service.DHL -> getDHLParcel(id)
-        Service.GLS -> getGLSParcel(id, postCode)
         Service.POLISH_POST -> getPolishPostParcel(id)
         Service.EVRI -> getEvriParcel(id)
         Service.DPD_UK -> getDpdUkParcel(id, postCode)
@@ -120,6 +129,7 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
 
 fun getDeliveryService(service: Service): DeliveryService? {
     return when (service) {
+        Service.GLS -> GLSDeliveryService
         Service.EXAMPLE -> ExampleDeliveryService
         else -> null
     }
@@ -136,7 +146,7 @@ interface DeliveryService {
     suspend fun getParcel(trackingId: String, postalCode: String?): Parcel
 }
 
-class ParcelNonExistentException: Exception("Parcel does not exist in delivery service API")
+class ParcelNonExistentException : Exception("Parcel does not exist in delivery service API")
 
 internal fun logUnknownStatus(service: String, data: String): Status {
     Log.d("APICore", "Unknown status reported by $service: $data")
