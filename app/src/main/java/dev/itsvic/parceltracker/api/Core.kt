@@ -67,39 +67,22 @@ val serviceOptions = listOf(
 private val serviceToHumanString = mapOf(
     Service.DHL to R.string.service_dhl,
     Service.POLISH_POST to R.string.service_polish_post,
-    Service.EVRI to R.string.service_evri,
-    Service.PACKETA to R.string.service_packeta,
 )
 
-enum class Status {
-    Preadvice,
-    InTransit,
-    InWarehouse,
-    Customs,
-    OutForDelivery,
-    DeliveryFailure,
-    Delivered,
-    AwaitingPickup,
-    PickedUp,
-    Unknown,
-    NetworkFailure,
-    NoData,
+enum class Status(val nameResource: Int) {
+    Preadvice(R.string.status_preadvice),
+    InTransit(R.string.status_in_transit),
+    InWarehouse(R.string.status_in_warehouse),
+    Customs(R.string.status_customs),
+    OutForDelivery(R.string.status_out_for_delivery),
+    DeliveryFailure(R.string.status_delivery_failure),
+    Delivered(R.string.status_delivered),
+    AwaitingPickup(R.string.status_awaiting_pickup),
+    PickedUp(R.string.status_picked_up),
+    Unknown(R.string.status_unknown),
+    NetworkFailure(R.string.status_network_failure),
+    NoData(R.string.status_no_data),
 }
-
-val statusToHumanString = mapOf(
-    Status.Preadvice to R.string.status_preadvice,
-    Status.InTransit to R.string.status_in_transit,
-    Status.InWarehouse to R.string.status_in_warehouse,
-    Status.Customs to R.string.status_customs,
-    Status.OutForDelivery to R.string.status_out_for_delivery,
-    Status.DeliveryFailure to R.string.status_delivery_failure,
-    Status.Delivered to R.string.status_delivered,
-    Status.AwaitingPickup to R.string.status_awaiting_pickup,
-    Status.PickedUp to R.string.status_picked_up,
-    Status.Unknown to R.string.status_unknown,
-    Status.NetworkFailure to R.string.status_network_failure,
-    Status.NoData to R.string.status_no_data,
-)
 
 suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
     // use DeliveryService abstraction if possible, otherwise default to the old hardcoded list
@@ -110,7 +93,6 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
     return when (service) {
         Service.DHL -> getDHLParcel(id)
         Service.POLISH_POST -> getPolishPostParcel(id)
-        Service.EVRI -> getEvriParcel(id)
 
         else -> throw NotImplementedError("Service $service has no fetch implementation yet")
     }
@@ -119,6 +101,7 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
 fun getDeliveryService(service: Service): DeliveryService? {
     return when (service) {
         Service.DPD_UK -> DpdUkDeliveryService
+        Service.EVRI -> EvriDeliveryService
         Service.GLS -> GLSDeliveryService
         Service.PACKETA -> PacketaDeliveryService
         Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService

@@ -26,7 +26,6 @@ import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.api.Service
 import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.api.getDeliveryServiceName
-import dev.itsvic.parceltracker.api.statusToHumanString
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
@@ -63,7 +62,7 @@ fun ParcelRow(parcel: Parcel, status: Status?, onClick: () -> Unit) {
                             else -> R.drawable.outline_question_mark_24
                         }
                     ),
-                    stringResource(statusToHumanString[status]!!),
+                    stringResource(status.nameResource),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
