@@ -69,10 +69,6 @@ private val serviceToHumanString = mapOf(
     Service.POLISH_POST to R.string.service_polish_post,
     Service.EVRI to R.string.service_evri,
     Service.PACKETA to R.string.service_packeta,
-
-    Service.SAMEDAY_BG to R.string.service_sameday_bg,
-    Service.SAMEDAY_HU to R.string.service_sameday_hu,
-    Service.SAMEDAY_RO to R.string.service_sameday_ro,
 )
 
 enum class Status {
@@ -116,9 +112,6 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
         Service.POLISH_POST -> getPolishPostParcel(id)
         Service.EVRI -> getEvriParcel(id)
         Service.PACKETA -> getPacketaParcel(id)
-        Service.SAMEDAY_BG -> getSamedayParcel("bg", id)
-        Service.SAMEDAY_HU -> getSamedayParcel("hu", id)
-        Service.SAMEDAY_RO -> getSamedayParcel("ro", id)
 
         else -> throw NotImplementedError("Service $service has no fetch implementation yet")
     }
@@ -128,6 +121,10 @@ fun getDeliveryService(service: Service): DeliveryService? {
     return when (service) {
         Service.DPD_UK -> DpdUkDeliveryService
         Service.GLS -> GLSDeliveryService
+        Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
+        Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
+        Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
+
         Service.EXAMPLE -> ExampleDeliveryService
         else -> null
     }
