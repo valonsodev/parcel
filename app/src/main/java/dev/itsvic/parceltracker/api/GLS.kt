@@ -1,5 +1,7 @@
 package dev.itsvic.parceltracker.api
 
+import android.os.LocaleList
+import android.text.Html
 import com.squareup.moshi.JsonClass
 import okhttp3.Request
 import okio.IOException
@@ -12,15 +14,17 @@ import java.time.format.DateTimeFormatter
 // rstt028 - post code, full information
 
 // TODO: should respect system language
-private const val API_BASE = "https://gls-group.com/app/service/open/rest/EN/en"
+private const val API_BASE = "https://gls-group.com/app/service/open/rest/EU/"
 private val glsJsonAdapter = api_moshi.adapter(GLSResponse::class.java)
 
 internal fun getGLSParcel(id: String, postalCode: String?): Parcel {
     // just throw an IOException for now until we implement the rstt029 API
     if (postalCode == null) throw IOException("Needs post codes for now")
 
+    val locale = LocaleList.getDefault().get(0).language
+
     val request = Request.Builder()
-        .url("$API_BASE/rstt028/$id?postalCode=$postalCode")
+        .url("$API_BASE/$locale/rstt028/$id?postalCode=$postalCode")
         .build()
 
     api_client.newCall(request).execute().use { response ->
@@ -32,7 +36,7 @@ internal fun getGLSParcel(id: String, postalCode: String?): Parcel {
         if (resp != null) {
             val history = resp.history.map { item ->
                 ParcelHistoryItem(
-                    item.evtDscr,
+                    Html.fromHtml(item.evtDscr, Html.FROM_HTML_MODE_LEGACY).toString(),
                     LocalDateTime.parse("${item.date}T${item.time}", DateTimeFormatter.ISO_DATE_TIME),
                     if (item.address.city != "") "${item.address.city}, ${item.address.countryName}" else item.address.countryName
                 )
