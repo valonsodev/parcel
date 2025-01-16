@@ -40,8 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.api.Service
+import dev.itsvic.parceltracker.api.getDeliveryServiceName
 import dev.itsvic.parceltracker.api.serviceOptions
-import dev.itsvic.parceltracker.api.serviceToHumanString
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
@@ -149,7 +149,7 @@ fun AddEditParcelView(
                 ) {
                     OutlinedTextField(
                         value = if (service == Service.UNDEFINED) "" else stringResource(
-                            serviceToHumanString[service]!!
+                            getDeliveryServiceName(service)!!
                         ),
                         onValueChange = {},
                         modifier = Modifier
@@ -170,7 +170,7 @@ fun AddEditParcelView(
                         onDismissRequest = { expanded = false }) {
                         serviceOptions.forEach { option ->
                             DropdownMenuItem(
-                                text = { Text(stringResource(serviceToHumanString[option]!!)) },
+                                text = { Text(stringResource(getDeliveryServiceName(option)!!)) },
                                 onClick = {
                                     service = option
                                     expanded = false

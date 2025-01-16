@@ -51,7 +51,7 @@ val serviceOptions = listOf(
     Service.SAMEDAY_RO,
 )
 
-val serviceToHumanString = mapOf(
+private val serviceToHumanString = mapOf(
     Service.UNDEFINED to R.string.service_undefined,
     Service.GLS to R.string.service_gls,
     Service.DHL to R.string.service_dhl,
@@ -98,6 +98,11 @@ val statusToHumanString = mapOf(
 )
 
 suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
+    // use DeliveryService abstraction if possible, otherwise default to the old hardcoded list
+    getDeliveryService(service)?.let {
+        return it.getParcel(id, postCode)
+    }
+
     return when (service) {
         Service.DHL -> getDHLParcel(id)
         Service.GLS -> getGLSParcel(id, postCode)
@@ -109,10 +114,26 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
         Service.SAMEDAY_HU -> getSamedayParcel("hu", id)
         Service.SAMEDAY_RO -> getSamedayParcel("ro", id)
 
-        // to be used only in demo mode.
-        Service.EXAMPLE -> getExampleParcel(id)
         else -> throw NotImplementedError("Service $service has no fetch implementation yet")
     }
+}
+
+fun getDeliveryService(service: Service): DeliveryService? {
+    return when (service) {
+        Service.EXAMPLE -> ExampleDeliveryService
+        else -> null
+    }
+}
+
+fun getDeliveryServiceName(service: Service): Int? {
+    // get DeliveryService abstraction. if missing, use the old hardcoded list
+    getDeliveryService(service)?.let { return it.nameResource }
+    return serviceToHumanString[service]
+}
+
+interface DeliveryService {
+    val nameResource: Int
+    suspend fun getParcel(trackingId: String, postalCode: String?): Parcel
 }
 
 class ParcelNonExistentException: Exception("Parcel does not exist in delivery service API")

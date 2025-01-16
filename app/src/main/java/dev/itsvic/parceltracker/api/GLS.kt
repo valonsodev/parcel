@@ -81,4 +81,3 @@ internal data class GLSHistoryAddress(
 internal data class GLSProgress(
     val statusInfo: String,
 )
-

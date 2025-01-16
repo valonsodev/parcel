@@ -38,7 +38,7 @@ import dev.itsvic.parceltracker.api.Parcel
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.api.Service
 import dev.itsvic.parceltracker.api.Status
-import dev.itsvic.parceltracker.api.serviceToHumanString
+import dev.itsvic.parceltracker.api.getDeliveryServiceName
 import dev.itsvic.parceltracker.api.statusToHumanString
 import dev.itsvic.parceltracker.ui.components.ParcelHistoryItemRow
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
@@ -110,7 +110,7 @@ fun ParcelView(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    serviceToHumanString[service]?.let {
+                    getDeliveryServiceName(service)?.let {
                         Text(
                             LocalContext.current.getString(it),
                             style = MaterialTheme.typography.bodyMedium,
