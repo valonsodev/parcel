@@ -13,14 +13,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.api.Status
-import dev.itsvic.parceltracker.api.statusToHumanString
 import dev.itsvic.parceltracker.db.Parcel
 
 const val CHANNEL_ID = "ParcelTrackerEvents"
 
 fun Context.sendNotification(parcel: Parcel, status: Status, event: ParcelHistoryItem) {
     val context = this
-    val statusString = getString(statusToHumanString[status]!!)
+    val statusString = getString(status.nameResource)
 
     val intent = Intent(this, MainActivity::class.java).apply {
         putExtra("openParcel", parcel.id)

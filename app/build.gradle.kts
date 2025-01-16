@@ -99,6 +99,7 @@ dependencies {
     implementation(libs.work.runtime)
     implementation(libs.work.runtime.ktx)
     implementation(libs.kotlinx.coroutines.guava)
+    implementation(libs.logging.interceptor)
 
     ksp(libs.room.compiler)
     ksp(libs.moshi.kotlin.codegen)

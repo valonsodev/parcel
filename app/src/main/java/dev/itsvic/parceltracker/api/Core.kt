@@ -2,12 +2,69 @@ package dev.itsvic.parceltracker.api
 
 import android.util.Log
 import com.squareup.moshi.Moshi
+import dev.itsvic.parceltracker.BuildConfig
 import dev.itsvic.parceltracker.R
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.time.LocalDateTime
 
-val api_client = OkHttpClient()
-val api_moshi: Moshi = Moshi.Builder().build()
+enum class Service {
+    UNDEFINED,
+    EXAMPLE,
+
+    // International
+    DHL,
+    GLS,
+
+    // United Kingdom
+    DPD_UK,
+    EVRI,
+
+    // Europe
+    PACKETA,
+    POLISH_POST,
+    SAMEDAY_BG,
+    SAMEDAY_HU,
+    SAMEDAY_RO,
+}
+
+val serviceOptions =
+    Service.entries.filter { return@filter it != Service.UNDEFINED && it != Service.EXAMPLE }
+        .toList()
+
+fun getDeliveryService(service: Service): DeliveryService? {
+    return when (service) {
+        Service.DHL -> DhlDeliveryService
+        Service.GLS -> GLSDeliveryService
+
+        Service.DPD_UK -> DpdUkDeliveryService
+        Service.EVRI -> EvriDeliveryService
+
+        Service.PACKETA -> PacketaDeliveryService
+        Service.POLISH_POST -> PolishPostDelieryService
+        Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
+        Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
+        Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
+
+        Service.EXAMPLE -> ExampleDeliveryService
+        else -> null
+    }
+}
+
+internal val api_client = OkHttpClient.Builder()
+    .addInterceptor(
+        HttpLoggingInterceptor {
+            Log.d("OkHttp", it)
+        }.setLevel(
+            if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
+            else HttpLoggingInterceptor.Level.BASIC
+        )
+    )
+    .build()
+
+internal val api_moshi: Moshi = Moshi.Builder().build()
+internal val api_factory = MoshiConverterFactory.create(api_moshi)
 
 // TODO: fill out with more data
 data class Parcel(
@@ -22,100 +79,40 @@ data class ParcelHistoryItem(
     val location: String,
 )
 
-enum class Service {
-    UNDEFINED,
-    DHL,
-    GLS,
-    POLISH_POST,
-    EVRI,
-    DPD_UK,
-    PACKETA,
-    SAMEDAY_BG,
-    SAMEDAY_HU,
-    SAMEDAY_RO,
-
-    EXAMPLE,
+enum class Status(val nameResource: Int) {
+    Preadvice(R.string.status_preadvice),
+    InTransit(R.string.status_in_transit),
+    InWarehouse(R.string.status_in_warehouse),
+    Customs(R.string.status_customs),
+    OutForDelivery(R.string.status_out_for_delivery),
+    DeliveryFailure(R.string.status_delivery_failure),
+    Delivered(R.string.status_delivered),
+    AwaitingPickup(R.string.status_awaiting_pickup),
+    PickedUp(R.string.status_picked_up),
+    Unknown(R.string.status_unknown),
+    NetworkFailure(R.string.status_network_failure),
+    NoData(R.string.status_no_data),
 }
-
-val serviceOptions = listOf(
-    Service.DHL,
-    Service.GLS,
-
-    Service.DPD_UK,
-    Service.EVRI,
-
-    Service.PACKETA,
-    Service.POLISH_POST,
-    Service.SAMEDAY_BG,
-    Service.SAMEDAY_HU,
-    Service.SAMEDAY_RO,
-)
-
-val serviceToHumanString = mapOf(
-    Service.UNDEFINED to R.string.service_undefined,
-    Service.GLS to R.string.service_gls,
-    Service.DHL to R.string.service_dhl,
-    Service.POLISH_POST to R.string.service_polish_post,
-    Service.EVRI to R.string.service_evri,
-    Service.DPD_UK to R.string.service_dpd_uk,
-    Service.PACKETA to R.string.service_packeta,
-
-    Service.SAMEDAY_BG to R.string.service_sameday_bg,
-    Service.SAMEDAY_HU to R.string.service_sameday_hu,
-    Service.SAMEDAY_RO to R.string.service_sameday_ro,
-
-    Service.EXAMPLE to R.string.service_example,
-)
-
-enum class Status {
-    Preadvice,
-    InTransit,
-    InWarehouse,
-    Customs,
-    OutForDelivery,
-    DeliveryFailure,
-    Delivered,
-    AwaitingPickup,
-    PickedUp,
-    Unknown,
-    NetworkFailure,
-    NoData,
-}
-
-val statusToHumanString = mapOf(
-    Status.Preadvice to R.string.status_preadvice,
-    Status.InTransit to R.string.status_in_transit,
-    Status.InWarehouse to R.string.status_in_warehouse,
-    Status.Customs to R.string.status_customs,
-    Status.OutForDelivery to R.string.status_out_for_delivery,
-    Status.DeliveryFailure to R.string.status_delivery_failure,
-    Status.Delivered to R.string.status_delivered,
-    Status.AwaitingPickup to R.string.status_awaiting_pickup,
-    Status.PickedUp to R.string.status_picked_up,
-    Status.Unknown to R.string.status_unknown,
-    Status.NetworkFailure to R.string.status_network_failure,
-    Status.NoData to R.string.status_no_data,
-)
 
 suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
-    return when (service) {
-        Service.DHL -> getDHLParcel(id)
-        Service.GLS -> getGLSParcel(id, postCode)
-        Service.POLISH_POST -> getPolishPostParcel(id)
-        Service.EVRI -> getEvriParcel(id)
-        Service.DPD_UK -> getDpdUkParcel(id, postCode)
-        Service.PACKETA -> getPacketaParcel(id)
-        Service.SAMEDAY_BG -> getSamedayParcel("bg", id)
-        Service.SAMEDAY_HU -> getSamedayParcel("hu", id)
-        Service.SAMEDAY_RO -> getSamedayParcel("ro", id)
-
-        // to be used only in demo mode.
-        Service.EXAMPLE -> getExampleParcel(id)
-        else -> throw NotImplementedError("Service $service has no fetch implementation yet")
+    // use DeliveryService abstraction if possible, otherwise default to the old hardcoded list
+    getDeliveryService(service)?.let {
+        return it.getParcel(id, postCode)
     }
+
+    throw NotImplementedError("Service $service has no DeliveryService object")
 }
 
-class ParcelNonExistentException: Exception("Parcel does not exist in delivery service API")
+fun getDeliveryServiceName(service: Service): Int? {
+    return getDeliveryService(service)?.nameResource
+}
+
+interface DeliveryService {
+    val nameResource: Int
+    suspend fun getParcel(trackingId: String, postalCode: String?): Parcel
+}
+
+class ParcelNonExistentException : Exception("Parcel does not exist in delivery service API")
 
 internal fun logUnknownStatus(service: String, data: String): Status {
     Log.d("APICore", "Unknown status reported by $service: $data")

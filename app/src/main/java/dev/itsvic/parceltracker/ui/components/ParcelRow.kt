@@ -25,12 +25,10 @@ import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.api.Service
 import dev.itsvic.parceltracker.api.Status
-import dev.itsvic.parceltracker.api.serviceToHumanString
-import dev.itsvic.parceltracker.api.statusToHumanString
+import dev.itsvic.parceltracker.api.getDeliveryServiceName
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
-// TODO: show the parcel status. requires a fetch so not doing it yet
 @Composable
 fun ParcelRow(parcel: Parcel, status: Status?, onClick: () -> Unit) {
     Row(
@@ -63,7 +61,7 @@ fun ParcelRow(parcel: Parcel, status: Status?, onClick: () -> Unit) {
                             else -> R.drawable.outline_question_mark_24
                         }
                     ),
-                    stringResource(statusToHumanString[status]!!),
+                    stringResource(status.nameResource),
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -72,7 +70,7 @@ fun ParcelRow(parcel: Parcel, status: Status?, onClick: () -> Unit) {
             Text(parcel.humanName, color = MaterialTheme.colorScheme.onBackground)
 
             Text(
-                "${stringResource(serviceToHumanString[parcel.service]!!)}: ${parcel.parcelId}",
+                "${stringResource(getDeliveryServiceName(parcel.service)!!)}: ${parcel.parcelId}",
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
