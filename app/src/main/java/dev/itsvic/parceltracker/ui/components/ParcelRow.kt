@@ -29,7 +29,6 @@ import dev.itsvic.parceltracker.api.getDeliveryServiceName
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 
-// TODO: show the parcel status. requires a fetch so not doing it yet
 @Composable
 fun ParcelRow(parcel: Parcel, status: Status?, onClick: () -> Unit) {
     Row(

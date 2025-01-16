@@ -65,7 +65,6 @@ val serviceOptions = listOf(
 )
 
 private val serviceToHumanString = mapOf(
-    Service.DHL to R.string.service_dhl,
     Service.POLISH_POST to R.string.service_polish_post,
 )
 
@@ -91,7 +90,6 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
     }
 
     return when (service) {
-        Service.DHL -> getDHLParcel(id)
         Service.POLISH_POST -> getPolishPostParcel(id)
 
         else -> throw NotImplementedError("Service $service has no fetch implementation yet")
@@ -100,6 +98,7 @@ suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
 
 fun getDeliveryService(service: Service): DeliveryService? {
     return when (service) {
+        Service.DHL -> DhlDeliveryService
         Service.DPD_UK -> DpdUkDeliveryService
         Service.EVRI -> EvriDeliveryService
         Service.GLS -> GLSDeliveryService
