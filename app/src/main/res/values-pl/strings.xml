@@ -15,6 +15,7 @@
     <string name="service_undefined">Niezdefiniowana</string>
     <string name="service_example">Poczta Pokazowa</string>
     <string name="service_polish_post">Poczta Polska</string>
+    <string name="service_belpost">Belposzta</string>
 
     <string name="add_a_parcel">Dodaj paczkę</string>
     <string name="postal_code">Kod pocztowy</string>
