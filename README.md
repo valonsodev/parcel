@@ -21,3 +21,4 @@ Europe:
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania
+- Belpost (BY)
