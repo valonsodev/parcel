@@ -18,7 +18,7 @@ object PosteItalianeDeliveryService : DeliveryService {
     }
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://www.poste.it/online/dovequando/DQ-REST")
+        .baseUrl("https://www.poste.it/online/dovequando/DQ-REST/")
         .client(api_client)
         .addConverterFactory(api_factory)
         .build()
