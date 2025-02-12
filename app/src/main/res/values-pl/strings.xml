@@ -56,4 +56,5 @@
     <string name="service_sameday_hu">Sameday Węgry</string>
     <string name="service_sameday_ro">Sameday Rumunia</string>
     <string name="service_sameday_bg">Sameday Bułgaria</string>
+    <string name="service_poste_italiane">Poczta Włoska</string>
 </resources>

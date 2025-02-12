@@ -61,4 +61,5 @@
     <string name="service_sameday_hu">Sameday Hungary</string>
     <string name="service_sameday_ro">Sameday Romania</string>
     <string name="service_sameday_bg">Sameday Bulgaria</string>
+    <string name="service_poste_italiane">Italian Post</string>
 </resources>

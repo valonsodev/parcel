@@ -24,6 +24,7 @@ enum class Service {
     // Europe
     PACKETA,
     POLISH_POST,
+    POSTE_ITALIANE,
     SAMEDAY_BG,
     SAMEDAY_HU,
     SAMEDAY_RO,
@@ -44,6 +45,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
 
         Service.PACKETA -> PacketaDeliveryService
         Service.POLISH_POST -> PolishPostDelieryService
+        Service.POSTE_ITALIANE -> PosteItalianeDeliveryService
         Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
         Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
         Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
