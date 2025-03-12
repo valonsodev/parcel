@@ -53,4 +53,8 @@
     <string name="service_belpost">Belposta</string>
     <string name="service_poste_italiane">Olasz Posta</string>
     <string name="service_spx_th">SPX Thaiföld</string>
+    <string name="about_app">App névjegye</string>
+    <string name="donate">Támogatás</string>
+    <string name="license">Licenc</string>
+    <string name="repository">Forráskód</string>
 </resources>

@@ -146,7 +146,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
     val navController = rememberNavController()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    val demoMode by context.dataStore.data.map { it[DEMO_MODE] ?: false }.collectAsState(false)
+    val demoMode by context.dataStore.data.map { it[DEMO_MODE] == true }.collectAsState(false)
 
     LaunchedEffect(parcelToOpen) {
         if (parcelToOpen != -1) {

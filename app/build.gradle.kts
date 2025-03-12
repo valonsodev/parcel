@@ -102,6 +102,7 @@ dependencies {
     implementation(libs.work.runtime.ktx)
     implementation(libs.kotlinx.coroutines.guava)
     implementation(libs.logging.interceptor)
+    implementation(libs.androidx.browser)
 
     ksp(libs.room.compiler)
     ksp(libs.moshi.kotlin.codegen)

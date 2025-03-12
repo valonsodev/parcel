@@ -58,4 +58,8 @@
     <string name="service_sameday_bg">Sameday Bułgaria</string>
     <string name="service_poste_italiane">Poczta Włoska</string>
     <string name="service_spx_th">SPX Tajlandia</string>
+    <string name="about_app">O aplikacji</string>
+    <string name="donate">Sponsoruj</string>
+    <string name="license">Licencja</string>
+    <string name="repository">Repozytorium</string>
 </resources>
