@@ -57,4 +57,5 @@
     <string name="service_sameday_ro">Sameday Rumunia</string>
     <string name="service_sameday_bg">Sameday Bułgaria</string>
     <string name="service_poste_italiane">Poczta Włoska</string>
+    <string name="service_spx_th">SPX Tajlandia</string>
 </resources>

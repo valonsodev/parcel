@@ -52,4 +52,5 @@
     <string name="service_sameday_bg">Sameday Bulgária</string>
     <string name="service_belpost">Belposta</string>
     <string name="service_poste_italiane">Olasz Posta</string>
+    <string name="service_spx_th">SPX Thaiföld</string>
 </resources>

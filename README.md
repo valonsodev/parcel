@@ -23,3 +23,6 @@ Europe:
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania
+
+Asia:
+- SPX Thailand

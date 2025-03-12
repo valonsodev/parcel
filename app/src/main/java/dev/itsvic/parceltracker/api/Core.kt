@@ -29,6 +29,9 @@ enum class Service {
     SAMEDAY_BG,
     SAMEDAY_HU,
     SAMEDAY_RO,
+
+    // Asia
+    SPX_TH,
 }
 
 val serviceOptions =
@@ -50,6 +53,8 @@ fun getDeliveryService(service: Service): DeliveryService? {
         Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
         Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
         Service.BELPOST -> BelpostDeliveryService
+
+        Service.SPX_TH -> SPXThailandDeliveryService
 
         Service.EXAMPLE -> ExampleDeliveryService
         else -> null
