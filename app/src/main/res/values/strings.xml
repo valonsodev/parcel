@@ -27,7 +27,7 @@
     <string name="specify_a_postal_code">Specify a postal code</string>
     <string name="postal_code">Postal code</string>
     <string name="add_parcel">Add parcel</string>
-    <string name="specify_postal_code_flavor_text">Some parcels require a postal code to view full details.</string>
+    <string name="specify_postal_code_flavor_text">Optional. You may be able to access extra information, such as location, with a postal code.</string>
 
     <string name="no_parcels_flavor">You currently do not have any parcels.</string>
 

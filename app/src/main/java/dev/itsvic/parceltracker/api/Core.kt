@@ -22,13 +22,13 @@ enum class Service {
     EVRI,
 
     // Europe
+    BELPOST,
     PACKETA,
     POLISH_POST,
     POSTE_ITALIANE,
     SAMEDAY_BG,
     SAMEDAY_HU,
     SAMEDAY_RO,
-    BELPOST,
 }
 
 val serviceOptions =
@@ -113,6 +113,8 @@ fun getDeliveryServiceName(service: Service): Int? {
 
 interface DeliveryService {
     val nameResource: Int
+    val acceptsPostCode: Boolean
+    val requiresPostCode: Boolean
     suspend fun getParcel(trackingId: String, postalCode: String?): Parcel
 }
 

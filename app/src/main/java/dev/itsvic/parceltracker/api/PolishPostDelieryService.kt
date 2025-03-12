@@ -13,6 +13,8 @@ import java.time.format.DateTimeFormatter
 // Reverse-engineered from https://emonitoring.poczta-polska.pl
 object PolishPostDelieryService : DeliveryService {
     override val nameResource: Int = R.string.service_polish_post
+    override val acceptsPostCode: Boolean = false
+    override val requiresPostCode: Boolean = false
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val locale = LocaleList.getDefault().get(0).language

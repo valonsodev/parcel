@@ -11,6 +11,8 @@ import java.time.format.DateTimeFormatter
 
 object DhlDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_dhl
+    override val acceptsPostCode: Boolean = false
+    override val requiresPostCode: Boolean = false
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val resp = try {

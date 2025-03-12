@@ -12,6 +12,8 @@ import java.util.TimeZone
 
 object BelpostDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_belpost
+    override val acceptsPostCode: Boolean = false
+    override val requiresPostCode: Boolean = false
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val req = ParcelRequest(trackingId)
@@ -52,13 +54,13 @@ object BelpostDeliveryService : DeliveryService {
             6 -> Status.InWarehouse
             8 -> Status.InTransit
             15 -> Status.InTransit
-            21 -> Status.PickedUp
+            21 -> Status.OutForDelivery
             30 -> Status.Customs
             31 -> Status.Customs
             32 -> Status.InWarehouse
             35 -> Status.InTransit
             38 -> Status.Customs
-            70 -> Status.AwaitingPickup
+            70 -> Status.InWarehouse
             else -> logUnknownStatus("Belpost", resp.data[0].steps.last().code.toString())
         }
 

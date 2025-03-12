@@ -15,6 +15,8 @@ import java.util.TimeZone
 
 object PosteItalianeDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_poste_italiane
+    override val acceptsPostCode: Boolean = false
+    override val requiresPostCode: Boolean = false
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val resp = try {

@@ -16,6 +16,8 @@ import java.time.format.DateTimeFormatter
 
 object GLSDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_gls
+    override val acceptsPostCode: Boolean = true
+    override val requiresPostCode: Boolean = true
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val locale = LocaleList.getDefault().get(0).language

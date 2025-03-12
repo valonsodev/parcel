@@ -20,7 +20,7 @@
     <string name="specify_a_postal_code">Irányítószám megadása</string>
     <string name="postal_code">Irányítószám</string>
     <string name="add_parcel">Csomag hozzáadása</string>
-    <string name="specify_postal_code_flavor_text">Néhány csomagnál előfordul, hogy az irányítószámot meg kell adni a teljes nyomkövetési állapot megtekintéséhez.</string>
+    <string name="specify_postal_code_flavor_text">Opcionális. További információ jelenhet meg az irányítószám megadásával, például a címzett címe.</string>
     <string name="no_parcels_flavor">Jelenleg nincsenek csomagjaid.</string>
     <string name="current_status">Jelenlegi állapot</string>
     <string name="parcel_history">Előzmény</string>

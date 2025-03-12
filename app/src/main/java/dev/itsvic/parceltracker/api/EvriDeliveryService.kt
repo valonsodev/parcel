@@ -14,6 +14,8 @@ import java.time.ZoneId
 
 object EvriDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_evri
+    override val acceptsPostCode: Boolean = false
+    override val requiresPostCode: Boolean = false
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val urnResp = try {

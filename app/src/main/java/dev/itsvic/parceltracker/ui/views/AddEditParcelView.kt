@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.api.Service
+import dev.itsvic.parceltracker.api.getDeliveryService
 import dev.itsvic.parceltracker.api.getDeliveryServiceName
 import dev.itsvic.parceltracker.api.serviceOptions
 import dev.itsvic.parceltracker.db.Parcel
@@ -58,13 +59,21 @@ fun AddEditParcelView(
     var nameError by remember { mutableStateOf(false) }
     var trackingId by remember { mutableStateOf(parcel?.parcelId ?: "") }
     var idError by remember { mutableStateOf(false) }
-    var needsPostalCode by remember { mutableStateOf(parcel?.postalCode != null) }
+    var specifyPostalCode by remember { mutableStateOf(parcel?.postalCode != null) }
     var postalCode by remember { mutableStateOf(parcel?.postalCode ?: "") }
     var postalCodeError by remember { mutableStateOf(false) }
     var service by remember { mutableStateOf(parcel?.service ?: Service.UNDEFINED) }
     var serviceError by remember { mutableStateOf(false) }
 
+    val backend = if (service != Service.UNDEFINED) getDeliveryService(service) else null
+
     fun validateInputs(): Boolean {
+        // reset error states first
+        nameError = false
+        idError = false
+        serviceError = false
+        postalCodeError = false
+
         var success = true
         if (humanName.isBlank()) {
             success = false; nameError = true
@@ -75,7 +84,7 @@ fun AddEditParcelView(
         if (service == Service.UNDEFINED) {
             success = false; serviceError = true
         }
-        if (needsPostalCode && postalCode.isBlank()) {
+        if (((backend?.acceptsPostCode == true && specifyPostalCode) || (backend?.requiresPostCode == true)) && postalCode.isBlank()) {
             success = false; postalCodeError = true
         }
 
@@ -101,8 +110,7 @@ fun AddEditParcelView(
                 },
                 scrollBehavior = scrollBehavior,
             )
-        },
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+        }, modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -127,8 +135,7 @@ fun AddEditParcelView(
                     isError = nameError,
                     supportingText = {
                         if (nameError) Text(stringResource(R.string.human_name_error_text))
-                    }
-                )
+                    })
 
                 OutlinedTextField(
                     value = trackingId,
@@ -139,8 +146,7 @@ fun AddEditParcelView(
                     isError = idError,
                     supportingText = {
                         if (idError) Text(stringResource(R.string.tracking_id_error_text))
-                    }
-                )
+                    })
 
                 // Service dropdown
                 ExposedDropdownMenuBox(
@@ -162,12 +168,10 @@ fun AddEditParcelView(
                         isError = serviceError,
                         supportingText = {
                             if (serviceError) Text(stringResource(R.string.service_error_text))
-                        }
-                    )
+                        })
 
                     ExposedDropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }) {
+                        expanded = expanded, onDismissRequest = { expanded = false }) {
                         serviceOptions.forEach { option ->
                             DropdownMenuItem(
                                 text = { Text(stringResource(getDeliveryServiceName(option)!!)) },
@@ -182,27 +186,29 @@ fun AddEditParcelView(
                     }
                 }
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column(modifier = Modifier.fillMaxWidth(0.8f)) {
-                        Text(stringResource(R.string.specify_a_postal_code))
-                        Text(
-                            stringResource(R.string.specify_postal_code_flavor_text),
-                            fontSize = 14.sp,
-                            lineHeight = 21.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                AnimatedVisibility(backend?.acceptsPostCode == true && !backend.requiresPostCode) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.fillMaxWidth(0.8f)) {
+                            Text(stringResource(R.string.specify_a_postal_code))
+                            Text(
+                                stringResource(R.string.specify_postal_code_flavor_text),
+                                fontSize = 14.sp,
+                                lineHeight = 21.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Checkbox(
+                            checked = specifyPostalCode,
+                            onCheckedChange = { specifyPostalCode = it },
                         )
                     }
-                    Checkbox(
-                        checked = needsPostalCode,
-                        onCheckedChange = { needsPostalCode = it },
-                    )
                 }
 
-                AnimatedVisibility(needsPostalCode) {
+                AnimatedVisibility(backend?.requiresPostCode == true || (backend?.requiresPostCode == false && backend.acceptsPostCode && specifyPostalCode)) {
                     OutlinedTextField(
                         value = postalCode,
                         onValueChange = { postalCode = it; postalCodeError = false },
@@ -212,13 +218,11 @@ fun AddEditParcelView(
                         isError = postalCodeError,
                         supportingText = {
                             if (postalCodeError) Text(stringResource(R.string.postal_code_error_text))
-                        }
-                    )
+                        })
                 }
 
                 Row(
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier.fillMaxWidth()
+                    horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()
                 ) {
                     Button(onClick = {
                         val isOk = validateInputs()
@@ -230,7 +234,7 @@ fun AddEditParcelView(
                                     humanName = humanName,
                                     parcelId = trackingId,
                                     service = service,
-                                    postalCode = if (needsPostalCode) postalCode else null
+                                    postalCode = if (specifyPostalCode) postalCode else null
                                 )
                             )
                         }

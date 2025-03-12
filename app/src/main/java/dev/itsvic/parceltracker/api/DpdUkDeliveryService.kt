@@ -14,6 +14,8 @@ import java.time.format.DateTimeFormatter
 
 object DpdUkDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_dpd_uk
+    override val acceptsPostCode: Boolean = true
+    override val requiresPostCode: Boolean = false
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val urlResp = service.getParcelURL(trackingId, postalCode)

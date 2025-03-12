@@ -15,6 +15,8 @@ import java.time.format.DateTimeFormatter
 // reverse engineered from their Nuxt app lol
 object PacketaDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_packeta
+    override val acceptsPostCode: Boolean = false
+    override val requiresPostCode: Boolean = false
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val cleanId = trackingId.replace(Regex("\\s"), "")

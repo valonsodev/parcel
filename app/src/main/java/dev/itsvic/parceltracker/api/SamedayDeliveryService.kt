@@ -14,6 +14,9 @@ object SamedayHungaryDeliveryService : SamedayDeliveryService("hu", R.string.ser
 object SamedayBulgariaDeliveryService : SamedayDeliveryService("bg", R.string.service_sameday_bg)
 
 open class SamedayDeliveryService(region: String, override val nameResource: Int) : DeliveryService {
+    override val acceptsPostCode: Boolean = false
+    override val requiresPostCode: Boolean = false
+
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val resp = try {
             service.getAwbHistory(trackingId)

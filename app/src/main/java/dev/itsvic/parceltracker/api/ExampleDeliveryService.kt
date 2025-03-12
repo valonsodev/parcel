@@ -9,6 +9,8 @@ import kotlin.random.Random
 
 object ExampleDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_example
+    override val acceptsPostCode: Boolean = true
+    override val requiresPostCode: Boolean = false
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         if (!exampleParcels.containsKey(trackingId)) throw ParcelNonExistentException()

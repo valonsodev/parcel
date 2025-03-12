@@ -25,7 +25,7 @@
     <string name="tracking_id">Identyfikator śledzenia</string>
     <string name="delivery_service">Usługa dostawy</string>
     <string name="specify_a_postal_code">Podaj kod pocztowy</string>
-    <string name="specify_postal_code_flavor_text">Niektóre paczki potrzebują kodu pocztowego do wyświetlenia pełnych szczegółów.</string>
+    <string name="specify_postal_code_flavor_text">Opcjonalne. Możesz uzyskać dostęp do dodatkowych informacji, takich jak lokalizacja, z kodem pocztowym.</string>
 
     <string name="no_parcels_flavor">Obecnie nie masz żadnych paczek.</string>
     <string name="current_status">Obecny status</string>
