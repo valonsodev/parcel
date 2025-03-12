@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -97,12 +98,11 @@ fun ParcelView(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { innerPadding ->
-
         LazyColumn(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(16.dp, 0.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item {
                 Row(
@@ -112,7 +112,7 @@ fun ParcelView(
                 ) {
                     getDeliveryServiceName(service)?.let {
                         Text(
-                            LocalContext.current.getString(it),
+                            stringResource(it),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -128,16 +128,36 @@ fun ParcelView(
                 }
             }
 
+            items(parcel.properties.entries.toList()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        stringResource(it.key),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        it.value,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
 
             item {
                 Text(
                     LocalContext.current.getString(parcel.currentStatus.nameResource),
-                    style = MaterialTheme.typography.headlineLarge
+                    style = MaterialTheme.typography.headlineLarge,
+                    modifier = Modifier.padding(vertical = 16.dp),
                 )
             }
 
-            items(parcel.history) { item ->
-                ParcelHistoryItemRow(item)
+            items(parcel.history.size) { index ->
+                if (index > 0)
+                    HorizontalDivider(Modifier.padding(top = 8.dp, bottom = 16.dp))
+                ParcelHistoryItemRow(parcel.history[index])
             }
         }
     }

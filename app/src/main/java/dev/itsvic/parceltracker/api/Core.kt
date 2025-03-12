@@ -81,6 +81,7 @@ data class Parcel(
     val id: String,
     val history: List<ParcelHistoryItem>,
     val currentStatus: Status,
+    val properties: Map<Int, String> = mapOf(),
 )
 
 data class ParcelHistoryItem(

@@ -53,7 +53,22 @@ object GLSDeliveryService : DeliveryService {
             else -> logUnknownStatus("GLS", resp.progressBar.statusInfo)
         }
 
-        val parcel = Parcel(trackingId, history, status)
+        val properties = mutableMapOf<Int, String>()
+
+        resp.infos.forEach {
+            if (it.type == "WEIGHT") {
+                properties[R.string.property_weight] = it.value
+            }
+        }
+
+        if (resp.arrivalTime != null) {
+            val type =
+                if (status == Status.Delivered) R.string.property_delivery_time
+                else R.string.property_eta
+            properties[type] = resp.arrivalTime.value
+        }
+
+        val parcel = Parcel(trackingId, history, status, properties)
         return parcel
     }
 
@@ -77,6 +92,22 @@ object GLSDeliveryService : DeliveryService {
     internal data class ExtendedParcelInfo(
         val history: List<GLSHistoryItem>,
         val progressBar: Progress,
+        val infos: List<GLSTypedProperty>,
+        val references: List<GLSTypedProperty>,
+        val arrivalTime: GLSProperty?,
+    )
+
+    @JsonClass(generateAdapter = true)
+    internal data class GLSTypedProperty(
+        val type: String,
+        val name: String,
+        val value: String,
+    )
+
+    @JsonClass(generateAdapter = true)
+    internal data class GLSProperty(
+        val name: String,
+        val value: String,
     )
 
     @JsonClass(generateAdapter = true)
