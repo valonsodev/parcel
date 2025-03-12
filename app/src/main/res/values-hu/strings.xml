@@ -57,4 +57,7 @@
     <string name="donate">Támogatás</string>
     <string name="license">Licenc</string>
     <string name="repository">Forráskód</string>
+    <string name="property_weight">Súly</string>
+    <string name="property_eta">Becsült érkezés</string>
+    <string name="property_delivery_time">Kiszállítva ekkor</string>
 </resources>
