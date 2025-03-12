@@ -16,9 +16,10 @@ United Kingdom:
 - Evri
 
 Europe:
+- Belpost (BY)
 - Packeta
 - Poczta Polska (PL)
+- Poste Italiane (IT)
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania
-- Belpost (BY)

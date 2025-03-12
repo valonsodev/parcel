@@ -2,10 +2,13 @@ package dev.itsvic.parceltracker.api
 
 import com.squareup.moshi.JsonClass
 import dev.itsvic.parceltracker.R
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.POST
-import java.math.BigInteger
+import java.time.Instant
+import java.time.LocalDateTime
+import java.util.TimeZone
 
 // Poste Italiane (Italian Post)
 // fucking asshats with their shitty italian API
@@ -14,14 +17,39 @@ object PosteItalianeDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_poste_italiane
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
-        TODO("Not yet implemented")
+        val resp = try {
+            service.getParcel(GetParcelRequest(trackingId))
+        } catch (e: HttpException) {
+            throw ParcelNonExistentException()
+        }
+
+        if (resp.listaMovimenti == null) {
+            throw ParcelNonExistentException()
+        }
+
+        val events = resp.listaMovimenti.reversed().map {
+            ParcelHistoryItem(
+                it.statoLavorazione,
+                LocalDateTime.ofInstant(
+                    Instant.ofEpochMilli(it.dataOra), TimeZone.getDefault().toZoneId()
+                ),
+                it.luogo,
+            )
+        }
+
+        val status = when (resp.listaMovimenti.last().box) {
+            "3" -> Status.InTransit
+            "4" -> Status.DeliveryFailure
+            "5" -> Status.Delivered
+            else -> logUnknownStatus("Italian Post", resp.listaMovimenti.last().box)
+        }
+
+        return Parcel(trackingId, events, status)
     }
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://www.poste.it/online/dovequando/DQ-REST/")
-        .client(api_client)
-        .addConverterFactory(api_factory)
-        .build()
+    private val retrofit =
+        Retrofit.Builder().baseUrl("https://www.poste.it/online/dovequando/DQ-REST/")
+            .client(api_client).addConverterFactory(api_factory).build()
 
     private val service = retrofit.create(API::class.java)
 
@@ -42,7 +70,7 @@ object PosteItalianeDeliveryService : DeliveryService {
     @JsonClass(generateAdapter = true)
     internal data class GetParcelResponse(
         /** movement list */
-        val listaMovimenti: List<ParcelEvent>,
+        val listaMovimenti: List<ParcelEvent>?,
     )
 
     @JsonClass(generateAdapter = true)
@@ -50,7 +78,7 @@ object PosteItalianeDeliveryService : DeliveryService {
         /** possibly state of the event? */
         val box: String,
         /** event date, epoch with milliseconds */
-        val dataOra: BigInteger,
+        val dataOra: Long,
         /** return flag */
         val flagRitorno: Boolean,
         /** post code */
