@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 pluginManagement {
     repositories {
         google {
@@ -19,6 +21,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Parcel Tracker"
+rootProject.name = "Parcel"
 include(":app")
  

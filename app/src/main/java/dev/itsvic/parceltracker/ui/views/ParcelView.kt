@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 package dev.itsvic.parceltracker.ui.views
 
 import androidx.compose.foundation.layout.Arrangement

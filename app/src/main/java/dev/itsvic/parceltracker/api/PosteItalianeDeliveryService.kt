@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 package dev.itsvic.parceltracker.api
 
 import com.squareup.moshi.JsonClass
@@ -21,7 +22,7 @@ object PosteItalianeDeliveryService : DeliveryService {
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val resp = try {
             service.getParcel(GetParcelRequest(trackingId))
-        } catch (e: HttpException) {
+        } catch (_: HttpException) {
             throw ParcelNonExistentException()
         }
 

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 package dev.itsvic.parceltracker
 
 import android.Manifest
@@ -77,7 +78,7 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            val parcelToOpen by MainActivity.parcelToOpen
+            val parcelToOpen by parcelToOpen
 
             ParcelTrackerTheme {
                 Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
@@ -250,7 +251,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                                 ),
                                 Status.NetworkFailure
                             )
-                        } catch (e: ParcelNonExistentException) {
+                        } catch (_: ParcelNonExistentException) {
                             apiParcel = APIParcel(
                                 dbParcel.parcelId,
                                 listOf(

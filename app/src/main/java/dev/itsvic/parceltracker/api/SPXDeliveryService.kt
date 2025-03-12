@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 package dev.itsvic.parceltracker.api
 
 import com.squareup.moshi.JsonClass
@@ -36,7 +37,7 @@ open class SPXDeliveryService(
         val slsTrackingNumber = "$trackingId|$timestamp$checksum"
         val resp = try {
             service.getParcel(slsTrackingNumber)
-        } catch (e: HttpException) {
+        } catch (_: HttpException) {
             throw ParcelNonExistentException()
         }
 
