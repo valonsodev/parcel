@@ -10,6 +10,7 @@ Parcel is an app that lets you track your parcels from various providers with ea
 International:
 - DHL
 - GLS
+- UPS
 
 United Kingdom:
 - DPD UK
