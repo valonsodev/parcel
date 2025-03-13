@@ -19,7 +19,8 @@ val versionBuild = 6 // Hidden from the user
 
 val versionSuffix = "RC 1.1"
 
-val appVersionCode = ((versionMajor * 100 + versionMinor) * 100 + versionPatch) * 1000 + versionBuild
+val appVersionCode =
+    ((versionMajor * 100 + versionMinor) * 100 + versionPatch) * 1000 + versionBuild
 val appVersionName =
     if (versionSuffix.isNotBlank())
         "$versionMajor.$versionMinor.$versionPatch $versionSuffix"
@@ -28,7 +29,8 @@ val appVersionName =
 
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
-keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+if (keystorePropertiesFile.exists())
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 room {
     schemaDirectory("$projectDir/schemas")
@@ -49,17 +51,19 @@ android {
     }
 
     signingConfigs {
-        create("release") {
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = file(keystoreProperties["storeFile"] as String)
-            storePassword = keystoreProperties["storePassword"] as String
-        }
+        if (keystorePropertiesFile.exists())
+            create("release") {
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+            }
     }
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("release")
+            if (keystorePropertiesFile.exists())
+                signingConfig = signingConfigs.getByName("release")
 
             isMinifyEnabled = true
             isShrinkResources = true
