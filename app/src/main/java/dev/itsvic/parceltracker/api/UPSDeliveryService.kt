@@ -101,7 +101,10 @@ object UPSDeliveryService : DeliveryService {
         }
         val day = details.scheduledDeliveryDateDetail.dayNum.toInt()
         val date = LocalDate.now().withMonth(month).withDayOfMonth(day)
-        val eta = "${date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL))}\n${details.packageStatusTime}"
+        val eta = (date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL))
+                + "\n"
+                // cleanup A.M., P.M. -> AM, PM
+                + details.packageStatusTime.replace(".M.", "M"))
 
         return Parcel(
             trackingId,
