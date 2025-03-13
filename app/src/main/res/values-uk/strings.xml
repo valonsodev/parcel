@@ -29,7 +29,7 @@
 
     <string name="current_status">Поточний стан</string>
     <string name="parcel_history">Історія посилок</string>
-    <string name="human_name_error_text">Ім'я не може бути пустим.</string>
+    <string name="human_name_error_text">Ім\'я не може бути пустим.</string>
     <string name="tracking_id_error_text">Трекінг-ID не може бути пустим.</string>
     <string name="service_error_text">Ви маєте вибрати службу.</string>
     <string name="postal_code_error_text">Поштовий індекс не може бути пустим.</string>
