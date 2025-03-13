@@ -37,7 +37,10 @@ object DhlDeliveryService : DeliveryService {
                 "OUT FOR DELIVERY" -> Status.OutForDelivery
                 else -> Status.InTransit
             }
-            "failure" -> Status.DeliveryFailure
+            "failure" -> when (shipment.status.status) {
+                "103" -> Status.InWarehouse // Shipment is on hold
+                else -> Status.DeliveryFailure
+            }
             "delivered" -> Status.Delivered
             else -> logUnknownStatus("DHL", shipment.status.statusCode)
         }
