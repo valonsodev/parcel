@@ -1,5 +1,6 @@
 package dev.itsvic.parceltracker.api
 
+import android.os.LocaleList
 import com.squareup.moshi.JsonClass
 import retrofit2.HttpException
 import retrofit2.Retrofit
@@ -19,8 +20,9 @@ object MagyarPostaDeliveryService : DeliveryService {
     override suspend fun getParcel(
         trackingId: String, postalCode: String?
     ): Parcel {
+        val locale = LocaleList.getDefault().get(0).language
         val resp = try {
-            service.getTrackingInfo(trackingId)
+            service.getTrackingInfo(trackingId, language = if (locale == "hu") 1 else 2)
         } catch (_: HttpException) {
             throw ParcelNonExistentException()
         }
