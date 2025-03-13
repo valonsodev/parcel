@@ -14,5 +14,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
 /app/release
+
 fastlane/play-store-creds.json
+fastlane/report.xml
