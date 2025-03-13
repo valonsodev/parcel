@@ -4,7 +4,7 @@ Niektóre funkcje Parcel:
 - 📱 Prosty i przejrzysty interfejs: Skup się wyłącznie na paczkach, a nie na tym, jak korzystać z aplikacji.
 - 💬 Powiadomienia: Otrzymuj powiadomienia za każdym razem, gdy paczka dotrze dalej.
 - 🚫 Żadnych reklam i innych irytacji.
-- 👥 Darmowe i otwarte oprogramowanie: https://github.com/itsvic-dev/parceltracker
+- 👥 Darmowe i otwarte oprogramowanie: https://github.com/itsvic-dev/parcel
 
 --- Obsługiwane usługi ---
 Międzynarodowe:
