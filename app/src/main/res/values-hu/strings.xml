@@ -60,4 +60,5 @@
     <string name="property_weight">Súly</string>
     <string name="property_eta">Becsült érkezés</string>
     <string name="property_delivery_time">Kiszállítva ekkor</string>
+    <string name="service_hungarian_post">Maygar Posta</string>
 </resources>

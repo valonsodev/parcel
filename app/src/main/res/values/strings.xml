@@ -70,4 +70,5 @@
     <string name="property_weight">Weight</string>
     <string name="property_eta">ETA</string>
     <string name="property_delivery_time">Delivered at</string>
+    <string name="service_hungarian_post">Hungarian Post</string>
 </resources>

@@ -65,4 +65,5 @@
     <string name="property_weight">Waga</string>
     <string name="property_eta">Czas dotarcia</string>
     <string name="property_delivery_time">Dostarczono o</string>
+    <string name="service_hungarian_post">Poczta Węgierska</string>
 </resources>
