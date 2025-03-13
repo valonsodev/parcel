@@ -37,6 +37,7 @@ import dev.itsvic.parceltracker.db.ParcelStatus
 import dev.itsvic.parceltracker.db.ParcelWithStatus
 import dev.itsvic.parceltracker.ui.components.AboutDialog
 import dev.itsvic.parceltracker.ui.components.ParcelRow
+import dev.itsvic.parceltracker.ui.theme.MenuItemContentPadding
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import java.time.Instant
 
@@ -74,6 +75,7 @@ fun HomeView(
                             },
                             text = { Text(stringResource(R.string.settings)) },
                             onClick = { expanded = false; onNavigateToSettings() },
+                            contentPadding = MenuItemContentPadding,
                         )
                         DropdownMenuItem(
                             leadingIcon = {
@@ -81,6 +83,7 @@ fun HomeView(
                             },
                             text = { Text(stringResource(R.string.about_app)) },
                             onClick = { expanded = false; aboutDialogOpen = true },
+                            contentPadding = MenuItemContentPadding,
                         )
                     }
                 },

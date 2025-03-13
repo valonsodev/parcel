@@ -5,6 +5,7 @@ import android.text.Html
 import android.util.Log
 import com.squareup.moshi.JsonClass
 import dev.itsvic.parceltracker.R
+import dev.itsvic.parceltracker.misc.defaultRegionsForLanguageCode
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Request
 import okhttp3.coroutines.executeAsync
@@ -33,8 +34,11 @@ object UPSDeliveryService : DeliveryService {
         val tokens = getCsrfTokens(trackingId)
 
         val language = LocaleList.getDefault().get(0)
+        val country =
+            if (language.country.isEmpty()) defaultRegionsForLanguageCode[language.language]
+            else language.country
         val locale =
-            "${language.language}_${if (language.country.isEmpty()) language.language.uppercase() else language.country}"
+            "${language.language}_$country"
 
         val resp = try {
             service.getStatus(

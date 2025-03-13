@@ -43,6 +43,7 @@ import dev.itsvic.parceltracker.api.Service
 import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.api.getDeliveryServiceName
 import dev.itsvic.parceltracker.ui.components.ParcelHistoryItemRow
+import dev.itsvic.parceltracker.ui.theme.MenuItemContentPadding
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
 import java.time.LocalDateTime
 
@@ -84,6 +85,7 @@ fun ParcelView(
                             },
                             text = { Text(stringResource(R.string.edit)) },
                             onClick = { expanded = false; onEdit() },
+                            contentPadding = MenuItemContentPadding,
                         )
                         DropdownMenuItem(
                             leadingIcon = {
@@ -91,6 +93,7 @@ fun ParcelView(
                             },
                             text = { Text(stringResource(R.string.delete)) },
                             onClick = onDelete,
+                            contentPadding = MenuItemContentPadding,
                         )
                     }
                 },
