@@ -87,6 +87,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.material.icons)
     implementation(libs.okhttp)
+    implementation(libs.okhttp.coroutines)
+    implementation(libs.logging.interceptor)
     implementation(libs.moshi)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.fragment)
@@ -101,7 +103,6 @@ dependencies {
     implementation(libs.work.runtime)
     implementation(libs.work.runtime.ktx)
     implementation(libs.kotlinx.coroutines.guava)
-    implementation(libs.logging.interceptor)
     implementation(libs.androidx.browser)
 
     ksp(libs.room.compiler)
