@@ -17,6 +17,7 @@ United Kingdom:
 
 Europe:
 - Belpost (BY)
+- Magyar Posta (HU)
 - Packeta
 - Poczta Polska (PL)
 - Poste Italiane (IT)
