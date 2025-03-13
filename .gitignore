@@ -19,3 +19,5 @@ local.properties
 
 fastlane/play-store-creds.json
 fastlane/report.xml
+
+keystore.properties

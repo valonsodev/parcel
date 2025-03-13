@@ -1,0 +1,4 @@
+1.0.0 RC 2 is here!
+- Simplified release process
+- Ukrainian translations (@dechioyo1)
+- Thai translations (@Aikoyori)
