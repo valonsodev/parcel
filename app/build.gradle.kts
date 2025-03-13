@@ -34,7 +34,7 @@ android {
 
     defaultConfig {
         applicationId = "dev.itsvic.parceltracker"
-        minSdk = 29
+        minSdk = 26
         targetSdk = 35
         versionCode = appVersionCode
         versionName = appVersionName
