@@ -87,37 +87,41 @@ object UPSDeliveryService : DeliveryService {
             else -> logUnknownStatus("UPS", details.progressBarType)
         }
 
+        val metadata = mutableMapOf(
+            R.string.property_weight to "${details.additionalInformation.weight} ${details.additionalInformation.weightUnit}",
+        )
+
         // ETA
-        val month = when (details.scheduledDeliveryDateDetail.monthCMSKey) {
-            "cms.stapp.jan" -> 1
-            "cms.stapp.feb" -> 2
-            "cms.stapp.mar" -> 3
-            "cms.stapp.apr" -> 4
-            "cms.stapp.may" -> 5
-            "cms.stapp.jun" -> 6
-            "cms.stapp.jul" -> 7
-            "cms.stapp.aug" -> 8
-            "cms.stapp.sep" -> 9
-            "cms.stapp.oct" -> 10
-            "cms.stapp.nov" -> 11
-            "cms.stapp.dec" -> 12
-            else -> 0
+        if (details.scheduledDeliveryDateDetail != null && details.packageStatusTime != null) {
+            val month = when (details.scheduledDeliveryDateDetail.monthCMSKey) {
+                "cms.stapp.jan" -> 1
+                "cms.stapp.feb" -> 2
+                "cms.stapp.mar" -> 3
+                "cms.stapp.apr" -> 4
+                "cms.stapp.may" -> 5
+                "cms.stapp.jun" -> 6
+                "cms.stapp.jul" -> 7
+                "cms.stapp.aug" -> 8
+                "cms.stapp.sep" -> 9
+                "cms.stapp.oct" -> 10
+                "cms.stapp.nov" -> 11
+                "cms.stapp.dec" -> 12
+                else -> 0
+            }
+            val day = details.scheduledDeliveryDateDetail.dayNum.toInt()
+            val date = LocalDate.now().withMonth(month).withDayOfMonth(day)
+            val eta = (date?.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL))
+                    + "\n"
+                    // cleanup A.M., P.M. -> AM, PM
+                    + details.packageStatusTime.replace(".M.", "M"))
+            metadata[R.string.property_eta] = eta
         }
-        val day = details.scheduledDeliveryDateDetail.dayNum.toInt()
-        val date = LocalDate.now().withMonth(month).withDayOfMonth(day)
-        val eta = (date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL))
-                + "\n"
-                // cleanup A.M., P.M. -> AM, PM
-                + details.packageStatusTime.replace(".M.", "M"))
 
         return Parcel(
             trackingId,
             history,
             status,
-            mapOf(
-                R.string.property_weight to "${details.additionalInformation.weight} ${details.additionalInformation.weightUnit}",
-                R.string.property_eta to eta,
-            )
+            metadata
         )
     }
 
@@ -168,8 +172,8 @@ object UPSDeliveryService : DeliveryService {
         val progressBarType: String,
         val additionalInformation: PkgMoreInfo,
         val shipmentProgressActivities: List<ActivityEntry>,
-        val scheduledDeliveryDateDetail: DeliveryDateDetail,
-        val packageStatusTime: String,
+        val scheduledDeliveryDateDetail: DeliveryDateDetail?,
+        val packageStatusTime: String?,
     )
 
     @JsonClass(generateAdapter = true)
