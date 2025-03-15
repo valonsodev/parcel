@@ -1,3 +1,0 @@
-1.0.0 RC 2.1 is here.
-- UPS: Fixed crash when ETA is null.
-- Polish Post: Fixed unknown status code.

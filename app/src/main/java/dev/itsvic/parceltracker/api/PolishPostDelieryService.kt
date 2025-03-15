@@ -44,6 +44,7 @@ object PolishPostDelieryService : DeliveryService {
             "P_WPUCPP" -> Status.Customs
             "P_WZL" -> Status.InTransit
             "P_WD", "P_WDML" -> Status.OutForDelivery
+            "P_D" -> Status.Delivered
             "P_A" -> Status.DeliveryFailure
             "P_KWD" -> Status.AwaitingPickup
             "P_OWU" -> Status.PickedUp

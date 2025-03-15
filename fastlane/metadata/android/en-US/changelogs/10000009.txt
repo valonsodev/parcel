@@ -1,0 +1,2 @@
+1.0.0 RC 2.2 is here.
+- Polish Post: Fixed more unknown status codes.
