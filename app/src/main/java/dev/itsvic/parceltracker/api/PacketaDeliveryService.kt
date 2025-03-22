@@ -62,7 +62,7 @@ object PacketaDeliveryService : DeliveryService {
     }
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://tracking.app.packeta.com/api/")
+        .baseUrl("https://tracking.packeta.com/api/")
         .client(api_client)
         .addConverterFactory(MoshiConverterFactory.create(api_moshi))
         .build()
