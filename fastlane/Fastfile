@@ -13,6 +13,15 @@
 default_platform(:android)
 
 platform :android do
+  desc "Deploy a version to the production track"
+  lane :release do
+    gradle(task: "clean bundleRelease")
+    upload_to_play_store(
+      track: "production",
+      sync_image_upload: true,
+    )
+  end
+
   desc "Deploy a version to the closed beta track"
   lane :alpha do
     gradle(task: "clean bundleRelease")
