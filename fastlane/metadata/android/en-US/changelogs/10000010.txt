@@ -1,0 +1,2 @@
+The first public release of Parcel is here!
+No changes since 1.0.0 RC 2.2.

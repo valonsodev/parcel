@@ -1,0 +1,2 @@
+Pierwsza publiczna wersja Parcel jest już dostępna!
+Żadnych zmian od wersji 1.0.0 RC 2.2.

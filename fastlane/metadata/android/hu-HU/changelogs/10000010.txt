@@ -1,0 +1,2 @@
+Megérkezett a Parcel nyilvános kiadása!
+Nincsenek változások az 1.0.0 RC 2.2 óta.

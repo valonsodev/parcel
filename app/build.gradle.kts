@@ -15,9 +15,9 @@ plugins {
 val versionMajor = 1
 val versionMinor = 0
 val versionPatch = 0
-val versionBuild = 9 // Hidden from the user
+val versionBuild = 10 // Hidden from the user
 
-val versionSuffix = "RC 2.2"
+val versionSuffix = ""
 
 val appVersionCode =
     ((versionMajor * 100 + versionMinor) * 100 + versionPatch) * 1000 + versionBuild
