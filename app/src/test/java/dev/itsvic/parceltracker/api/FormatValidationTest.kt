@@ -1,3 +1,4 @@
+import dev.itsvic.parceltracker.api.MagyarPostaDeliveryService
 import dev.itsvic.parceltracker.api.PolishPostDeliveryService
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -7,10 +8,24 @@ class FormatValidationTest {
     @Test fun polishPost_PocztexFormatReturnsTrue() {
         assertTrue(PolishPostDeliveryService.acceptsFormat("PX1234567890"))
     }
-    @Test fun polishPost_CommonFormatReturnsTrue() {
-        assertTrue(PolishPostDeliveryService.acceptsFormat("NL123456789PL"))
+    @Test fun polishPost_EMSFormatReturnsTrue() {
+        assertTrue(PolishPostDeliveryService.acceptsFormat("EX123456789PL"))
     }
     @Test fun polishPost_NonsenseReturnsFalse() {
         assertFalse(PolishPostDeliveryService.acceptsFormat("fsjkdkjjksd"))
+    }
+
+
+    @Test fun hungarianPost_EMSFormatReturnsTrue() {
+        assertTrue(MagyarPostaDeliveryService.acceptsFormat("EX123456789PL"))
+    }
+    @Test fun hungarianPost_GovFormatReturnsTrue() {
+        assertTrue(MagyarPostaDeliveryService.acceptsFormat("RL12345678901234"))
+    }
+    @Test fun hungarianPost_WeirdFormatReturnsTrue() {
+        assertTrue(MagyarPostaDeliveryService.acceptsFormat("JJH12AAAAAPL12345678"))
+    }
+    @Test fun hungarianPost_NonsenseReturnsFalse() {
+        assertFalse(MagyarPostaDeliveryService.acceptsFormat("fsjkdkjjksd"))
     }
 }

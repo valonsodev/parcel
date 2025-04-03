@@ -19,8 +19,7 @@ object PolishPostDeliveryService : DeliveryService {
 
     override fun acceptsFormat(trackingId: String): Boolean {
         val pocztexRegex = """^PX\d{10}$""".toRegex()
-        val commonRegex = """^\w{2}\d{9}\w{2}$""".toRegex()
-        return pocztexRegex.matchEntire(trackingId) != null || commonRegex.matchEntire(trackingId) != null
+        return pocztexRegex.matchEntire(trackingId) != null || emsFormat.matchEntire(trackingId) != null
     }
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {

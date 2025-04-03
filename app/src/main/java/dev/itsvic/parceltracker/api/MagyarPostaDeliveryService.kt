@@ -17,6 +17,12 @@ object MagyarPostaDeliveryService : DeliveryService {
     override val acceptsPostCode: Boolean = false
     override val requiresPostCode: Boolean = false
 
+    override fun acceptsFormat(trackingId: String): Boolean {
+        val someWeirdFormat = """^\w{3}\d{2}\w{7}\d{8}$""".toRegex()
+        val govFormat = """^RL\d{14}$""".toRegex()
+        return someWeirdFormat.matchEntire(trackingId) != null || emsFormat.matchEntire(trackingId) != null || govFormat.matchEntire(trackingId) != null
+    }
+
     override suspend fun getParcel(
         trackingId: String, postalCode: String?
     ): Parcel {
