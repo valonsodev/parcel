@@ -12,21 +12,6 @@ plugins {
     kotlin("plugin.serialization") version "2.0.21"
 }
 
-val versionMajor = 1
-val versionMinor = 0
-val versionPatch = 0
-val versionBuild = 10 // Hidden from the user
-
-val versionSuffix = ""
-
-val appVersionCode =
-    ((versionMajor * 100 + versionMinor) * 100 + versionPatch) * 1000 + versionBuild
-val appVersionName =
-    if (versionSuffix.isNotBlank())
-        "$versionMajor.$versionMinor.$versionPatch $versionSuffix"
-    else
-        "$versionMajor.$versionMinor.$versionPatch"
-
 val keystorePropertiesFile = rootProject.file("keystore.properties")
 val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists())
@@ -44,8 +29,9 @@ android {
         applicationId = "dev.itsvic.parceltracker"
         minSdk = 26
         targetSdk = 35
-        versionCode = appVersionCode
-        versionName = appVersionName
+        // ((major * 100 + minor) * 100 + patch) * 1000 + build
+        versionCode = 10000010
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
