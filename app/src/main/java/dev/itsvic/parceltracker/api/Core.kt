@@ -53,7 +53,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
         Service.BELPOST -> BelpostDeliveryService
         Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
         Service.PACKETA -> PacketaDeliveryService
-        Service.POLISH_POST -> PolishPostDelieryService
+        Service.POLISH_POST -> PolishPostDeliveryService
         Service.POSTE_ITALIANE -> PosteItalianeDeliveryService
         Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
         Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
@@ -127,6 +127,9 @@ interface DeliveryService {
     val acceptsPostCode: Boolean
     val requiresPostCode: Boolean
     suspend fun getParcel(trackingId: String, postalCode: String?): Parcel
+    fun acceptsFormat(trackingId: String): Boolean {
+        return false
+    }
 }
 
 class ParcelNonExistentException : Exception("Parcel does not exist in delivery service API")

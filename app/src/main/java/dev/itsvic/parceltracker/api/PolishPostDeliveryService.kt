@@ -12,10 +12,16 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 // Reverse-engineered from https://emonitoring.poczta-polska.pl
-object PolishPostDelieryService : DeliveryService {
+object PolishPostDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_polish_post
     override val acceptsPostCode: Boolean = false
     override val requiresPostCode: Boolean = false
+
+    override fun acceptsFormat(trackingId: String): Boolean {
+        val pocztexRegex = """^PX\d{10}$""".toRegex()
+        val commonRegex = """^\w{2}\d{9}\w{2}$""".toRegex()
+        return pocztexRegex.matchEntire(trackingId) != null || commonRegex.matchEntire(trackingId) != null
+    }
 
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val locale = LocaleList.getDefault().get(0).language
