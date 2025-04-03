@@ -82,6 +82,12 @@ android {
         compose = true
         buildConfig = true
     }
+
+    // Disables encrypted dependency info block as requested by the F-Droid team.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
 }
 
 dependencies {
