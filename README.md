@@ -1,10 +1,7 @@
 # Parcel
 Parcel is an app that lets you track your parcels from various providers with ease.
 
-> [!WARNING]
-> This app is currently a work-in-progress alpha.
-> If you'd like to help test the app and bring it closer to production,
-> [join this Google group!](https://groups.google.com/g/parcel-closed-beta-testing)
+[<img src="./.github/play-badge.png" alt="Get it on Google Play" height="48dp">](https://play.google.com/store/apps/details?id=dev.itsvic.parceltracker)
 
 ## Supported services
 International:
