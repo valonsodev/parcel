@@ -3,7 +3,7 @@ package dev.itsvic.parceltracker.ui.views
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Info
@@ -107,7 +107,7 @@ fun HomeView(
                 )
             }
 
-            itemsIndexed(parcels) { _, parcel ->
+            items(parcels.reversed()) { parcel ->
                 ParcelRow(
                     parcel.parcel,
                     parcel.status?.status
