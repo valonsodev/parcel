@@ -1,0 +1,5 @@
+- Parcel archival is here! You can archive a parcel to preserve its history on device.
+- Delivery services are now sorted by whether or not they accept the given tracking ID.
+- Parcels are now shown in most recently added order.
+- Belpost: Fixed certain edge-case crashes.
+- UPS: Fixed crashes for non-existent parcels.

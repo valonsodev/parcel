@@ -1,0 +1,5 @@
+- Archiwizacja paczek jest już dostępna! Możesz archiwizować paczki, aby zachować ich historię na urządzeniu.
+- Usługi dostawcze są teraz sortowane według tego, czy akceptują podany identyfikator śledzenia.
+- Paczki są teraz wyświetlane w kolejności ostatnio dodanej.
+- Belpost: Naprawiono pewne skrajne przypadki awarii.
+- UPS: Naprawiono awarie dla nieistniejących paczek.
