@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package dev.itsvic.parceltracker.api
 
-import android.util.Log
 import com.squareup.moshi.JsonClass
 import dev.itsvic.parceltracker.R
 import retrofit2.Retrofit
@@ -20,16 +19,19 @@ object BelpostDeliveryService : DeliveryService {
         val req = ParcelRequest(trackingId)
         val resp = try {
             service.getParcel(req)
-        } catch (e: Exception) {
-            Log.d("BelpostDeliveryService", "exception", e)
+        } catch (_: Exception) {
+            throw ParcelNonExistentException()
+        }
+
+        if (resp.data.isEmpty()) {
             throw ParcelNonExistentException()
         }
 
         val history = resp.data[0].steps.map { item ->
             ParcelHistoryItem(
-                item.event,
-                LocalDateTime.ofInstant(Instant.ofEpochSecond(item.timestamp.toLong()), TimeZone.getDefault().toZoneId()),
-                item.place
+                item.event, LocalDateTime.ofInstant(
+                    Instant.ofEpochSecond(item.timestamp.toLong()), TimeZone.getDefault().toZoneId()
+                ), item.place
             )
         }
 
@@ -48,31 +50,30 @@ object BelpostDeliveryService : DeliveryService {
         38 - end of customs
         70 - arrived to warehouse
          */
-        val status = when (resp.data[0].steps.first().code.toInt()) {
-            1 -> Status.Preadvice
-            3 -> Status.Customs
-            4 -> Status.Preadvice
-            6 -> Status.InWarehouse
-            8 -> Status.InTransit
-            15 -> Status.InTransit
-            21 -> Status.OutForDelivery
-            30 -> Status.Customs
-            31 -> Status.Customs
-            32 -> Status.InWarehouse
-            35 -> Status.InTransit
-            38 -> Status.Customs
-            70 -> Status.InWarehouse
-            else -> logUnknownStatus("Belpost", resp.data[0].steps.last().code.toString())
-        }
+        val status =
+            if (resp.data[0].steps.isEmpty()) Status.Preadvice else when (resp.data[0].steps.first().code.toInt()) {
+                1 -> Status.Preadvice
+                3 -> Status.Customs
+                4 -> Status.Preadvice
+                6 -> Status.InWarehouse
+                8 -> Status.InTransit
+                15 -> Status.InTransit
+                21 -> Status.OutForDelivery
+                30 -> Status.Customs
+                31 -> Status.Customs
+                32 -> Status.InWarehouse
+                35 -> Status.InTransit
+                38 -> Status.Customs
+                70 -> Status.InWarehouse
+                else -> logUnknownStatus("Belpost", resp.data[0].steps.last().code.toString())
+            }
 
         return Parcel(resp.data[0].number, history, status)
     }
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.belpost.by/api/v1/")
-        .client(api_client)
-        .addConverterFactory(api_factory)
-        .build()
+    private val retrofit =
+        Retrofit.Builder().baseUrl("https://api.belpost.by/api/v1/").client(api_client)
+            .addConverterFactory(api_factory).build()
 
     private val service = retrofit.create(API::class.java)
 
