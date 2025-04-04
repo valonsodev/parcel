@@ -15,6 +15,13 @@ object DhlDeliveryService : DeliveryService {
     override val acceptsPostCode: Boolean = false
     override val requiresPostCode: Boolean = false
 
+    override fun acceptsFormat(trackingId: String): Boolean {
+        val dhlParcelFormat = """^(?:JJD|JVGL|3S|JV|JD)\d*$""".toRegex()
+        return digits11Format.accepts(trackingId) || digits12Format.accepts(trackingId) || digits18Format.accepts(
+            trackingId
+        ) || emsFormat.accepts(trackingId) || dhlParcelFormat.accepts(trackingId)
+    }
+
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val resp = try {
             service.getShipments(trackingId)
@@ -37,10 +44,12 @@ object DhlDeliveryService : DeliveryService {
                 "OUT FOR DELIVERY" -> Status.OutForDelivery
                 else -> Status.InTransit
             }
+
             "failure" -> when (shipment.status.status) {
                 "103" -> Status.InWarehouse // Shipment is on hold
                 else -> Status.DeliveryFailure
             }
+
             "delivered" -> Status.Delivered
             else -> logUnknownStatus("DHL", shipment.status.statusCode)
         }
@@ -50,10 +59,8 @@ object DhlDeliveryService : DeliveryService {
                 it.description ?: it.status,
                 LocalDateTime.parse(it.timestamp, DateTimeFormatter.ISO_DATE_TIME),
                 if (it.location == null) "Unknown location"
-                else
-                    if (it.location.address.postalCode != null)
-                        "${it.location.address.postalCode} ${it.location.address.addressLocality}"
-                    else it.location.address.addressLocality
+                else if (it.location.address.postalCode != null) "${it.location.address.postalCode} ${it.location.address.addressLocality}"
+                else it.location.address.addressLocality
             )
         }
 
@@ -63,11 +70,8 @@ object DhlDeliveryService : DeliveryService {
     // please don't take it for yourself, make one for free - https://developer.dhl.com/
     private const val API_KEY = "VzYp08GaeA2esfeCPBLtzHkLShfRTk28"
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api-eu.dhl.com/")
-        .client(api_client)
-        .addConverterFactory(api_factory)
-        .build()
+    private val retrofit = Retrofit.Builder().baseUrl("https://api-eu.dhl.com/").client(api_client)
+        .addConverterFactory(api_factory).build()
 
     private val service = retrofit.create(API::class.java)
 
