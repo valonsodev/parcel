@@ -32,7 +32,7 @@
     <string name="network_failure_detail">Az eszköz offline állapotban van, a futárszolgálat szerverei elérhetetlenek, vagy a megadott adatok érvénytelenek</string>
     <string name="settings">Beállítások</string>
     <string name="demo_mode_detail">Minta csomagokat jelenít meg az applikációban. Nem érinti a már meglévő adatokat.</string>
-    <string name="parcel_doesnt_exist_detail">Ez a csomag még nem áll rendelkezésre a futárszolgálat(ok) szerverein. Kérjük, ellenőrizze a csomag adatait.</string>
+    <string name="parcel_doesnt_exist_detail">Ez a csomag még nem áll rendelkezésre a futárszolgálat szerverein. Kérjük, ellenőrizze a csomag adatait.</string>
     <string name="more_options">További lehetőségek</string>
     <string name="delete">Törlés</string>
     <string name="demo_mode">Teszt mód</string>
@@ -50,7 +50,7 @@
     <string name="service_sameday_hu">Sameday Magyarország</string>
     <string name="service_sameday_ro">Sameday Románia</string>
     <string name="service_sameday_bg">Sameday Bulgária</string>
-    <string name="service_belpost">Belpost</string>
+    <string name="service_belpost">Belposta</string>
     <string name="service_poste_italiane">Olasz Posta</string>
     <string name="service_spx_th">SPX Thaiföld</string>
     <string name="about_app">App névjegye</string>
