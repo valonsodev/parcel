@@ -22,6 +22,7 @@ Europe:
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania
+- An Post (IE)
 
 Asia:
 - SPX Thailand
