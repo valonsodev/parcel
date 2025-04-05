@@ -39,7 +39,7 @@ class FormatValidationTest {
     }
 
     @Test fun anPostFormatReturnsTrue() {
-        assertTrue(AnPostDeliveryService.acceptsFormat("AY123456789IE"))
+        assertTrue(AnPostDeliveryService.acceptsFormat("Ay123456789Ie"))
     }
     @Test fun anPostFormatReturnsFalse() {
         assertFalse(AnPostDeliveryService.acceptsFormat("AY12345678HA"))
