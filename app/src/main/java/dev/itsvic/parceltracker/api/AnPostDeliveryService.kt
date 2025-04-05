@@ -17,7 +17,7 @@ object AnPostDeliveryService : DeliveryService {
     override val requiresPostCode: Boolean = false
 
     override fun acceptsFormat(trackingId: String): Boolean {
-        val anPostParcelFormat = """(?i)^[A-Z]{2}\d{9}IE$""".toRegex()
+        val anPostParcelFormat = """^[A-Z]{2}\d{9}IE$""".toRegex(RegexOption.IGNORE_CASE)
         return anPostParcelFormat.matchEntire(trackingId) != null
     }
 
@@ -130,7 +130,7 @@ object AnPostDeliveryService : DeliveryService {
             4 -> Status.OutForDelivery  // "Your item is out for delivery"
             13 -> Status.DeliveryFailure  // "We tried to deliver your item"
             14 -> Status.Delivered  // "Your item has been delivered"
-            else -> logUnknownStatus("AnPost", "TraceCode: $traceCode")
+            else -> logUnknownStatus("AnPost", traceCode.toString())
         }
     }
 }
