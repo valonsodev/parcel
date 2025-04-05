@@ -18,7 +18,7 @@ object AnPostDeliveryService : DeliveryService {
 
     override fun acceptsFormat(trackingId: String): Boolean {
         val anPostParcelFormat = """(?i)^[A-Z]{2}\d{9}IE$""".toRegex()
-        return anPostParcelFormat.matches(trackingId)
+        return anPostParcelFormat.matchEntire(trackingId) != null
     }
 
     // Public API key for request header
