@@ -1,7 +1,7 @@
-- Archiwizacja paczek jest już dostępna! Możesz archiwizować paczki, aby zachować ich historię na urządzeniu.
-- Usługi dostawcze są teraz sortowane według tego, czy akceptują podany identyfikator śledzenia.
-- Paczki są teraz wyświetlane w kolejności ostatnio dodanej.
+- Archiwizacja paczek jest już dostępna! Możesz archiwizować paczki, aby zachować ich historię lokalnie.
+- Usługi są teraz sortowane według tego, czy akceptują dany identyfikator śledzenia.
+- Paczki są teraz wyświetlane w najnowszej kolejności.
 - Teraz możesz kopiować opisy w historii przesyłki.
-- Naprawiono błąd powodujący, że kod pocztowy nie był zapisywany, gdy był wymagany przez usługę.
+- Naprawiono błąd, gdzie kod pocztowy nie był zapisywany, gdy był wymagany przez usługę.
 - Belpost: Naprawiono pewne skrajne przypadki awarii.
 - UPS: Naprawiono awarie dla nieistniejących paczek.
