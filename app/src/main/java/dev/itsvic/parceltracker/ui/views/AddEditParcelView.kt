@@ -237,7 +237,7 @@ fun AddEditParcelView(
                                     humanName = humanName,
                                     parcelId = trackingId,
                                     service = service,
-                                    postalCode = if (specifyPostalCode) postalCode else null
+                                    postalCode = if (backend?.requiresPostCode == true || (backend?.acceptsPostCode == true && specifyPostalCode)) postalCode else null
                                 )
                             )
                         }
