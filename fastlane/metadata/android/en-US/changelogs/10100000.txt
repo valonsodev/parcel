@@ -2,5 +2,6 @@
 - Delivery services are now sorted by whether or not they accept the given tracking ID.
 - Parcels are now shown in most recently added order.
 - You can now copy the descriptions in the parcel's history.
+- Fixed postal code not saving when it is required by a service.
 - Belpost: Fixed certain edge-case crashes.
 - UPS: Fixed crashes for non-existent parcels.

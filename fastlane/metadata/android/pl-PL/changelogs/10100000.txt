@@ -2,5 +2,6 @@
 - Usługi dostawcze są teraz sortowane według tego, czy akceptują podany identyfikator śledzenia.
 - Paczki są teraz wyświetlane w kolejności ostatnio dodanej.
 - Teraz możesz kopiować opisy w historii przesyłki.
+- Naprawiono błąd powodujący, że kod pocztowy nie był zapisywany, gdy był wymagany przez usługę.
 - Belpost: Naprawiono pewne skrajne przypadki awarii.
 - UPS: Naprawiono awarie dla nieistniejących paczek.
