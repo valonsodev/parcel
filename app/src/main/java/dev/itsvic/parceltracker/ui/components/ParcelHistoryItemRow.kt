@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,10 +27,12 @@ fun ParcelHistoryItemRow(item: ParcelHistoryItem) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        Text(
-            item.description,
-            color = MaterialTheme.colorScheme.onBackground
-        )
+        SelectionContainer {
+            Text(
+                item.description,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+        }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(
                 item.time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)),

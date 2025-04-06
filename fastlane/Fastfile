@@ -1,0 +1,43 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+default_platform(:android)
+
+platform :android do
+  desc "Deploy a version to the production track"
+  lane :release do
+    gradle(task: "clean bundleRelease")
+    upload_to_play_store(
+      track: "production",
+      sync_image_upload: true,
+    )
+  end
+
+  desc "Deploy a version to the closed beta track"
+  lane :alpha do
+    gradle(task: "clean bundleRelease")
+    upload_to_play_store(
+      track: "alpha",
+      sync_image_upload: true,
+    )
+  end
+
+  desc "Upload only metadata to Google Play"
+  lane :upload_metadata do
+    upload_to_play_store(
+      track: "alpha",
+      skip_upload_aab: true,
+      skip_upload_changelogs: true,
+      sync_image_upload: true,
+    )
+  end
+end

@@ -11,7 +11,6 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import dev.itsvic.parceltracker.api.Status
 import dev.itsvic.parceltracker.api.getParcel
 import dev.itsvic.parceltracker.db.ParcelStatus
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +32,7 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
         Log.d("NotificationWorker", "I ran!")
 
         withContext(Dispatchers.IO) {
-            val parcels = parcelDao.getAllWithStatusAsync()
+            val parcels = parcelDao.getAllNonArchivedWithStatusAsync()
             Log.d("NotificationWorker", "Got parcels: $parcels")
 
             for (parcelWithStatus in parcels) {
@@ -45,14 +44,6 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
                     getParcel(parcel.parcelId, parcel.postalCode, parcel.service)
                 } catch (e: Exception) {
                     Log.d("NotificationWorker", "Failed to fetch, skipping", e)
-                    continue
-                }
-
-                if (apiParcel.currentStatus == Status.NetworkFailure) {
-                    Log.d(
-                        "NotificationWorker",
-                        "Parcel status is NetworkFailure, skipping."
-                    )
                     continue
                 }
 

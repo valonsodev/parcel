@@ -1,0 +1,31 @@
+📦 Parcel je aplikace, která vám pomáhá sledovat všechny vaše zásilky.
+
+Některé funkce aplikace:
+- 📱 Čisté a jednoduché rozhraní: soustřeďte se na své zásilky, ne na to, jak používat aplikaci.
+- 💬 Oznámení: získejte oznámení vždy, když se změní stav zásilky.
+- 🚫 Bez reklam a jiných nepříjemností.
+- 👥 Bezplatná a s otevřeným kódem: https://github.com/itsvic-dev/parcel
+
+--- Podporované služby ---
+Mezinárodní:
+- DHL
+- GLS
+- UPS
+
+Velká Británie:
+- DPD UK
+- Evri
+
+Evropa:
+- Belpost (BY)
+- Magyar Posta (HU)
+- Packeta (Zásilkovna)
+- Poczta Polska (PL)
+- Poste Italiane (IT)
+- Sameday Bulgaria
+- Sameday Hungary
+- Sameday Romania
+
+Asie:
+- eKart (IN)
+- SPX Thailand

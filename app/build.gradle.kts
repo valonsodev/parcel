@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -10,19 +12,10 @@ plugins {
     kotlin("plugin.serialization") version "2.0.21"
 }
 
-val versionMajor = 1
-val versionMinor = 0
-val versionPatch = 0
-val versionBuild = 6 // Hidden from the user
-
-val versionSuffix = "RC 1.1"
-
-val appVersionCode = ((versionMajor * 100 + versionMinor) * 100 + versionPatch) * 1000 + versionBuild
-val appVersionName =
-    if (versionSuffix.isNotBlank())
-        "$versionMajor.$versionMinor.$versionPatch $versionSuffix"
-    else
-        "$versionMajor.$versionMinor.$versionPatch"
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists())
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 
 room {
     schemaDirectory("$projectDir/schemas")
@@ -36,14 +29,29 @@ android {
         applicationId = "dev.itsvic.parceltracker"
         minSdk = 26
         targetSdk = 35
-        versionCode = appVersionCode
-        versionName = appVersionName
+        // ((major * 100 + minor) * 100 + patch) * 1000 + build
+        versionCode = 10100000
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (keystorePropertiesFile.exists())
+            create("release") {
+                keyAlias = keystoreProperties["keyAlias"] as String
+                keyPassword = keystoreProperties["keyPassword"] as String
+                storeFile = file(keystoreProperties["storeFile"] as String)
+                storePassword = keystoreProperties["storePassword"] as String
+            }
+    }
+
     buildTypes {
         release {
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.getByName("release")
+            }
+
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -74,6 +82,12 @@ android {
         compose = true
         buildConfig = true
     }
+
+    // Disables encrypted dependency info block as requested by the F-Droid team.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
 }
 
 dependencies {
@@ -93,7 +107,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui)
-    implementation(libs.androidx.navigation.dynamicFeaturesFragment)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)

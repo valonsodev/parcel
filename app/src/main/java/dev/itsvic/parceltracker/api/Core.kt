@@ -8,7 +8,9 @@ import dev.itsvic.parceltracker.R
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.time.Instant
 import java.time.LocalDateTime
+import java.util.TimeZone
 
 enum class Service {
     UNDEFINED,
@@ -26,6 +28,7 @@ enum class Service {
     // Europe
     BELPOST,
     MAGYAR_POSTA,
+    NOVA_POSHTA,
     PACKETA,
     POLISH_POST,
     POSTE_ITALIANE,
@@ -34,6 +37,7 @@ enum class Service {
     SAMEDAY_RO,
 
     // Asia
+    EKART,
     SPX_TH,
 }
 
@@ -52,13 +56,15 @@ fun getDeliveryService(service: Service): DeliveryService? {
 
         Service.BELPOST -> BelpostDeliveryService
         Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
+        Service.NOVA_POSHTA -> NovaPostDeliveryService
         Service.PACKETA -> PacketaDeliveryService
-        Service.POLISH_POST -> PolishPostDelieryService
+        Service.POLISH_POST -> PolishPostDeliveryService
         Service.POSTE_ITALIANE -> PosteItalianeDeliveryService
         Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
         Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
         Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
 
+        Service.EKART -> EKartDeliveryService
         Service.SPX_TH -> SPXThailandDeliveryService
 
         Service.EXAMPLE -> ExampleDeliveryService
@@ -127,6 +133,9 @@ interface DeliveryService {
     val acceptsPostCode: Boolean
     val requiresPostCode: Boolean
     suspend fun getParcel(trackingId: String, postalCode: String?): Parcel
+    fun acceptsFormat(trackingId: String): Boolean {
+        return false
+    }
 }
 
 class ParcelNonExistentException : Exception("Parcel does not exist in delivery service API")
@@ -134,4 +143,8 @@ class ParcelNonExistentException : Exception("Parcel does not exist in delivery 
 internal fun logUnknownStatus(service: String, data: String): Status {
     Log.d("APICore", "Unknown status reported by $service: $data")
     return Status.Unknown
+}
+
+fun localDateFromMilli(milli: Long): LocalDateTime {
+    return LocalDateTime.ofInstant(Instant.ofEpochMilli(milli), TimeZone.getDefault().toZoneId())
 }

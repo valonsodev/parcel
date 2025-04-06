@@ -96,6 +96,8 @@ fun AddEditParcelView(
     var expanded by remember { mutableStateOf(false) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
+    val sortedServiceOptions = serviceOptions.sortedBy { getDeliveryService(it)?.acceptsFormat(trackingId)?.not() }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -173,7 +175,7 @@ fun AddEditParcelView(
 
                     ExposedDropdownMenu(
                         expanded = expanded, onDismissRequest = { expanded = false }) {
-                        serviceOptions.forEach { option ->
+                        sortedServiceOptions.forEach { option ->
                             DropdownMenuItem(
                                 text = { Text(stringResource(getDeliveryServiceName(option)!!)) },
                                 onClick = {
@@ -235,7 +237,7 @@ fun AddEditParcelView(
                                     humanName = humanName,
                                     parcelId = trackingId,
                                     service = service,
-                                    postalCode = if (specifyPostalCode) postalCode else null
+                                    postalCode = if (backend?.requiresPostCode == true || (backend?.acceptsPostCode == true && specifyPostalCode)) postalCode else null
                                 )
                             )
                         }

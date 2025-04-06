@@ -73,14 +73,14 @@ object GLSDeliveryService : DeliveryService {
     }
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://gls-group.com/app/service/open/rest/")
+        .baseUrl("https://gls-group.com/app/service/open/rest/GROUP/")
         .client(api_client)
         .addConverterFactory(api_factory)
         .build()
     private val service = retrofit.create(API::class.java)
 
     private interface API {
-        @GET("EU/{locale}/rstt028/{id}")
+        @GET("{locale}/rstt028/{id}")
         suspend fun getExtendedParcel(
             @Path("locale") locale: String,
             @Path("id") id: String,

@@ -19,6 +19,10 @@ object PacketaDeliveryService : DeliveryService {
     override val acceptsPostCode: Boolean = false
     override val requiresPostCode: Boolean = false
 
+    override fun acceptsFormat(trackingId: String): Boolean {
+        return """^Z\s?\d{3}\s?\d{4}\s?\d{3}$""".toRegex().matchEntire(trackingId) != null
+    }
+
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val cleanId = trackingId.replace(Regex("\\s"), "")
             .lowercase()
@@ -62,7 +66,7 @@ object PacketaDeliveryService : DeliveryService {
     }
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://tracking.app.packeta.com/api/")
+        .baseUrl("https://tracking.packeta.com/api/")
         .client(api_client)
         .addConverterFactory(MoshiConverterFactory.create(api_moshi))
         .build()
