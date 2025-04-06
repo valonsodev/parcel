@@ -26,6 +26,7 @@ enum class Service {
     EVRI,
 
     // Europe
+    AN_POST,
     BELPOST,
     MAGYAR_POSTA,
     NOVA_POSHTA,
@@ -54,6 +55,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
         Service.DPD_UK -> DpdUkDeliveryService
         Service.EVRI -> EvriDeliveryService
 
+        Service.AN_POST -> AnPostDeliveryService
         Service.BELPOST -> BelpostDeliveryService
         Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
         Service.NOVA_POSHTA -> NovaPostDeliveryService

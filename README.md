@@ -29,6 +29,7 @@ United Kingdom:
 - Evri
 
 Europe:
+- An Post (IE)
 - Belpost (BY)
 - Magyar Posta (HU)
 - Packeta

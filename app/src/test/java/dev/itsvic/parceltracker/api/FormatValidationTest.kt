@@ -1,6 +1,7 @@
 import dev.itsvic.parceltracker.api.MagyarPostaDeliveryService
 import dev.itsvic.parceltracker.api.PacketaDeliveryService
 import dev.itsvic.parceltracker.api.PolishPostDeliveryService
+import dev.itsvic.parceltracker.api.AnPostDeliveryService
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -35,5 +36,12 @@ class FormatValidationTest {
     }
     @Test fun packeta_CanonicalFormatNoSpaces_ReturnsTrue() {
         assertTrue(PacketaDeliveryService.acceptsFormat("Z1234567890"))
+    }
+
+    @Test fun anPostFormatReturnsTrue() {
+        assertTrue(AnPostDeliveryService.acceptsFormat("Ay123456789Ie"))
+    }
+    @Test fun anPostFormatReturnsFalse() {
+        assertFalse(AnPostDeliveryService.acceptsFormat("AY12345678HA"))
     }
 }
