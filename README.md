@@ -14,6 +14,7 @@ United Kingdom:
 - Evri
 
 Europe:
+- An Post (IE)
 - Belpost (BY)
 - Magyar Posta (HU)
 - Packeta
@@ -22,7 +23,6 @@ Europe:
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania
-- An Post (IE)
 
 Asia:
 - SPX Thailand

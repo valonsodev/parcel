@@ -24,6 +24,7 @@ enum class Service {
     EVRI,
 
     // Europe
+    AN_POST,
     BELPOST,
     MAGYAR_POSTA,
     PACKETA,
@@ -32,7 +33,6 @@ enum class Service {
     SAMEDAY_BG,
     SAMEDAY_HU,
     SAMEDAY_RO,
-    AN_POST,
 
     // Asia
     SPX_TH,
@@ -51,6 +51,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
         Service.DPD_UK -> DpdUkDeliveryService
         Service.EVRI -> EvriDeliveryService
 
+        Service.AN_POST -> AnPostDeliveryService
         Service.BELPOST -> BelpostDeliveryService
         Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
         Service.PACKETA -> PacketaDeliveryService
@@ -59,7 +60,6 @@ fun getDeliveryService(service: Service): DeliveryService? {
         Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
         Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
         Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
-        Service.AN_POST -> AnPostDeliveryService
 
         Service.SPX_TH -> SPXThailandDeliveryService
 
