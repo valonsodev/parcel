@@ -66,5 +66,10 @@
     <string name="property_eta">Очікуваний час</string>
     <string name="property_delivery_time">Доставлено </string>
     <string name="service_hungarian_post">Угорська Пошта</string>
+
+    <string name="archive">Архів</string>
+    <string name="archive_prompt_question">Ви хочете заархівувати цю посилку?</string>
+    <string name="archive_prompt_text">Якщо ви заархівуєте цю посилку, її історія збережться на пристрої. Вона не буде перевірятися на оновлення.</string>
+    <string name="ignore">Ігнорувати</string> 
     
 </resources>
