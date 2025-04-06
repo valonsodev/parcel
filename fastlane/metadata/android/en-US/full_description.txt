@@ -27,4 +27,5 @@ Europe:
 - Sameday Romania
 
 Asia:
+- eKart (IN)
 - SPX Thailand

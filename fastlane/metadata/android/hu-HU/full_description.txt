@@ -27,4 +27,5 @@ Európa:
 - Sameday Románia
 
 Ázsia:
+- eKart (IN)
 - SPX Thaiföld

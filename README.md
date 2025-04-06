@@ -20,18 +20,15 @@ Parcel is an app that lets you track your parcels from various providers with ea
 ## Supported services
 
 International:
-
 - DHL
 - GLS
 - UPS
 
 United Kingdom:
-
 - DPD UK
 - Evri
 
 Europe:
-
 - Belpost (BY)
 - Magyar Posta (HU)
 - Packeta
@@ -42,5 +39,5 @@ Europe:
 - Sameday Romania
 
 Asia:
-
+- eKart (IN)
 - SPX Thailand
