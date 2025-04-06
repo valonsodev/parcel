@@ -9,7 +9,7 @@
     <string name="status_awaiting_pickup">Átvételre vár</string>
     <string name="status_picked_up">Átvéve</string>
     <string name="status_unknown">Ismeretlen állapotkód</string>
-    <string name="service_undefined">Undefined</string>
+    <string name="service_undefined">Meghatározatlan</string>
     <string name="service_example">Minta Posta</string>
     <string name="service_polish_post">Lengyel Posta</string>
     <string name="add_a_parcel">Csomag hozzáadása</string>
@@ -26,13 +26,13 @@
     <string name="parcel_history">Előzmény</string>
     <string name="human_name_error_text">A név nem lehet üres.</string>
     <string name="tracking_id_error_text">A csomagszám nem lehet üres.</string>
-    <string name="service_error_text">Ki kell választani egy Futárszolgálatot.</string>
+    <string name="service_error_text">Ki kell választani egy futárszolgálatot.</string>
     <string name="postal_code_error_text">Az irányítószám nem lehet üres.</string>
     <string name="status_network_failure">Hálózati hiba</string>
     <string name="network_failure_detail">Az eszköz offline állapotban van, a futárszolgálat szerverei elérhetetlenek, vagy a megadott adatok érvénytelenek</string>
     <string name="settings">Beállítások</string>
     <string name="demo_mode_detail">Minta csomagokat jelenít meg az applikációban. Nem érinti a már meglévő adatokat.</string>
-    <string name="parcel_doesnt_exist_detail">This parcel does not exist on the delivery service\'s servers yet. Make sure the parcel details are correct.</string>
+    <string name="parcel_doesnt_exist_detail">Ez a csomag még nem áll rendelkezésre a futárszolgálat szerverein. Kérjük, ellenőrizze a csomag adatait.</string>
     <string name="more_options">További lehetőségek</string>
     <string name="delete">Törlés</string>
     <string name="demo_mode">Teszt mód</string>
@@ -60,7 +60,7 @@
     <string name="property_weight">Súly</string>
     <string name="property_eta">Becsült érkezés</string>
     <string name="property_delivery_time">Kiszállítva ekkor</string>
-    <string name="service_hungarian_post">Maygar Posta</string>
+    <string name="service_hungarian_post">Magyar Posta</string>
     <string name="archive">Archivál</string>
     <string name="archive_prompt_question">Biztosan archiválod ezt a csomagot?</string>
     <string name="archive_prompt_text">Ha archiválod, akkor a csomag előzmény az eszközön kerül eltárolásra és frissítés sem történik.</string>
