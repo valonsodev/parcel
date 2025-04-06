@@ -8,7 +8,9 @@ import dev.itsvic.parceltracker.R
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.time.Instant
 import java.time.LocalDateTime
+import java.util.TimeZone
 
 enum class Service {
     UNDEFINED,
@@ -27,6 +29,7 @@ enum class Service {
     AN_POST,
     BELPOST,
     MAGYAR_POSTA,
+    NOVA_POSHTA,
     PACKETA,
     POLISH_POST,
     POSTE_ITALIANE,
@@ -35,6 +38,7 @@ enum class Service {
     SAMEDAY_RO,
 
     // Asia
+    EKART,
     SPX_TH,
 }
 
@@ -54,6 +58,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
         Service.AN_POST -> AnPostDeliveryService
         Service.BELPOST -> BelpostDeliveryService
         Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
+        Service.NOVA_POSHTA -> NovaPostDeliveryService
         Service.PACKETA -> PacketaDeliveryService
         Service.POLISH_POST -> PolishPostDeliveryService
         Service.POSTE_ITALIANE -> PosteItalianeDeliveryService
@@ -61,6 +66,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
         Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
         Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
 
+        Service.EKART -> EKartDeliveryService
         Service.SPX_TH -> SPXThailandDeliveryService
 
         Service.EXAMPLE -> ExampleDeliveryService
@@ -139,4 +145,8 @@ class ParcelNonExistentException : Exception("Parcel does not exist in delivery 
 internal fun logUnknownStatus(service: String, data: String): Status {
     Log.d("APICore", "Unknown status reported by $service: $data")
     return Status.Unknown
+}
+
+fun localDateFromMilli(milli: Long): LocalDateTime {
+    return LocalDateTime.ofInstant(Instant.ofEpochMilli(milli), TimeZone.getDefault().toZoneId())
 }

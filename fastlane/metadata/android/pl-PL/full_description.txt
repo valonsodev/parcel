@@ -27,4 +27,5 @@ Europa:
 - Sameday Rumunia
 
 Azja:
+- eKart (IN)
 - SPX Tajlandia
