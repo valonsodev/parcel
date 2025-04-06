@@ -50,7 +50,7 @@ object UPSDeliveryService : DeliveryService {
             throw ParcelNonExistentException()
         }
 
-        if (resp.trackDetails.isEmpty()) {
+        if (resp.trackDetails == null || resp.trackDetails.isEmpty()) {
             throw ParcelNonExistentException()
         }
 
@@ -168,7 +168,7 @@ object UPSDeliveryService : DeliveryService {
 
     @JsonClass(generateAdapter = true)
     internal data class GetStatusResponse(
-        val trackDetails: List<TrackDetails>,
+        val trackDetails: List<TrackDetails>?,
     )
 
     @JsonClass(generateAdapter = true)
