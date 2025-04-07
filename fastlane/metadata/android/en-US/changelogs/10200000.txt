@@ -1,0 +1,8 @@
+preliminary 1.2.0 changelog
+- DHL now requires you to supply you your own API key. I didn't want to make this change, but DHL forced my hand.
+
+New services:
+- An Post (IE)
+- eKart (IN)
+- Nova Post (UA)
+- Ukrposhta (UA)

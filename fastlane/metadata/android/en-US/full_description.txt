@@ -17,14 +17,17 @@ United Kingdom:
 - Evri
 
 Europe:
+- An Post (IE)
 - Belpost (BY)
 - Magyar Posta (HU)
+- Nova Post (UA)
 - Packeta
 - Poczta Polska (PL)
 - Poste Italiane (IT)
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania
+- Ukrposhta (UA)
 
 Asia:
 - eKart (IN)
