@@ -41,7 +41,7 @@ class NotificationWorker(context: Context, params: WorkerParameters) :
 
                 Log.d("NotificationWorker", "Fetching parcel status for $parcel")
                 val apiParcel = try {
-                    getParcel(parcel.parcelId, parcel.postalCode, parcel.service)
+                    applicationContext.getParcel(parcel.parcelId, parcel.postalCode, parcel.service)
                 } catch (e: Exception) {
                     Log.d("NotificationWorker", "Failed to fetch, skipping", e)
                     continue

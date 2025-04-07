@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.LargeTopAppBar
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -30,8 +31,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.fromHtml
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import dev.itsvic.parceltracker.R
 import dev.itsvic.parceltracker.ui.theme.ParcelTrackerTheme
@@ -39,6 +47,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import dev.itsvic.parceltracker.BuildConfig
 import dev.itsvic.parceltracker.DEMO_MODE
+import dev.itsvic.parceltracker.DHL_API_KEY
 import dev.itsvic.parceltracker.UNMETERED_ONLY
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.api.Service
@@ -55,15 +64,17 @@ fun SettingsView(
     onBackPressed: () -> Unit,
 ) {
     val context = LocalContext.current
-    val demoMode by context.dataStore.data.map { it[DEMO_MODE] ?: false }.collectAsState(false)
-    val unmeteredOnly by context.dataStore.data.map { it[UNMETERED_ONLY] ?: false }
+    val demoMode by context.dataStore.data.map { it[DEMO_MODE] == true }.collectAsState(false)
+    val unmeteredOnly by context.dataStore.data.map { it[UNMETERED_ONLY] == true }
         .collectAsState(false)
     val coroutineScope = rememberCoroutineScope()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
-    val setDemoMode: (Boolean) -> Unit = { value ->
+    val dhlApiKey by context.dataStore.data.map { it[DHL_API_KEY] ?: "" }.collectAsState("")
+
+    fun <T> setValue(key: Preferences.Key<T>, value: T) {
         coroutineScope.launch {
-            context.dataStore.edit { it[DEMO_MODE] = value }
+            context.dataStore.edit { it[key] = value }
         }
     }
 
@@ -91,7 +102,11 @@ fun SettingsView(
         },
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
     ) { innerPadding ->
-        Column(Modifier.padding(innerPadding).verticalScroll(rememberScrollState())) {
+        Column(
+            Modifier
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+        ) {
             Row(
                 modifier = Modifier
                     .clickable { setUnmeteredOnly(unmeteredOnly.not()) }
@@ -111,6 +126,38 @@ fun SettingsView(
             }
 
             Text(
+                stringResource(R.string.settings_api_keys),
+                modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 2.dp),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+
+            OutlinedTextField(
+                dhlApiKey,
+                { setValue(DHL_API_KEY, it) },
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .fillMaxWidth(),
+                label = { Text(stringResource(R.string.service_dhl)) },
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
+            )
+
+            Text(
+                AnnotatedString.fromHtml(
+                    stringResource(R.string.dhl_api_key_flavor_text),
+                    linkStyles = TextLinkStyles(
+                        style = SpanStyle(
+                            textDecoration = TextDecoration.Underline,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    )
+                ),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            )
+
+            Text(
                 stringResource(R.string.settings_experimental),
                 modifier = Modifier.padding(16.dp, 16.dp, 16.dp, 2.dp),
                 style = MaterialTheme.typography.bodyMedium,
@@ -119,7 +166,7 @@ fun SettingsView(
 
             Row(
                 modifier = Modifier
-                    .clickable { setDemoMode(demoMode.not()) }
+                    .clickable { setValue(DEMO_MODE, demoMode.not()) }
                     .padding(16.dp, 12.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -132,7 +179,7 @@ fun SettingsView(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
-                Switch(checked = demoMode, onCheckedChange = { setDemoMode(it) })
+                Switch(checked = demoMode, onCheckedChange = { setValue(DEMO_MODE, it) })
             }
 
             if (BuildConfig.DEBUG)

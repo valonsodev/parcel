@@ -1,12 +1,17 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package dev.itsvic.parceltracker.api
 
+import android.content.Context
+import androidx.datastore.preferences.core.Preferences
 import com.squareup.moshi.JsonClass
+import dev.itsvic.parceltracker.DHL_API_KEY
 import dev.itsvic.parceltracker.R
+import dev.itsvic.parceltracker.dataStore
+import kotlinx.coroutines.flow.first
 import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.http.GET
-import retrofit2.http.Headers
+import retrofit2.http.Header
 import retrofit2.http.Query
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -15,6 +20,8 @@ object DhlDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_dhl
     override val acceptsPostCode: Boolean = false
     override val requiresPostCode: Boolean = false
+    override val requiresApiKey: Boolean = true
+    override val apiKeyPreference: Preferences.Key<String>? = DHL_API_KEY
 
     override fun acceptsFormat(trackingId: String): Boolean {
         val dhlParcelFormat = """^(?:JJD|JVGL|3S|JV|JD)\d*$""".toRegex()
@@ -23,9 +30,18 @@ object DhlDeliveryService : DeliveryService {
         ) || emsFormat.accepts(trackingId) || dhlParcelFormat.accepts(trackingId)
     }
 
-    override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
+    override suspend fun getParcel(
+        context: Context,
+        trackingId: String,
+        postalCode: String?
+    ): Parcel {
+        val key = context.dataStore.data.first()[apiKeyPreference!!]
+        if (key.isNullOrEmpty()) {
+            throw APIKeyMissingException()
+        }
+
         val resp = try {
-            service.getShipments(trackingId)
+            service.getShipments(key, trackingId)
         } catch (_: HttpException) {
             throw ParcelNonExistentException()
         }
@@ -68,9 +84,6 @@ object DhlDeliveryService : DeliveryService {
         return Parcel(shipment.id, history, status)
     }
 
-    // please don't take it for yourself, make one for free - https://developer.dhl.com/
-    private const val API_KEY = "VzYp08GaeA2esfeCPBLtzHkLShfRTk28"
-
     private val retrofit = Retrofit.Builder().baseUrl("https://api-eu.dhl.com/").client(api_client)
         .addConverterFactory(api_factory).build()
 
@@ -78,8 +91,10 @@ object DhlDeliveryService : DeliveryService {
 
     private interface API {
         @GET("track/shipments")
-        @Headers("DHL-API-Key: $API_KEY")
-        suspend fun getShipments(@Query("trackingNumber") id: String): ShipmentsResponse
+        suspend fun getShipments(
+            @Header("DHL-API-Key") apiKey: String,
+            @Query("trackingNumber") id: String
+        ): ShipmentsResponse
     }
 
     @JsonClass(generateAdapter = true)

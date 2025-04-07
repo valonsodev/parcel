@@ -70,4 +70,7 @@
     <string name="archive_prompt_question">Czy chcesz zarchiwizować tę paczkę?</string>
     <string name="archive_prompt_text">Jeśli zarchiwizujesz tę paczkę, jej historia zostanie zachowana na urządzeniu. Nie będzie ona okresowo sprawdzana pod kątem aktualizacji.</string>
     <string name="ignore">Ignoruj</string>
+    <string name="error_no_api_key_provided">Ten serwis wymaga klucza API, ale żaden został podany. Sprawdż ustawienia aplikacji po więcej informacji.</string>
+    <string name="dhl_api_key_flavor_text"><![CDATA[DHL wymaga abyśmy prosili użytkowników o klucz API. Możesz zdobyć klucz za darmo na <a href=\"https://developer.dhl.com\">stronie DHL API Developer Portal</a> i zapisywaniu się na API \"Shipment Tracking - Unified.\"]]></string>
+    <string name="settings_api_keys">Klucze API</string>
 </resources>
