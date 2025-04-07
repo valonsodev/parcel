@@ -3,6 +3,7 @@ package dev.itsvic.parceltracker.api
 
 import com.squareup.moshi.JsonClass
 import dev.itsvic.parceltracker.R
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -25,7 +26,7 @@ object DhlDeliveryService : DeliveryService {
     override suspend fun getParcel(trackingId: String, postalCode: String?): Parcel {
         val resp = try {
             service.getShipments(trackingId)
-        } catch (_: Exception) {
+        } catch (_: HttpException) {
             throw ParcelNonExistentException()
         }
 
