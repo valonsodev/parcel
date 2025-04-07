@@ -1,5 +1,5 @@
 preliminary 1.2.0 changelog
-- DHL now requires you to supply you your own API key. I didn't want to make this change, but DHL forced my hand.
+- DHL now requires us to ask you to supply you your own API key. DHL tracking will not work until you do so.
 
 New services:
 - An Post (IE)
