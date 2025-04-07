@@ -20,7 +20,8 @@ object MagyarPostaDeliveryService : DeliveryService {
     override fun acceptsFormat(trackingId: String): Boolean {
         val someWeirdFormat = """^\w{3}\d{2}\w{7}\d{8}$""".toRegex()
         val govFormat = """^RL\d{14}$""".toRegex()
-        return someWeirdFormat.matchEntire(trackingId) != null || emsFormat.matchEntire(trackingId) != null || govFormat.matchEntire(trackingId) != null
+        val parcelLockerFormat = """^PNTM\d{22}$""".toRegex()
+        return someWeirdFormat.accepts(trackingId) || emsFormat.accepts(trackingId) || govFormat.accepts(trackingId) || parcelLockerFormat.accepts(trackingId)
     }
 
     override suspend fun getParcel(

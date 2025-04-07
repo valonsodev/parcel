@@ -27,9 +27,13 @@ class FormatValidationTest {
     @Test fun hungarianPost_WeirdFormatReturnsTrue() {
         assertTrue(MagyarPostaDeliveryService.acceptsFormat("JJH12AAAAAPL12345678"))
     }
+    @Test fun hungarianPost_ParcelLockerFormatReturnsTrue() {
+        assertTrue(MagyarPostaDeliveryService.acceptsFormat("PNTM1234567890123456789012"))
+    }
     @Test fun hungarianPost_NonsenseReturnsFalse() {
         assertFalse(MagyarPostaDeliveryService.acceptsFormat("fsjkdkjjksd"))
     }
+
 
     @Test fun packeta_CanonicalFormat_ReturnsTrue() {
         assertTrue(PacketaDeliveryService.acceptsFormat("Z 123 4567 890"))
