@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 package dev.itsvic.parceltracker.api
 
+import android.content.Context
 import android.util.Log
+import androidx.datastore.preferences.core.Preferences
 import com.squareup.moshi.Moshi
 import dev.itsvic.parceltracker.BuildConfig
 import dev.itsvic.parceltracker.R
@@ -117,10 +119,10 @@ enum class Status(val nameResource: Int) {
     NoData(R.string.status_no_data),
 }
 
-suspend fun getParcel(id: String, postCode: String?, service: Service): Parcel {
+suspend fun Context.getParcel(id: String, postCode: String?, service: Service): Parcel {
     // use DeliveryService abstraction if possible, otherwise default to the old hardcoded list
     getDeliveryService(service)?.let {
-        return it.getParcel(id, postCode)
+        return it.getParcel(this, id, postCode)
     }
 
     throw NotImplementedError("Service $service has no DeliveryService object")
@@ -134,13 +136,25 @@ interface DeliveryService {
     val nameResource: Int
     val acceptsPostCode: Boolean
     val requiresPostCode: Boolean
-    suspend fun getParcel(trackingId: String, postalCode: String?): Parcel
+    val requiresApiKey: Boolean
+        get() = false
+    val apiKeyPreference: Preferences.Key<String>?
+        get() = null
+
+    suspend fun getParcel(trackingId: String, postCode: String?): Parcel {
+        return TODO("DeliveryService does not implement getParcel")
+    }
+    suspend fun getParcel(context: Context, trackingId: String, postalCode: String?): Parcel {
+        return getParcel(trackingId, postalCode)
+    }
+
     fun acceptsFormat(trackingId: String): Boolean {
         return false
     }
 }
 
 class ParcelNonExistentException : Exception("Parcel does not exist in delivery service API")
+class APIKeyMissingException : Exception("Delivery service requires an API key but none is present")
 
 internal fun logUnknownStatus(service: String, data: String): Status {
     Log.d("APICore", "Unknown status reported by $service: $data")

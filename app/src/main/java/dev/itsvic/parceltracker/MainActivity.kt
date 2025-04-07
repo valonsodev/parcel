@@ -43,6 +43,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import dev.itsvic.parceltracker.api.APIKeyMissingException
 import dev.itsvic.parceltracker.api.ParcelHistoryItem
 import dev.itsvic.parceltracker.api.ParcelNonExistentException
 import dev.itsvic.parceltracker.api.Status
@@ -221,7 +222,7 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                 if (dbParcel != null && !dbParcel.isArchived) {
                     launch(Dispatchers.IO) {
                         try {
-                            apiParcel = getParcel(
+                            apiParcel = context.getParcel(
                                 dbParcel.parcelId,
                                 dbParcel.postalCode,
                                 dbParcel.service
@@ -267,6 +268,18 @@ fun ParcelAppNavigation(parcelToOpen: Int) {
                                     )
                                 ),
                                 Status.NoData
+                            )
+                        } catch (_: APIKeyMissingException) {
+                            apiParcel = APIParcel(
+                                dbParcel.parcelId,
+                                listOf(
+                                    ParcelHistoryItem(
+                                        context.getString(R.string.error_no_api_key_provided),
+                                        LocalDateTime.now(),
+                                        ""
+                                    )
+                                ),
+                                Status.NetworkFailure
                             )
                         }
                     }
