@@ -73,4 +73,6 @@
     <string name="error_no_api_key_provided">Ten serwis wymaga klucza API, ale żaden został podany. Sprawdż ustawienia aplikacji po więcej informacji.</string>
     <string name="dhl_api_key_flavor_text"><![CDATA[DHL wymaga abyśmy prosili użytkowników o klucz API. Możesz zdobyć klucz za darmo na <a href=\"https://developer.dhl.com\">stronie DHL API Developer Portal</a> i zapisywaniu się na API \"Shipment Tracking - Unified.\"]]></string>
     <string name="settings_api_keys">Klucze API</string>
+    <string name="service_nova_poshta">Nova Post</string>
+    <string name="service_ukrposhta">Ukrposzta</string>
 </resources>
