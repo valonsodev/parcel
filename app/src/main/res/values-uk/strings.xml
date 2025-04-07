@@ -66,7 +66,7 @@
     <string name="property_eta">Очікуваний час</string>
     <string name="property_delivery_time">Доставлено </string>
     <string name="service_hungarian_post">Угорська Пошта</string>
-    <string name="nova_poshta">Нова Пошта</string>
+    <string name="service_nova_poshta">Нова Пошта</string>
     <string name="service_ukrposhta">Укрпошта</string>
 
     <string name="error_no_api_key_provided">Ця доставка потребує ключ API, але він не наданий. Перевірте налаштування застосунку для більшої інформації.</string>
