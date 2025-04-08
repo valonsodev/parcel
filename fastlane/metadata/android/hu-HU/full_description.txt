@@ -19,6 +19,7 @@ Egyesült Királyság:
 Európa:
 - An Post (IE)
 - Belposta (BY)
+- GLS Magyarország
 - Magyar Posta (HU)
 - Nova Post (UA)
 - Packeta

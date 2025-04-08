@@ -75,4 +75,5 @@
     <string name="settings_api_keys">Klucze API</string>
     <string name="service_nova_poshta">Nova Post</string>
     <string name="service_ukrposhta">Ukrposzta</string>
+    <string name="service_gls_hungary">GLS Węgry</string>
 </resources>

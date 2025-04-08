@@ -19,6 +19,7 @@ Wielka Brytania:
 Europa:
 - An Post (IE)
 - Belpost (BY)
+- GLS Węgry
 - Magyar Posta (HU)
 - Nova Post (UA)
 - Packeta

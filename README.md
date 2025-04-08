@@ -34,6 +34,7 @@ United Kingdom:
 Europe:
 - An Post (IE)
 - Belpost (BY)
+- GLS Hungary
 - Magyar Posta (HU)
 - Nova Post (UA)
 - Packeta

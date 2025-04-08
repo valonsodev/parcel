@@ -30,6 +30,7 @@ enum class Service {
     // Europe
     AN_POST,
     BELPOST,
+    GLS_HUNGARY,
     MAGYAR_POSTA,
     NOVA_POSHTA,
     PACKETA,
@@ -52,7 +53,7 @@ val serviceOptions =
 fun getDeliveryService(service: Service): DeliveryService? {
     return when (service) {
         Service.DHL -> DhlDeliveryService
-        Service.GLS -> GLSDeliveryService
+        Service.GLS -> GLSGlobalDeliveryService
         Service.UPS -> UPSDeliveryService
 
         Service.DPD_UK -> DpdUkDeliveryService
@@ -60,6 +61,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
 
         Service.AN_POST -> AnPostDeliveryService
         Service.BELPOST -> BelpostDeliveryService
+        Service.GLS_HUNGARY -> GLSHungaryDeliveryService
         Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
         Service.NOVA_POSHTA -> NovaPostDeliveryService
         Service.PACKETA -> PacketaDeliveryService

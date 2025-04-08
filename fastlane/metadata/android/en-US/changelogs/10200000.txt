@@ -4,5 +4,6 @@ preliminary 1.2.0 changelog
 New services:
 - An Post (IE)
 - eKart (IN)
+- GLS Hungary
 - Nova Post (UA)
 - Ukrposhta (UA)
