@@ -1,0 +1,9 @@
+Zmiany:
+- DHL wymaga, abyśmy prosili użytkowników o ich własny klucz API. Śledzenie DHL nie będzie działać dopóki nie podasz własnego klucza.
+
+Nowe serwisy:
+- An Post (IE)
+- eKart (IN)
+- GLS Węgry
+- Nova Post (UA)
+- Ukrposzta (UA)
