@@ -53,6 +53,7 @@ open class GLSDeliveryService(override val nameResource: Int, region: String) : 
             "INPICKUP", "INTRANSIT" -> Status.InTransit
             "INWAREHOUSE" -> Status.InWarehouse
             "INDELIVERY" -> Status.OutForDelivery
+            "DELIVEREDPS" -> Status.AwaitingPickup
             "DELIVERED" -> Status.Delivered
             else -> logUnknownStatus("GLS", resp.progressBar.statusInfo)
         }
