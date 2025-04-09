@@ -1,0 +1,49 @@
+name: Service request
+description: Suggest support for a given service
+title: "Support for "
+labels: ["enhancement", "service support"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to fill out this form!
+
+        Before creating the issue, please verify that this service [has not been suggested before](https://github.com/itsvic-dev/parcel/issues?q=is%3Aissue%20label%3A%22service%20support%22%20) in another issue.
+
+  - type: checkboxes
+    id: terms-n-such
+    attributes:
+      label: Prerequisites
+      description: By submitting this issue, you agree that the information you provided is correct and you have done the necessary research beforehand.
+      options:
+        - label: The information provided below is, to my knowledge, correct.
+          required: true
+        - label: I verify that I have searched through the existing issues and that this issue is not a duplicate.
+          required: true
+
+  - type: input
+    id: tracking-page-url
+    attributes:
+      label: Tracking page
+      description: Please provide a link to the tracking page for this service.
+      placeholder: https://example-post.org/tracking
+    validations:
+      required: true
+
+  - type: input
+    id: dev-docs
+    attributes:
+      label: Developer documentation page
+      description: Please provide a link to the developer documentation for this service, if possible.
+      placeholder: https://developer.example-post.org
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-comments
+    attributes:
+      label: Additional context
+      description: Is there anything else we should know? Let us know here.
+    validations:
+      required: false
