@@ -1,34 +1,36 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name" translatable="false">Parcel</string>
 
-    <string name="status_preadvice">Not sent yet</string>
-    <string name="status_in_transit">In transit</string>
-    <string name="status_in_warehouse">Arrived at warehouse</string>
-    <string name="status_customs">Arrived at customs</string>
-    <string name="status_out_for_delivery">Out for delivery</string>
-    <string name="status_delivery_failure">Failed to deliver</string>
-    <string name="status_delivered">Delivered</string>
-    <string name="status_awaiting_pickup">Awaiting pickup</string>
-    <string name="status_picked_up">Picked up</string>
-    <string name="status_unknown">Unknown status code</string>
+    <string name="status_preadvice">Skickas inte ännu</string>
+    <string name="status_in_transit">I transitering</string>
+    <string name="status_in_warehouse">Anlänt till lagret</string>
+    <string name="status_customs">Anlänt till tullen</string>
+    <string name="status_out_for_delivery">På väg för leverans</string>
+    <string name="status_delivery_failure">Leveransen misslyckades</string>
+    <string name="status_delivered">Levererat</string>
+    <string name="status_awaiting_pickup">Väntar på upphämtning</string>
+    <string name="status_picked_up">Upphämtat</string>
+    <string name="status_unknown">Okänd statuskod</string>
 
-    <string name="service_undefined">Undefined</string>
-    <string name="service_example">Example Post</string>
+    <!-- föredrar endonymer om det är inte tyska -->
+    <!-- EN: preferring endonyms unless it's German -->
+    <string name="service_undefined">Odefinerad</string>
+    <string name="service_example">Exempelpost</string>
     <string name="service_gls" translatable="false">GLS</string>
     <string name="service_dhl" translatable="false">DHL</string>
-    <string name="service_polish_post">Polish Post</string>
-    <string name="service_belpost">Belpost</string>
+    <string name="service_polish_post">Poczta Polska</string>
+    <string name="service_belpost">Belposhta</string>
     <string name="service_an_post" translatable="false">An Post</string>
 
-    <string name="add_a_parcel">Add a parcel</string>
-    <string name="go_back">Go back</string>
-    <string name="parcel_name">Name</string>
-    <string name="tracking_id">Tracking ID</string>
-    <string name="delivery_service">Delivery service</string>
-    <string name="specify_a_postal_code">Specify a postal code</string>
-    <string name="postal_code">Postal code</string>
-    <string name="add_parcel">Add parcel</string>
-    <string name="specify_postal_code_flavor_text">Optional. You may be able to access extra information, such as location, with a postal code.</string>
+    <string name="add_a_parcel">Lägg till en paket</string>
+    <string name="go_back">Tillbaka</string>
+    <string name="parcel_name">Namn</string>
+    <string name="tracking_id">Spårningsnummer</string> <!-- eller Spårnings-ID? -->
+    <string name="delivery_service">Leverantör</string>
+    <string name="specify_a_postal_code">Ange postnummer</string>
+    <string name="postal_code">Postnummer</string>
+    <string name="add_parcel">Lägg till paketet</string>
+    <string name="specify_postal_code_flavor_text">Valfritt. Du kan kanske få tillgång till extra information, såsom läge, med en postnummer.</string>
 
     <string name="no_parcels_flavor">You currently do not have any parcels.</string>
 
@@ -84,5 +86,4 @@
     <string name="settings_api_keys">API keys</string>
     <string name="service_ukrposhta">Ukrposhta</string>
     <string name="service_gls_hungary">GLS Hungary</string>
-    <string name="service_usps">USPS</string>
 </resources>
