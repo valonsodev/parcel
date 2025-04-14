@@ -32,7 +32,7 @@
     <string name="add_parcel">Lägg till paketet</string>
     <string name="specify_postal_code_flavor_text">Valfritt. Du kan kanske få tillgång till extra information, såsom läge, med en postnummer.</string>
 
-    <string name="no_parcels_flavor">You currently do not have any parcels.</string>
+    <string name="no_parcels_flavor">Du har för närvarande inga paket.</string>
 
     <string name="current_status">Current status</string>
     <string name="parcel_history">Parcel history</string>
