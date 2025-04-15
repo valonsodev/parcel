@@ -22,7 +22,7 @@
     <string name="go_back">Tillbaka</string>
     <string name="parcel_name">Namn</string>
     <string name="tracking_id">Spårningsnummer</string> <!-- eller Spårnings-ID? -->
-    <string name="delivery_service">Leverantör</string> <!-- this is more "deliverer" than "delivery service" - kanske "Leveranstjänst" eller "Leveransservice" -->
+    <string name="delivery_service">Leveransservice</string>
     <string name="specify_a_postal_code">Ange postnummer</string>
     <string name="postal_code">Postnummer</string>
     <string name="add_parcel">Lägg till paketet</string>
