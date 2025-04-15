@@ -67,7 +67,7 @@
     <string name="repository">Repo</string>
     <string name="property_weight">Vikt</string>
     <string name="property_eta">ETA</string>
-    <string name="property_delivery_time">Levereras</string> <!-- closest phrase to "delivered at" is "Levereras på"; "på" here is more "on" than "at" so I went with just "levereras". better to skip a preposition than to include a weird one (: -->
+    <string name="property_delivery_time">Levereras kl.</string>
     <string name="service_hungarian_post">Magyar Posta</string> <!-- TODO: deras webbplats på engelska säger fortfarande "Magyar Posta" så jag valde endonymen? (: -->
     <string name="archive">Arkivera</string>
     <string name="archive_prompt_question">Vill du arkivera den här paket?</string>
