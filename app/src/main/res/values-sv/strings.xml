@@ -66,9 +66,9 @@
     <string name="service_sameday_bg">Sameday Bulgarien</string>
     <string name="service_poste_italiane">Italienska posten</string>
     <string name="service_spx_th">SPX Thailand</string>
-    <string name="about_app">About app</string>
-    <string name="donate">Donate</string>
-    <string name="license">License</string>
+    <string name="about_app">Om appen</string>
+    <string name="donate">Donera</string>
+    <string name="license">Licens</string>
     <string name="repository">Repository</string>
     <string name="property_weight">Weight</string>
     <string name="property_eta">ETA</string>
