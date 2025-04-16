@@ -15,8 +15,8 @@
     <!-- EN: preferring endonyms unless it's German -->
     <string name="service_undefined">Odefinerad</string>
     <string name="service_example">Exempelpost</string>
-    <string name="service_polish_post">Poczta Polska</string>
-    <string name="service_belpost">Belposhta</string>
+    <string name="service_polish_post">Polska Posten</string>
+    <string name="service_belpost">Belpost</string>
 
     <string name="add_a_parcel">Lägg till en paket</string>
     <string name="go_back">Tillbaka</string>
@@ -68,7 +68,7 @@
     <string name="property_weight">Vikt</string>
     <string name="property_eta">ETA</string>
     <string name="property_delivery_time">Levereras kl.</string>
-    <string name="service_hungarian_post">Magyar Posta</string> <!-- TODO: deras webbplats på engelska säger fortfarande "Magyar Posta" så jag valde endonymen? (: -->
+    <string name="service_hungarian_post">Ungerska Posten</string> <!-- TODO: deras webbplats på engelska säger fortfarande "Magyar Posta" så jag valde endonymen? (: -->
     <string name="archive">Arkivera</string>
     <string name="archive_prompt_question">Vill du arkivera den här paket?</string>
     <string name="archive_prompt_text">Om du arkivera den här paket, kommer dess historia att sparas på enheten. Det kommer inte att kontrolleras för uppdateringar.</string>
