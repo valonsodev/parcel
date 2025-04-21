@@ -39,11 +39,12 @@ object PostNordDeliveryService : DeliveryService {
         val item = resp.items.first()
 
         val status = when (item.status.code) {
-            "EN_ROUTE" -> Status.InTransit
-            "AVAILABLE_FOR_DELIVERY" -> Status.InWarehouse
+            "CREATED" -> Status.Preadvice
+            "EN_ROUTE", "DELAYED", "EXPECTED_DELAY" -> Status.InTransit
+            "AVAILABLE_FOR_DELIVERY", "AVAILABLE_FOR_DELIVERY_PAR_LOC" -> Status.InWarehouse
             "DELIVERED" -> Status.Delivered
-            "DELIVERY_IMPOSSIBLE" -> Status.DeliveryFailure
-            "OTHER" -> Status.Unknown
+            "DELIVERY_IMPOSSIBLE", "DELIVERY_REFUSED", "STOPPED", "RETURNED" -> Status.DeliveryFailure
+            "OTHER", "INFORMED" -> Status.Unknown
             else -> logUnknownStatus("PostNord", item.status.code)
         }
 
