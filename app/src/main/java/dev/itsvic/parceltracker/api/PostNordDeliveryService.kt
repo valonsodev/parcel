@@ -11,7 +11,8 @@ import retrofit2.http.Query
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-// Made by following the API documentation.
+// Reverse-engineered from https://www.postnord.com/track-and-trace/
+// And additional information about locales from https://developer.postnord.com/apis/details?systemName=shipment-v5-trackandtrace-shipmentinformation
 object PostNordDeliveryService : DeliveryService {
     override val nameResource: Int = R.string.service_postnord
     override val acceptsPostCode: Boolean = false
