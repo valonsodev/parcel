@@ -19,11 +19,11 @@ object PostNordDeliveryService : DeliveryService {
 
     // Define supported locales and default
     private const val DEFAULT_LOCALE = "en"
-    private val SUPPORTED_LOCALES = setOf("en", "sv", "no", "da", "fi")
+    private val supportedLocales = setOf("en", "sv", "no", "da", "fi")
 
     override suspend fun getParcel(trackingId: String, postCode: String?): Parcel {
         val locale = LocaleList.getDefault().get(0).language
-        val apiLocale = if (SUPPORTED_LOCALES.contains(locale)) {
+        val apiLocale = if (supportedLocales.contains(locale)) {
             locale
         } else {
             DEFAULT_LOCALE
@@ -35,17 +35,24 @@ object PostNordDeliveryService : DeliveryService {
             throw ParcelNonExistentException()
         }
 
-        val status = when (resp.items.first().status.code) {
+        val item = resp.items.first()
+
+        val status = when (item.status.code) {
             "EN_ROUTE" -> Status.InTransit
             "AVAILABLE_FOR_DELIVERY" -> Status.InWarehouse
             "DELIVERED" -> Status.Delivered
             "DELIVERY_IMPOSSIBLE" -> Status.DeliveryFailure
             "OTHER" -> Status.Unknown
-            else -> logUnknownStatus("Postnord", resp.items.first().status.code)
+            else -> logUnknownStatus("PostNord", item.status.code)
         }
 
-        val history = resp.items.first().events.map {
-            ParcelHistoryItem(it.eventDescription, LocalDateTime.parse(it.eventTime, DateTimeFormatter.ISO_DATE_TIME), if (it.location.name != null) "${it.location.name}, ${it.location.countryCode}" else it.location.countryCode)
+        val history = item.events.map {
+            ParcelHistoryItem(
+                it.eventDescription,
+                LocalDateTime.parse(it.eventTime, DateTimeFormatter.ISO_DATE_TIME),
+                if (it.location.name != null) "${it.location.name}, ${it.location.countryCode}"
+                else it.location.countryCode
+            )
         }
 
         return Parcel(resp.shipmentId, history, status)
@@ -80,7 +87,7 @@ object PostNordDeliveryService : DeliveryService {
         val itemId: String,
         val deliveryInformation: DeliveryInformation,
         val events: List<Event>,
-        val status: PNStatus
+        val status: ItemStatus
     )
 
     @JsonClass(generateAdapter = true)
@@ -105,7 +112,7 @@ object PostNordDeliveryService : DeliveryService {
     )
 
     @JsonClass(generateAdapter = true)
-    internal data class PNStatus(
+    internal data class ItemStatus(
         val code: String,
         val header: String,
         val description: String
