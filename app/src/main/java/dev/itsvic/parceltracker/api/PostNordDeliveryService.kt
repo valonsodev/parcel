@@ -8,8 +8,8 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 // Reverse-engineered from https://www.postnord.com/track-and-trace/
 // And additional information about locales from https://developer.postnord.com/apis/details?systemName=shipment-v5-trackandtrace-shipmentinformation
@@ -50,7 +50,7 @@ object PostNordDeliveryService : DeliveryService {
         val history = item.events.map {
             ParcelHistoryItem(
                 it.eventDescription,
-                LocalDateTime.parse(it.eventTime, DateTimeFormatter.ISO_DATE_TIME),
+                ZonedDateTime.parse(it.eventTime).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime(),
                 if (it.location.name != null) "${it.location.name}, ${it.location.countryCode}"
                 else it.location.countryCode
             )
