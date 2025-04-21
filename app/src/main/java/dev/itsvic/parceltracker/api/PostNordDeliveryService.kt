@@ -51,13 +51,17 @@ object PostNordDeliveryService : DeliveryService {
         return Parcel(resp.shipmentId, history, status)
     }
 
-    private val retrofit = Retrofit.Builder().baseUrl("https://api2.postnord.com/rest/").client(api_client).addConverterFactory(
-        api_factory).build()
+    private val retrofit = Retrofit
+        .Builder()
+        .baseUrl("https://api2.postnord.com/rest/shipment/v1/trackingweb/")
+        .client(api_client)
+        .addConverterFactory(api_factory)
+        .build()
 
     private val service = retrofit.create(API::class.java)
 
     private interface API {
-        @GET("shipment/v1/trackingweb/shipmentInformation")
+        @GET("shipmentInformation")
         @Headers("x-bap-key: web-tracking-sc")
         suspend fun getShipments(
             @Query("shipmentId") id: String,
