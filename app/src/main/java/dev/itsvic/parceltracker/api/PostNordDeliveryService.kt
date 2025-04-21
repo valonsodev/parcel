@@ -45,7 +45,7 @@ object PostNordDeliveryService : DeliveryService {
         }
 
         val history = resp.items.first().events.map {
-            ParcelHistoryItem(it.eventDescription, LocalDateTime.parse(it.eventTime, DateTimeFormatter.ISO_DATE_TIME), "test")
+            ParcelHistoryItem(it.eventDescription, LocalDateTime.parse(it.eventTime, DateTimeFormatter.ISO_DATE_TIME), if (it.location.name != null) "${it.location.name}, ${it.location.countryCode}" else it.location.countryCode)
         }
 
         return Parcel(resp.shipmentId, history, status)
