@@ -66,6 +66,12 @@
     <string name="property_eta">Очікуваний час</string>
     <string name="property_delivery_time">Доставлено </string>
     <string name="service_hungarian_post">Угорська Пошта</string>
+    <string name="service_nova_poshta">Нова Пошта</string>
+    <string name="service_ukrposhta">Укрпошта</string>
+
+    <string name="error_no_api_key_provided">Ця доставка потребує ключ API, але він не наданий. Перевірте налаштування застосунку для більшої інформації.</string>
+    <string name="dhl_api_key_flavor_text"><![CDATA[DHL вимагають у нас, щоб користувачі надавали свої ключі API. Ви можете отримати його безкоштовно з <a href=\"https://developer.dhl.com\">Порталу Розробників DHL</a>, реєструючи його як \"Shipment Tracking - Unified\" API.]]></string>
+    <string name="settings_api_keys">Ключі API</string>
 
     <string name="archive">Архів</string>
     <string name="archive_prompt_question">Ви хочете заархівувати цю посилку?</string>

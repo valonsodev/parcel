@@ -17,14 +17,18 @@ Velká Británie:
 - Evri
 
 Evropa:
+- An Post (IE)
 - Belpost (BY)
+- GLS Hungary
 - Magyar Posta (HU)
+- Nova Post (UA)
 - Packeta (Zásilkovna)
 - Poczta Polska (PL)
 - Poste Italiane (IT)
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania
+- Ukrposhta (UA)
 
 Asie:
 - eKart (IN)

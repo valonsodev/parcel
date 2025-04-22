@@ -1,0 +1,9 @@
+Changes:
+- DHL now requires us to ask you to supply you your own API key. DHL tracking will not work until you do so.
+
+New services:
+- An Post (IE)
+- eKart (IN)
+- GLS Hungary
+- Nova Post (UA)
+- Ukrposhta (UA)

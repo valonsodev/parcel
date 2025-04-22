@@ -65,4 +65,5 @@
     <string name="archive_prompt_question">Biztosan archiválod ezt a csomagot?</string>
     <string name="archive_prompt_text">Ha archiválod, akkor a csomag előzmény az eszközön kerül eltárolásra és frissítés sem történik.</string>
     <string name="ignore">Figyelmen kívül hagy</string>
+    <string name="service_gls_hungary">GLS Magyarország</string>
 </resources>

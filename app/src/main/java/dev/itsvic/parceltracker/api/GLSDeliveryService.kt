@@ -3,9 +3,9 @@ package dev.itsvic.parceltracker.api
 
 import android.os.LocaleList
 import android.text.Html
-import android.util.Log
 import com.squareup.moshi.JsonClass
 import dev.itsvic.parceltracker.R
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,8 +15,10 @@ import java.time.format.DateTimeFormatter
 
 // Reverse-engineered from their private API. Pretty basic at least
 
-object GLSDeliveryService : DeliveryService {
-    override val nameResource: Int = R.string.service_gls
+object GLSGlobalDeliveryService : GLSDeliveryService(R.string.service_gls, "GROUP")
+object GLSHungaryDeliveryService : GLSDeliveryService(R.string.service_gls_hungary, "HU")
+
+open class GLSDeliveryService(override val nameResource: Int, region: String) : DeliveryService {
     override val acceptsPostCode: Boolean = true
     override val requiresPostCode: Boolean = true
 
@@ -29,8 +31,7 @@ object GLSDeliveryService : DeliveryService {
                 postalCode = postalCode!!,
                 locale = locale
             )
-        } catch (e: Exception) {
-            Log.d("GLSDeliveryService", "exception", e)
+        } catch (_: HttpException) {
             throw ParcelNonExistentException()
         }
 
@@ -38,24 +39,28 @@ object GLSDeliveryService : DeliveryService {
             ParcelHistoryItem(
                 Html.fromHtml(item.evtDscr, Html.FROM_HTML_MODE_LEGACY).toString(),
                 LocalDateTime.parse("${item.date}T${item.time}", DateTimeFormatter.ISO_DATE_TIME),
-                if (item.address.city != "")
-                    "${item.address.city}, ${item.address.countryName}"
-                else item.address.countryName
+                when {
+                    item.address.countryName == null && item.address.city.isNotEmpty() -> item.address.city
+                    item.address.countryName != null && item.address.city.isNotEmpty() -> "${item.address.city}, ${item.address.countryName}"
+                    item.address.countryName != null && item.address.city.isEmpty() -> item.address.countryName
+                    else -> ""
+                }
             )
         }
 
         val status = when (resp.progressBar.statusInfo) {
             "PREADVICE" -> Status.Preadvice
-            "INTRANSIT" -> Status.InTransit
+            "INPICKUP", "INTRANSIT" -> Status.InTransit
             "INWAREHOUSE" -> Status.InWarehouse
             "INDELIVERY" -> Status.OutForDelivery
+            "DELIVEREDPS" -> Status.AwaitingPickup
             "DELIVERED" -> Status.Delivered
             else -> logUnknownStatus("GLS", resp.progressBar.statusInfo)
         }
 
         val properties = mutableMapOf<Int, String>()
 
-        resp.infos.forEach {
+        resp.infos?.forEach {
             if (it.type == "WEIGHT") {
                 properties[R.string.property_weight] = it.value
             }
@@ -73,7 +78,7 @@ object GLSDeliveryService : DeliveryService {
     }
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://gls-group.com/app/service/open/rest/GROUP/")
+        .baseUrl("https://gls-group.com/app/service/open/rest/${region}/")
         .client(api_client)
         .addConverterFactory(api_factory)
         .build()
@@ -92,7 +97,7 @@ object GLSDeliveryService : DeliveryService {
     internal data class ExtendedParcelInfo(
         val history: List<GLSHistoryItem>,
         val progressBar: Progress,
-        val infos: List<GLSTypedProperty>,
+        val infos: List<GLSTypedProperty>?,
         val references: List<GLSTypedProperty>,
         val arrivalTime: GLSProperty?,
     )
@@ -121,8 +126,7 @@ object GLSDeliveryService : DeliveryService {
     @JsonClass(generateAdapter = true)
     internal data class HistoryAddress(
         val city: String,
-        val countryName: String,
-        val countryCode: String,
+        val countryName: String?,
     )
 
     @JsonClass(generateAdapter = true)
