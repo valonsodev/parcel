@@ -56,6 +56,7 @@ import dev.itsvic.parceltracker.dataStore
 import dev.itsvic.parceltracker.db.Parcel
 import dev.itsvic.parceltracker.enqueueNotificationWorker
 import dev.itsvic.parceltracker.sendNotification
+import dev.itsvic.parceltracker.ui.components.LogcatButton
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -201,6 +202,12 @@ fun SettingsView(
                 ) {
                     Text("Send test notification")
                 }
+
+            LogcatButton(
+                modifier = Modifier
+                    .padding(16.dp, 12.dp)
+                    .fillMaxWidth()
+            )
 
             Text(
                 "Parcel ${BuildConfig.VERSION_NAME}",
