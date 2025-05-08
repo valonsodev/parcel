@@ -36,7 +36,7 @@ object UniUniDeliveryService : DeliveryService {
     val parcel = resp.data.valid_tno.first()
 
     val history =
-        parcel.spath_list.map {
+        parcel.spath_list.reversed().map {
           ParcelHistoryItem(it.pathInfo, localDateFromMilli(it.pathTime * 1000), it.pathAddress)
         }
 
