@@ -1,0 +1,22 @@
+name: Check formatting
+
+on:
+  push:
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: 17
+
+      - name: Check formatting
+        run: ./scripts/ktfmt.sh --set-exit-if-changed --dry-run .
