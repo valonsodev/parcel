@@ -36,17 +36,13 @@ object HermesDeliveryService : DeliveryService {
             "AVISE" -> Status.Preadvice
             "SENDUNG_VON_HERMES_UEBERNOMMEN" -> Status.InWarehouse
             "UMSCHLAG_INLAND", "SENDUNG_IN_ZIELREGION_ANGEKOMMEN" -> Status.InTransit
-            else -> Status.Unknown
+            else -> logUnknownStatus("Hermes", resp.status.parcelStatus)
         }
 
-//        val i = ParcelHistoryItem("DESC", LocalDateTime.now(), "LOC")
-//        val history: List<ParcelHistoryItem> = listOf(i)
-
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX")
         val history = resp.parcelHistory.map {
             ParcelHistoryItem(
                 it.statusHistoryText,
-                LocalDateTime.parse(it.timestamp, formatter),
+                LocalDateTime.parse(it.timestamp, DateTimeFormatter.ISO_DATE_TIME),
                 ""
             )
         }

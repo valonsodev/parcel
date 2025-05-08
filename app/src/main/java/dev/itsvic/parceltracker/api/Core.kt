@@ -69,6 +69,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
         Service.AN_POST -> AnPostDeliveryService
         Service.BELPOST -> BelpostDeliveryService
         Service.GLS_HUNGARY -> GLSHungaryDeliveryService
+        Service.HERMES -> HermesDeliveryService
         Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
         Service.NOVA_POSHTA -> NovaPostDeliveryService
         Service.PACKETA -> PacketaDeliveryService
@@ -79,7 +80,6 @@ fun getDeliveryService(service: Service): DeliveryService? {
         Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
         Service.UKRPOSHTA -> UkrposhtaDeliveryService
         Service.POSTNORD -> PostNordDeliveryService
-        Service.HERMES -> HermesDeliveryService
 
         Service.EKART -> EKartDeliveryService
         Service.SPX_TH -> SPXThailandDeliveryService
