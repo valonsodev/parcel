@@ -45,11 +45,13 @@ Europe:
 - An Post (IE)
 - Belpost (BY)
 - GLS Hungary
+- Hermes (DE)
 - Magyar Posta (HU)
 - Nova Post (UA)
 - Packeta
 - Poczta Polska (PL)
 - Poste Italiane (IT)
+- PostNord
 - Sameday Bulgaria
 - Sameday Hungary
 - Sameday Romania
