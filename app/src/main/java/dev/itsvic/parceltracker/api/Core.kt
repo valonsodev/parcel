@@ -34,6 +34,7 @@ enum class Service {
     AN_POST,
     BELPOST,
     GLS_HUNGARY,
+    HERMES,
     MAGYAR_POSTA,
     NOVA_POSHTA,
     PACKETA,
@@ -44,7 +45,6 @@ enum class Service {
     SAMEDAY_RO,
     UKRPOSHTA,
     POSTNORD,
-    HERMES,
 
     // Asia
     EKART,
