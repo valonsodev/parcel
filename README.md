@@ -25,6 +25,8 @@ Parcel is an app that lets you track your parcels from various providers with ea
 We use `ktfmt` for formatting files. For ease of use, we included the sample editorconfig that comes with `ktfmt`, as well as a helper script to invoke it.
 To format all the code, simply run `./scripts/ktfmt.sh .`. It will download `ktfmt` if necessary.
 
+Similarly, we have `./scripts/sort-strings.sh` to sort translation files by key. This script uses Nix to pull in `xsltproc` from `libxslt`.
+
 ## Supported services
 
 International:
