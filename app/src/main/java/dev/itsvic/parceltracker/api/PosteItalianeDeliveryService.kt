@@ -27,7 +27,7 @@ object PosteItalianeDeliveryService : DeliveryService {
           throw ParcelNonExistentException()
         }
 
-    if (resp.listaMovimenti == null) {
+    if (resp.listaMovimenti.isNullOrEmpty()) {
       throw ParcelNonExistentException()
     }
 
