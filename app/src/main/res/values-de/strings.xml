@@ -61,7 +61,7 @@
   <string name="status_delivered">Zugestellt</string>
   <string name="status_delivery_failure">Zustellung fehlgeschlagen</string>
   <string name="status_in_transit">Unterwegs</string>
-  <string name="status_in_warehouse">Im Lager eingetroffen</string>
+  <string name="status_in_warehouse">Im Paketzentrum eingetroffen</string>
   <string name="status_network_failure">Netzwerkfehler</string>
   <string name="status_no_data">Keine Daten</string>
   <string name="status_out_for_delivery">Wird zugestellt</string>
