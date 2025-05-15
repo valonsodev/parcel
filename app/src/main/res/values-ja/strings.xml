@@ -14,7 +14,7 @@
   <string name="delivery_service">配送サービス</string>
   <string name="demo_mode">デモモード</string>
   <string name="demo_mode_action_block">デモモードでは許可されていない操作です</string>
-  <string name="demo_mode_detail">デモ用のサンプルとなる荷物を表示します。ユーザーデータには影響しません、</string>
+  <string name="demo_mode_detail">デモ用のサンプルとなる荷物を表示します。ユーザーデータには影響しません。</string>
   <string name="dhl_api_key_flavor_text">DHL はユーザーに API キーの提供をお願いしています。&lt;a href=\"https://developer.dhl.com\"&gt;DHL の API デベロッパーポータル&lt;/a&gt;から「Shipment Tracking - Unified API」にサインアップすることで、無料で API キーを取得できます。</string>
   <string name="donate">寄付</string>
   <string name="dump_logs_button">ログをファイルにダンプ</string>
