@@ -30,21 +30,22 @@ enum class Service {
   DPD_UK,
   EVRI,
 
-  // Europe
-  AN_POST,
-  BELPOST,
-  GLS_HUNGARY,
-  HERMES,
-  MAGYAR_POSTA,
-  NOVA_POSHTA,
-  PACKETA,
-  POLISH_POST,
-  POSTE_ITALIANE,
-  SAMEDAY_BG,
-  SAMEDAY_HU,
-  SAMEDAY_RO,
-  UKRPOSHTA,
-  POSTNORD,
+    // Europe
+    AN_POST,
+    BELPOST,
+    DPD_GER,
+    GLS_HUNGARY,
+    HERMES,
+    MAGYAR_POSTA,
+    NOVA_POSHTA,
+    PACKETA,
+    POLISH_POST,
+    POSTE_ITALIANE,
+    SAMEDAY_BG,
+    SAMEDAY_HU,
+    SAMEDAY_RO,
+    UKRPOSHTA,
+    POSTNORD,
 
   // Asia
   EKART,
@@ -69,20 +70,21 @@ fun getDeliveryService(service: Service): DeliveryService? {
     Service.DPD_UK -> DpdUkDeliveryService
     Service.EVRI -> EvriDeliveryService
 
-    Service.AN_POST -> AnPostDeliveryService
-    Service.BELPOST -> BelpostDeliveryService
-    Service.GLS_HUNGARY -> GLSHungaryDeliveryService
-    Service.HERMES -> HermesDeliveryService
-    Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
-    Service.NOVA_POSHTA -> NovaPostDeliveryService
-    Service.PACKETA -> PacketaDeliveryService
-    Service.POLISH_POST -> PolishPostDeliveryService
-    Service.POSTE_ITALIANE -> PosteItalianeDeliveryService
-    Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
-    Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
-    Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
-    Service.UKRPOSHTA -> UkrposhtaDeliveryService
-    Service.POSTNORD -> PostNordDeliveryService
+        Service.AN_POST -> AnPostDeliveryService
+        Service.BELPOST -> BelpostDeliveryService
+        Service.DPD_GER -> DpdGerDeliveryService
+        Service.GLS_HUNGARY -> GLSHungaryDeliveryService
+        Service.HERMES -> HermesDeliveryService
+        Service.MAGYAR_POSTA -> MagyarPostaDeliveryService
+        Service.NOVA_POSHTA -> NovaPostDeliveryService
+        Service.PACKETA -> PacketaDeliveryService
+        Service.POLISH_POST -> PolishPostDeliveryService
+        Service.POSTE_ITALIANE -> PosteItalianeDeliveryService
+        Service.SAMEDAY_BG -> SamedayBulgariaDeliveryService
+        Service.SAMEDAY_HU -> SamedayHungaryDeliveryService
+        Service.SAMEDAY_RO -> SamedayRomaniaDeliveryService
+        Service.UKRPOSHTA -> UkrposhtaDeliveryService
+        Service.POSTNORD -> PostNordDeliveryService
 
     Service.EKART -> EKartDeliveryService
     Service.SPX_TH -> SPXThailandDeliveryService
