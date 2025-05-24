@@ -29,47 +29,46 @@ object PostNordDeliveryService : DeliveryService {
     return if (supportedLocales.contains(locale)) locale else DEFAULT_LOCALE
   }
 
-  private val statusMapping = mapOf(
-    "CREATED" to Status.Preadvice,
-    "EN_ROUTE" to Status.InTransit,
-    "DELAYED" to Status.InTransit,
-    "EXPECTED_DELAY" to Status.InTransit,
-    "AVAILABLE_FOR_DELIVERY" to Status.InWarehouse,
-    "AVAILABLE_FOR_DELIVERY_PAR_LOC" to Status.InWarehouse,
-    "DELIVERED" to Status.Delivered,
-    "DELIVERY_IMPOSSIBLE" to Status.DeliveryFailure,
-    "DELIVERY_REFUSED" to Status.DeliveryFailure,
-    "STOPPED" to Status.DeliveryFailure,
-    "RETURNED" to Status.DeliveryFailure,
-    "OTHER" to Status.Unknown,
-    "INFORMED" to Status.Unknown
-  )
+  private val statusMapping =
+      mapOf(
+          "CREATED" to Status.Preadvice,
+          "EN_ROUTE" to Status.InTransit,
+          "DELAYED" to Status.InTransit,
+          "EXPECTED_DELAY" to Status.InTransit,
+          "AVAILABLE_FOR_DELIVERY" to Status.InWarehouse,
+          "AVAILABLE_FOR_DELIVERY_PAR_LOC" to Status.InWarehouse,
+          "DELIVERED" to Status.Delivered,
+          "DELIVERY_IMPOSSIBLE" to Status.DeliveryFailure,
+          "DELIVERY_REFUSED" to Status.DeliveryFailure,
+          "STOPPED" to Status.DeliveryFailure,
+          "RETURNED" to Status.DeliveryFailure,
+          "OTHER" to Status.Unknown,
+          "INFORMED" to Status.Unknown)
 
   override suspend fun getParcel(trackingId: String, postCode: String?): Parcel {
-    val resp = try {
-      service.getShipments(trackingId, getApiLocale())
-    } catch (e: HttpException) {
-      when (e.code()) {
-        404 -> throw ParcelNonExistentException()
-        else -> throw IOException("Failed to fetch parcel information: ${e.message()}")
-      }
-    }
+    val resp =
+        try {
+          service.getShipments(trackingId, getApiLocale())
+        } catch (e: HttpException) {
+          when (e.code()) {
+            404 -> throw ParcelNonExistentException()
+            else -> throw IOException("Failed to fetch parcel information: ${e.message()}")
+          }
+        }
 
     val item = resp.items.firstOrNull() ?: throw ParcelNonExistentException()
 
     val status = statusMapping[item.status.code] ?: logUnknownStatus("PostNord", item.status.code)
 
-    val history = item.events.map {
-      ParcelHistoryItem(
-        it.eventDescription,
-        ZonedDateTime.parse(it.eventTime)
-          .withZoneSameInstant(ZoneId.systemDefault())
-          .toLocalDateTime(),
-        listOfNotNull(
-          it.location.name,
-          it.location.countryCode
-        ).joinToString(", "))
-    }
+    val history =
+        item.events.map {
+          ParcelHistoryItem(
+              it.eventDescription,
+              ZonedDateTime.parse(it.eventTime)
+                  .withZoneSameInstant(ZoneId.systemDefault())
+                  .toLocalDateTime(),
+              listOfNotNull(it.location.name, it.location.countryCode).joinToString(", "))
+        }
 
     return Parcel(resp.shipmentId, history, status)
   }
@@ -119,9 +118,9 @@ object PostNordDeliveryService : DeliveryService {
 
   @JsonClass(generateAdapter = true)
   internal data class Location(
-    val countryCode: String?,
-    val locationType: String?,
-    val name: String?
+      val countryCode: String?,
+      val locationType: String?,
+      val name: String?
   )
 
   @JsonClass(generateAdapter = true)
