@@ -62,11 +62,13 @@ object CainiaoDeliveryService : DeliveryService {
           "CC_HO_OUT_SUCCESS" -> Status.InTransit
           "CC_IM_START" -> Status.Customs
           "CC_IM_SUCCESS" -> Status.CustomsSuccess
+          "TD_TRANSWH_OUTBOUND" -> Status.InTransit
           "GTMS_ACCEPT" -> Status.InTransit
           "GTMS_DO_ARRIVE" -> Status.InWarehouse
           "GTMS_DO_DEPART" -> Status.OutForDelivery
           "GTMS_STATION_OUT" -> Status.InTransit
           "GTMS_SIGNED" -> Status.Delivered
+          "GTMS_DEL_FAILURE" -> Status.DeliveryFailure
           else -> logUnknownStatus("Cainiao", parcel.detailList.first().actionCode)
         }
 
