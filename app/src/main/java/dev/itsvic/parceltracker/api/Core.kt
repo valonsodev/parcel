@@ -19,6 +19,7 @@ enum class Service {
   EXAMPLE,
 
   // International
+  CAINIAO,
   DHL,
   GLS,
   UPS,
@@ -61,6 +62,7 @@ val serviceOptions =
 
 fun getDeliveryService(service: Service): DeliveryService? {
   return when (service) {
+    Service.CAINIAO -> CainiaoDeliveryService
     Service.DHL -> DhlDeliveryService
     Service.GLS -> GLSGlobalDeliveryService
     Service.UPS -> UPSDeliveryService
@@ -125,6 +127,7 @@ enum class Status(val nameResource: Int) {
   InTransit(R.string.status_in_transit),
   InWarehouse(R.string.status_in_warehouse),
   Customs(R.string.status_customs),
+  CustomsSuccess(R.string.status_customs_cleared),
   OutForDelivery(R.string.status_out_for_delivery),
   DeliveryFailure(R.string.status_delivery_failure),
   Delivered(R.string.status_delivered),

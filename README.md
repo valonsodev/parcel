@@ -30,6 +30,7 @@ Similarly, we have `./scripts/sort-strings.sh` to sort translation files by key.
 ## Supported services
 
 International:
+- Cainiao
 - DHL
 - GLS
 - UPS
