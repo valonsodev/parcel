@@ -2,14 +2,14 @@ package dev.itsvic.parceltracker.api
 
 import com.squareup.moshi.JsonClass
 import dev.itsvic.parceltracker.R
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Query
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.Locale
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 object CainiaoDeliveryService : DeliveryService {
   override val nameResource: Int = R.string.service_cainiao
@@ -23,7 +23,9 @@ object CainiaoDeliveryService : DeliveryService {
 
     val parcelResp = service.getParcel(trackingID, "$language-$country", "$language-$country")
 
-    if (!parcelResp.success || parcelResp.module.isEmpty() || parcelResp.module.first().detailList.isEmpty()) {
+    if (!parcelResp.success ||
+        parcelResp.module.isEmpty() ||
+        parcelResp.module.first().detailList.isEmpty()) {
       throw ParcelNonExistentException()
     }
 
@@ -34,9 +36,10 @@ object CainiaoDeliveryService : DeliveryService {
           ParcelHistoryItem(
               it.standerdDesc,
               // Sometimes new parcels have no timezone info, so default to origin country (china)
-              LocalDateTime.ofInstant(Instant.ofEpochMilli(it.time), ZoneId.of(if (it.timeZone.isBlank()) "GMT+8" else it.timeZone)),
-              ""
-          )
+              LocalDateTime.ofInstant(
+                  Instant.ofEpochMilli(it.time),
+                  ZoneId.of(if (it.timeZone.isBlank()) "GMT+8" else it.timeZone)),
+              "")
         }
 
     // Based on the few tracking numbers I have, there may be more
@@ -64,9 +67,7 @@ object CainiaoDeliveryService : DeliveryService {
           "GTMS_DO_DEPART" -> Status.OutForDelivery
           "GTMS_STATION_OUT" -> Status.InTransit
           "GTMS_SIGNED" -> Status.Delivered
-          else ->
-              logUnknownStatus(
-                  "Cainiao", parcel.detailList.first().actionCode)
+          else -> logUnknownStatus("Cainiao", parcel.detailList.first().actionCode)
         }
 
     return Parcel(trackingID, history, status)
@@ -83,7 +84,11 @@ object CainiaoDeliveryService : DeliveryService {
 
   private interface API {
     @GET("detail.json")
-    suspend fun getParcel(@Query("mailNos") trackingID: String, @Query("lang") lang: String, @Query("language") language: String): ParcelResponse
+    suspend fun getParcel(
+        @Query("mailNos") trackingID: String,
+        @Query("lang") lang: String,
+        @Query("language") language: String
+    ): ParcelResponse
   }
 
   @JsonClass(generateAdapter = true)

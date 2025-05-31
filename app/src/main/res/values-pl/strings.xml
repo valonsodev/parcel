@@ -58,8 +58,8 @@
   <string name="specify_postal_code_flavor_text">Opcjonalne. Możesz uzyskać dostęp do dodatkowych informacji, takich jak lokalizacja, z kodem pocztowym.</string>
   <string name="status_awaiting_pickup">Oczekiwanie na odbiór</string>
   <string name="status_customs">Dotarła do odprawy celnej</string>
-    <string name="status_customs_cleared">Odprawa celna zakończona</string>
-    <string name="status_delivered">Dostarczona</string>
+  <string name="status_customs_cleared">Odprawa celna zakończona</string>
+  <string name="status_delivered">Dostarczona</string>
   <string name="status_delivery_failure">Nie udało się dostarczyć</string>
   <string name="status_in_transit">W tranzycie</string>
   <string name="status_in_warehouse">Dotarła do magazynu</string>
