@@ -35,18 +35,18 @@ object HermesDeliveryService : DeliveryService {
 
     val status =
         when (resp.status.parcelStatus) {
-          "ZUGESTELLT", "RETOURE_AUSGELIEFERT_BEIM_ATG" -> Status.Delivered
+          "ZUGESTELLT",
+          "RETOURE_AUSGELIEFERT_BEIM_ATG" -> Status.Delivered
           "ZUSTELLTOUR" -> Status.OutForDelivery
           "AVISE" -> Status.Preadvice
-          "SENDUNG_VON_HERMES_UEBERNOMMEN", "AM_PKS_ABGEGEBEN" -> Status.InWarehouse
+          "SENDUNG_VON_HERMES_UEBERNOMMEN",
+          "AM_PKS_ABGEGEBEN" -> Status.InWarehouse
           "UMSCHLAG_INLAND",
           "SENDUNG_IN_ZIELREGION_ANGEKOMMEN" -> Status.InTransit
           else -> logUnknownStatus("Hermes", resp.status.parcelStatus)
         }
 
-    val statusReached = resp.parcelHistory.filter {
-      it.timestamp != null
-    }
+    val statusReached = resp.parcelHistory.filter { it.timestamp != null }
 
     val history =
         statusReached.map {
