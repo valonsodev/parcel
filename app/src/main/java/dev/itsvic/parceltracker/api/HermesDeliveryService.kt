@@ -36,7 +36,8 @@ object HermesDeliveryService : DeliveryService {
     val status =
         when (resp.status.parcelStatus) {
           "ZUGESTELLT",
-          "RETOURE_AUSGELIEFERT_BEIM_ATG" -> Status.Delivered
+          "RETOURE_AUSGELIEFERT_BEIM_ATG",
+          "VOM_PAKETSHOP_ABGEHOLT" -> Status.Delivered
           "ZUSTELLTOUR" -> Status.OutForDelivery
           "AVISE" -> Status.Preadvice
           "SENDUNG_VON_HERMES_UEBERNOMMEN",
