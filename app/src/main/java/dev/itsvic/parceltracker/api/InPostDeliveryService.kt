@@ -51,11 +51,11 @@ object InPostDeliveryService : DeliveryService {
   }
 
   private fun mapLanguageToAPIFormat(language: String): String {
-    // FIXME: See what languages are actually accepted by the API
     return when (language) {
       "pl" -> "pl_PL"
       "uk" -> "en_UK"
-      else -> "en_EN" // Fallback to en_EN
+      "ua" -> "uk_UA"
+      else -> "en_EN" // Fallback to English
     }
   }
 
