@@ -59,6 +59,7 @@
   <string name="status_awaiting_pickup">Oczekiwanie na odbiór</string>
   <string name="status_customs">Dotarła do odprawy celnej</string>
   <string name="status_customs_cleared">Odprawa celna zakończona</string>
+  <string name="status_customs_held">Zatrzymana na odprawie celnej</string>
   <string name="status_delivered">Dostarczona</string>
   <string name="status_delivery_failure">Nie udało się dostarczyć</string>
   <string name="status_in_transit">W tranzycie</string>
@@ -81,7 +82,6 @@
   <string name="status_delayed">Opóźniona</string>
   <string name="status_damaged">Uszkodzona</string>
   <string name="status_destroyed">Zniszczona</string>
-  <string name="status_customs_held">Zatrzymana na odprawie celnej</string>
   <string name="tracking_id">Identyfikator śledzenia</string>
   <string name="tracking_id_error_text">Identyfikator śledzenia nie może być pusty.</string>
   <string name="unmetered_only_setting">Aktualizuj tylko w sieciach bez limitu</string>

@@ -72,6 +72,7 @@
   <string name="status_awaiting_pickup">Awaiting pickup</string>
   <string name="status_customs">Arrived at customs</string>
   <string name="status_customs_cleared">Cleared customs</string>
+  <string name="status_customs_held">Held at customs</string>
   <string name="status_delivered">Delivered</string>
   <string name="status_delivery_failure">Failed to deliver</string>
   <string name="status_in_transit">In transit</string>
@@ -91,10 +92,9 @@
   <string name="status_returning_to_sender">Returning to sender</string>
   <string name="status_returned_to_sender">Returned to sender</string>
   <string name="status_pickup_time_ending_soon">Pickup time ending soon!</string>
-  <string name="status_delayed">Opóźniona</string>
-  <string name="status_damaged">Uszkodzona</string>
-  <string name="status_destroyed">Zniszczona</string>
-  <string name="status_customs_held">Zatrzymana na odprawie celnej</string>
+  <string name="status_delayed">Delayed</string>
+  <string name="status_damaged">Damaged</string>
+  <string name="status_destroyed">Destroyed</string>
   <string name="tracking_id">Tracking ID</string>
   <string name="tracking_id_error_text">Tracking ID must not be blank.</string>
   <string name="unmetered_only_setting">Update only on unmetered networks</string>
