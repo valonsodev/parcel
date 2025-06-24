@@ -47,14 +47,16 @@ fun ParcelRow(parcel: Parcel, status: Status?, onClick: () -> Unit) {
                       painterResource(
                           when (status) {
                             Status.Preadvice -> R.drawable.outline_other_admission_24
-                            Status.LockerboxAcceptedParcel -> R.drawable.outline_deployed_code_update_24
+                            Status.LockerboxAcceptedParcel ->
+                                R.drawable.outline_deployed_code_update_24
                             Status.PickedUpByCourier -> R.drawable.outline_deployed_code_account_24
                             Status.InTransit -> R.drawable.outline_local_shipping_24
                             Status.InWarehouse -> R.drawable.outline_warehouse_24
                             Status.Customs -> R.drawable.outline_search_24
                             Status.OutForDelivery -> R.drawable.outline_delivery_truck_speed_24
                             Status.DeliveryFailure -> R.drawable.outline_error_24
-                            Status.PickupTimeEndingSoon -> R.drawable.outline_notifications_active_24
+                            Status.PickupTimeEndingSoon ->
+                                R.drawable.outline_notifications_active_24
                             Status.AwaitingPickup -> R.drawable.outline_pin_drop_24
                             Status.Delivered,
                             Status.PickedUp -> R.drawable.outline_check_24
