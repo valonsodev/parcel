@@ -3,12 +3,12 @@ package dev.itsvic.parceltracker.api
 import android.os.LocaleList
 import com.squareup.moshi.JsonClass
 import dev.itsvic.parceltracker.R
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 // Reverse-engineered from https://inpost.pl/en/find-parcel
 object InPostDeliveryService : DeliveryService {
@@ -16,7 +16,7 @@ object InPostDeliveryService : DeliveryService {
   override val acceptsPostCode: Boolean = false
   override val requiresPostCode: Boolean = false
 
-  private const val BASE_URL = "https://inpost.pl/";
+  private const val BASE_URL = "https://inpost.pl/"
 
   private val retrofit =
       Retrofit.Builder()
@@ -46,8 +46,7 @@ object InPostDeliveryService : DeliveryService {
     return Parcel(
         parcelData.mainTrackingNumber,
         eventsToHistory(parcelData.events),
-        eventCodeToStatus(parcelData.events.first().eventCode)
-    )
+        eventCodeToStatus(parcelData.events.first().eventCode))
   }
 
   private fun mapLanguageToAPIFormat(language: String): String {
@@ -93,49 +92,47 @@ object InPostDeliveryService : DeliveryService {
   private fun eventsToHistory(events: List<Event>): List<ParcelHistoryItem> {
     return events.map { item ->
       ParcelHistoryItem(
-        item.eventDescription,
-        LocalDateTime.parse(item.timestamp, DateTimeFormatter.ISO_DATE_TIME),
-        item.eventTitle
-      )
+          item.eventDescription,
+          LocalDateTime.parse(item.timestamp, DateTimeFormatter.ISO_DATE_TIME),
+          item.eventTitle)
     }
   }
 
   private interface API {
     @GET("shipx-proxy/")
-    @Headers("X-Requested-With: XMLHttpRequest") // This is a necessary hack to spoof Ajax. Otherwise we would get 403
+    @Headers(
+        "X-Requested-With: XMLHttpRequest") // This is a necessary hack to spoof Ajax. Otherwise we
+                                            // would get 403
     suspend fun getParcel(
-      @Query("number") number: String,
-      @Query("new_api") newApi: Boolean,
-      @Query("language") language: String
+        @Query("number") number: String,
+        @Query("new_api") newApi: Boolean,
+        @Query("language") language: String
     ): List<ParcelResponse>
   }
 
   @JsonClass(generateAdapter = true)
   internal data class ParcelResponse(
-    val mainTrackingNumber: String,
-    val status: Any?, // seems to always be null
-    val statusTitle: Any?, // seems to always be null
-    val statusDescription: Any?, // seems to always be null
-    val trackingNumbers: List<TrackingNumbers>,
-    val events: List<Event>
+      val mainTrackingNumber: String,
+      val status: Any?, // seems to always be null
+      val statusTitle: Any?, // seems to always be null
+      val statusDescription: Any?, // seems to always be null
+      val trackingNumbers: List<TrackingNumbers>,
+      val events: List<Event>
   )
 
   @JsonClass(generateAdapter = true)
-  internal data class TrackingNumbers(
-    val trackingNumber: String,
-    val kind: String
-  )
+  internal data class TrackingNumbers(val trackingNumber: String, val kind: String)
 
   @JsonClass(generateAdapter = true)
   internal data class Event(
-    val eventCode: String,
-    val status: Any?, // seems to always be null
-    val timestamp: String, // format: 0000-00-00T00:00:00.000+00:00
-    val carrier: String,
-    val eventTitle: String,
-    val eventDescription: String,
-    val statusTitle: Any?, // seems to always be null
-    val statusDescription: Any?, // seems to always be null
-    val location: Any? // seems to always be null
+      val eventCode: String,
+      val status: Any?, // seems to always be null
+      val timestamp: String, // format: 0000-00-00T00:00:00.000+00:00
+      val carrier: String,
+      val eventTitle: String,
+      val eventDescription: String,
+      val statusTitle: Any?, // seems to always be null
+      val statusDescription: Any?, // seems to always be null
+      val location: Any? // seems to always be null
   )
 }
