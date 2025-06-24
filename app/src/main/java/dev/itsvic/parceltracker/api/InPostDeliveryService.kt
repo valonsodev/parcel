@@ -102,7 +102,7 @@ object InPostDeliveryService : DeliveryService {
     @GET("shipx-proxy/")
     @Headers(
         "X-Requested-With: XMLHttpRequest") // This is a necessary hack to spoof Ajax. Otherwise we
-                                            // would get 403
+    // would get 403
     suspend fun getParcel(
         @Query("number") number: String,
         @Query("new_api") newApi: Boolean,
