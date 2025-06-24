@@ -71,7 +71,7 @@ object AllegroOneBoxDeliveryService : DeliveryService {
             "Przesyłka wyjechała w drogę do punktu docelowego" -> Status.InTransit
             "Przesyłka została przyjęta w oddziale" -> Status.InWarehouse
             "Przesyłka została wydana do doręczenia" -> Status.OutForDelivery
-            "Przesyłka oczekuje na odbiór" -> Status.Delivered
+            "Przesyłka oczekuje na odbiór" -> Status.AwaitingPickup
             "Przesyłka została doręczona" -> Status.PickedUp
             "Przesyłka nie została doręczona i wróciła do oddziału" -> Status.DeliveryFailure
             "Przesyłka została odebrana przez kuriera" -> Status.InTransit
@@ -88,8 +88,8 @@ object AllegroOneBoxDeliveryService : DeliveryService {
             "Shipment has been picked up by the courier" -> Status.InTransit
             "Shipment has been accepted at the delivery center" -> Status.InWarehouse
             "Shipment has been released for delivery" -> Status.OutForDelivery
-            "Shipment is awaiting pick-up" -> Status.Delivered
-            "Shipment has been delivered" -> Status.PickedUp
+            "Shipment is awaiting pick-up" -> Status.AwaitingPickup
+            "Shipment has been delivered" -> Status.Delivered
             "Shipment has not been delivered and has returned to the delivery center" ->
                 Status.DeliveryFailure
             "Shipment has been picked up from point by courier" -> Status.InTransit
