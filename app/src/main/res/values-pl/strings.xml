@@ -44,6 +44,7 @@
   <string name="service_gls_hungary">GLS Węgry</string>
   <string name="service_hungarian_post">Poczta Węgierska</string>
   <string name="service_nova_poshta">Nova Post</string>
+  <string name="service_orlen_paczka">Orlen Paczka</string>
   <string name="service_polish_post">Poczta Polska</string>
   <string name="service_poste_italiane">Poczta Włoska</string>
   <string name="service_sameday_bg">Sameday Bułgaria</string>
@@ -87,5 +88,4 @@
   <string name="tracking_id_error_text">Identyfikator śledzenia nie może być pusty.</string>
   <string name="unmetered_only_setting">Aktualizuj tylko w sieciach bez limitu</string>
   <string name="unmetered_only_setting_detail">Jeśli ta opcja jest włączona, Parcel będzie szukać aktualizacji przesyłek tylko w przypadku połączeń nielimitowanych, takich jak domowe Wi-Fi.</string>
-  <string name="service_orlen_paczka">Orlen Paczka</string>
 </resources>
