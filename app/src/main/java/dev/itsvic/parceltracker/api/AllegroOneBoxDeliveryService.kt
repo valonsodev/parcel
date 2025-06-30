@@ -42,6 +42,10 @@ object AllegroOneBoxDeliveryService : DeliveryService {
           throw ParcelNonExistentException()
         }
 
+    if (response.status.isEmpty()) {
+      throw ParcelNonExistentException()
+    }
+
     return Parcel(
         trackingId,
         eventsToHistory(response.status),
