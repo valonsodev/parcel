@@ -4,15 +4,15 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import com.squareup.moshi.Moshi
 import dev.itsvic.parceltracker.R
+import java.lang.reflect.Type
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import okhttp3.ResponseBody
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
-import java.lang.reflect.Type
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 // Reverse engineered from https://www.orlenpaczka.pl/sledz-paczke
 object OrlenPaczkaDeliveryService : DeliveryService {
@@ -22,16 +22,16 @@ object OrlenPaczkaDeliveryService : DeliveryService {
 
   private const val BASE_URL = "https://nadaj.orlenpaczka.pl/"
 
-  // Orlen Paczka's API returns a JSONP instead of JSON so we need a custom Converter to remove the callback
+  // Orlen Paczka's API returns a JSONP instead of JSON so we need a custom Converter to remove the
+  // callback
   // TODO: Verify if it actually works...
   class JsonpConverterFactory(private val moshi: Moshi) : Converter.Factory() {
     override fun responseBodyConverter(
-      type: Type,
-      annotations: Array<Annotation>,
-      retrofit: Retrofit
+        type: Type,
+        annotations: Array<Annotation>,
+        retrofit: Retrofit
     ): Converter<ResponseBody, *>? {
-      if (type != ParcelResponse::class.java)
-        return null
+      if (type != ParcelResponse::class.java) return null
 
       return Converter { responseBody ->
         val jsonp = responseBody.string()
@@ -80,7 +80,7 @@ object OrlenPaczkaDeliveryService : DeliveryService {
         mapCodeToStatus(response.history.first().code))
   }
 
-  private fun mapCodeToStatus(code: String) : Status {
+  private fun mapCodeToStatus(code: String): Status {
     return when (code) {
       // TODO: Implement codes
       else -> logUnknownStatus("Orlen Paczka", code)
@@ -91,39 +91,42 @@ object OrlenPaczkaDeliveryService : DeliveryService {
     return history.map { item ->
       ParcelHistoryItem(
           item.label,
-          LocalDateTime.parse(item.date, DateTimeFormatter.ISO_DATE_TIME), // TODO: Verify if ISO_DATE_TIME is the proper format
+          LocalDateTime.parse(
+              item.date,
+              DateTimeFormatter
+                  .ISO_DATE_TIME), // TODO: Verify if ISO_DATE_TIME is the proper format
           "" // TODO: Replace with parcel location provided by the API
-      )
+          )
     }
   }
 
   private interface API {
     @GET("parcel/api-status")
     suspend fun getParcel(
-      @Query("id") parcelId: String,
-      @Query("jsonp") jsonp: String,
-      @Query("_") currentMillis: Long
+        @Query("id") parcelId: String,
+        @Query("jsonp") jsonp: String,
+        @Query("_") currentMillis: Long
     ): ParcelResponse
   }
 
   @JsonClass(generateAdapter = true)
   data class ParcelResponse(
-    val status: String,
-    val number: String,
-    val full: Boolean,
-    val historyHtml: String,
-    val history: List<HistoryEntry>,
-    val label: String,
-    @Json(name = "return") val returnField: Boolean,
-    val truckNo: String,
-    val returnTruck: String,
+      val status: String,
+      val number: String,
+      val full: Boolean,
+      val historyHtml: String,
+      val history: List<HistoryEntry>,
+      val label: String,
+      @Json(name = "return") val returnField: Boolean,
+      val truckNo: String,
+      val returnTruck: String,
   )
 
   @JsonClass(generateAdapter = true)
   data class HistoryEntry(
-    val date: String,
-    val code: String,
-    val label: String,
-    val labelShort: String,
+      val date: String,
+      val code: String,
+      val label: String,
+      val labelShort: String,
   )
 }
