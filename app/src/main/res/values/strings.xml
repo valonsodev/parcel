@@ -37,6 +37,7 @@
   <string name="property_weight">Weight</string>
   <string name="repository">Repository</string>
   <string name="save">Save</string>
+  <string name="service_allegro_onebox">Allegro OneBox</string>
   <string name="service_an_post" translatable="false">An Post</string>
   <string name="service_belpost">Belpost</string>
   <string name="service_cainiao" translatable="false">Cainiao</string>
