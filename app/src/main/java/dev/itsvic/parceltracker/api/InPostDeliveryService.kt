@@ -94,7 +94,7 @@ object InPostDeliveryService : DeliveryService {
       ParcelHistoryItem(
           item.eventDescription,
           LocalDateTime.parse(item.timestamp, DateTimeFormatter.ISO_DATE_TIME),
-          item.eventTitle)
+          item.location ?: "")
     }
   }
 
@@ -133,6 +133,6 @@ object InPostDeliveryService : DeliveryService {
       val eventDescription: String,
       val statusTitle: Any?, // seems to always be null
       val statusDescription: Any?, // seems to always be null
-      val location: Any? // seems to always be null
+      val location: String? // seems to always be null
   )
 }
