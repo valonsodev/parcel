@@ -86,11 +86,12 @@ class FormatValidationTest {
 
   @Test
   fun fpx_ReturnsTrue() {
-    assertTrue(FPXDeliveryService.acceptsFormat("4PX000000000000000CN"))
+    assertTrue(FPXDeliveryService.acceptsFormat("4PX00000000000000CN"))
   }
 
   @Test
   fun fpx_ReturnsFalse() {
     assertFalse(FPXDeliveryService.acceptsFormat("eawifjsadmf"))
+    assertFalse(FPXDeliveryService.acceptsFormat("4PX00a00000000000CN"))
   }
 }
