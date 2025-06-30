@@ -82,4 +82,14 @@ class FormatValidationTest {
     assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("AAAAAAAAAAA"))
     assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("B000000000"))
   }
+
+  @Test
+  fun fpx_ReturnsTrue() {
+    assertTrue(AllegroOneBoxDeliveryService.acceptsFormat("4PX00000000000000CN"))
+  }
+
+  @Test
+  fun fpx_ReturnsFalse() {
+    assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("eawifjsadmf"))
+  }
 }
