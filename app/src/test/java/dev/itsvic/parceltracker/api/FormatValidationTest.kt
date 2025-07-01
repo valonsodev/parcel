@@ -84,7 +84,7 @@ class FormatValidationTest {
     assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("AAAAAAAAAAA"))
     assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("B000000000"))
   }
-  
+
   @Test
   fun inpost_NumberFormatReturnsTrue() {
     assertTrue(InPostDeliveryService.acceptsFormat("000000000000000000000000"))
