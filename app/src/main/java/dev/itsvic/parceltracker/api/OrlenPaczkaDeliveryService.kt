@@ -98,7 +98,7 @@ object OrlenPaczkaDeliveryService : DeliveryService {
       ParcelHistoryItem(
           item.label,
           LocalDateTime.parse(item.date, DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm")),
-          "" // TODO: Replace with parcel location provided by the API
+          "" // the API doesn't provide any location fields
           )
     }
   }
