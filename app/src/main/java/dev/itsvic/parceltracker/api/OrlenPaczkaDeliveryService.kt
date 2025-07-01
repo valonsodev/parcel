@@ -90,10 +90,7 @@ object OrlenPaczkaDeliveryService : DeliveryService {
     return history.map { item ->
       ParcelHistoryItem(
           item.label,
-          LocalDateTime.parse(
-              item.date,
-              DateTimeFormatter
-                  .ISO_DATE_TIME), // TODO: Verify if ISO_DATE_TIME is the proper format
+          LocalDateTime.parse(item.date, DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm")),
           "" // TODO: Replace with parcel location provided by the API
           )
     }
