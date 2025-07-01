@@ -24,7 +24,6 @@ object OrlenPaczkaDeliveryService : DeliveryService {
 
   // Orlen Paczka's API returns a JSONP instead of JSON so we need a custom Converter to remove the
   // callback
-  // TODO: Verify if it actually works...
   class JsonpConverterFactory(private val moshi: Moshi) : Converter.Factory() {
     override fun responseBodyConverter(
         type: Type,
@@ -51,8 +50,8 @@ object OrlenPaczkaDeliveryService : DeliveryService {
       Retrofit.Builder()
           .baseUrl(BASE_URL)
           .client(api_client)
-          .addConverterFactory(api_factory)
           .addConverterFactory(JsonpConverterFactory.create(Moshi.Builder().build()))
+          .addConverterFactory(api_factory)
           .build()
 
   private val service = retrofit.create(API::class.java)
