@@ -76,7 +76,7 @@ object OrlenPaczkaDeliveryService : DeliveryService {
     return Parcel(
         trackingId,
         convertHistory(response.history),
-        mapCodeToStatus(response.history.first().code))
+        mapCodeToStatus(response.history.last().code))
   }
 
   private fun mapCodeToStatus(code: String): Status {
@@ -94,7 +94,7 @@ object OrlenPaczkaDeliveryService : DeliveryService {
   }
 
   private fun convertHistory(history: List<HistoryEntry>): List<ParcelHistoryItem> {
-    return history.map { item ->
+    return history.reversed().map { item ->
       ParcelHistoryItem(
           item.label,
           LocalDateTime.parse(item.date, DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm")),
