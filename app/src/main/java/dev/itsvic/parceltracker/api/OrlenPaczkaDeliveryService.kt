@@ -74,9 +74,7 @@ object OrlenPaczkaDeliveryService : DeliveryService {
     }
 
     return Parcel(
-        trackingId,
-        convertHistory(response.history),
-        mapCodeToStatus(response.history.last().code))
+        trackingId, convertHistory(response.history), mapCodeToStatus(response.history.last().code))
   }
 
   private fun mapCodeToStatus(code: String): Status {
