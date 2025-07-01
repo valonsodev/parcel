@@ -48,7 +48,9 @@ object DpdGerDeliveryService : DeliveryService {
 
     val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm")
     val history =
-        h.map { ParcelHistoryItem(it.label, LocalDateTime.parse(it.date, formatter), it.location) }
+        h.reversed().map {
+          ParcelHistoryItem(it.label, LocalDateTime.parse(it.date, formatter), it.location)
+        }
 
     return Parcel(trackingId, history, status)
   }

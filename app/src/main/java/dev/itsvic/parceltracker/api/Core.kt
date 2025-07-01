@@ -48,6 +48,7 @@ enum class Service {
   UKRPOSHTA,
   POSTNORD,
   ALLEGRO_ONEBOX,
+  INPOST,
   ORLEN_PACZKA,
 
   // Asia
@@ -90,6 +91,7 @@ fun getDeliveryService(service: Service): DeliveryService? {
     Service.UKRPOSHTA -> UkrposhtaDeliveryService
     Service.POSTNORD -> PostNordDeliveryService
     Service.ALLEGRO_ONEBOX -> AllegroOneBoxDeliveryService
+    Service.INPOST -> InPostDeliveryService
     Service.ORLEN_PACZKA -> OrlenPaczkaDeliveryService
 
     Service.EKART -> EKartDeliveryService
