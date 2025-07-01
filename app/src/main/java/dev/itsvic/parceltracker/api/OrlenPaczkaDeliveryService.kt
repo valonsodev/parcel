@@ -81,7 +81,14 @@ object OrlenPaczkaDeliveryService : DeliveryService {
 
   private fun mapCodeToStatus(code: String): Status {
     return when (code) {
-      // TODO: Implement codes
+      "200" -> Status.Preadvice
+      "210" -> Status.LockerboxAcceptedParcel
+      "240" -> Status.PickedUpByCourier
+      "100" -> Status.InWarehouse
+      "653" -> Status.InWarehouse
+      "680" -> Status.OutForDelivery
+      "690" -> Status.AwaitingPickup
+      "1000" -> Status.Delivered
       else -> logUnknownStatus("Orlen Paczka", code)
     }
   }
