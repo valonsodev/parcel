@@ -1,5 +1,6 @@
 import dev.itsvic.parceltracker.api.AllegroOneBoxDeliveryService
 import dev.itsvic.parceltracker.api.AnPostDeliveryService
+import dev.itsvic.parceltracker.api.InPostDeliveryService
 import dev.itsvic.parceltracker.api.MagyarPostaDeliveryService
 import dev.itsvic.parceltracker.api.PacketaDeliveryService
 import dev.itsvic.parceltracker.api.PolishPostDeliveryService
@@ -81,5 +82,15 @@ class FormatValidationTest {
     assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("A 0000AA0A"))
     assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("AAAAAAAAAAA"))
     assertFalse(AllegroOneBoxDeliveryService.acceptsFormat("B000000000"))
+  }
+
+  @Test
+  fun inpost_NumberFormatReturnsTrue() {
+    assertTrue(InPostDeliveryService.acceptsFormat("000000000000000000000000"))
+  }
+
+  @Test
+  fun inpost_NumberFormatReturnsFalse() {
+    assertFalse(InPostDeliveryService.acceptsFormat("A00000000000000000000000"))
   }
 }
