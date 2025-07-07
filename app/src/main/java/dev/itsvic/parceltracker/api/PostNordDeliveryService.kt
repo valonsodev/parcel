@@ -61,13 +61,17 @@ object PostNordDeliveryService : DeliveryService {
     val status = statusMapping[item.status.code] ?: logUnknownStatus("PostNord", item.status.code)
 
     val history =
-        item.events.map {
+        item.events.map { event ->
+          val location = event.location
+          val locationName = location.name
+          val locationCountryCode = location.countryCode
+
           ParcelHistoryItem(
-              it.eventDescription,
-              ZonedDateTime.parse(it.eventTime)
+              event.eventDescription,
+              ZonedDateTime.parse(event.eventTime)
                   .withZoneSameInstant(ZoneId.systemDefault())
                   .toLocalDateTime(),
-              listOfNotNull(it.location.name, it.location.countryCode).joinToString(", "))
+              listOfNotNull(locationName, locationCountryCode).joinToString(", "))
         }
 
     return Parcel(resp.shipmentId, history, status)
@@ -118,7 +122,7 @@ object PostNordDeliveryService : DeliveryService {
 
   @JsonClass(generateAdapter = true)
   internal data class Location(
-      val countryCode: String?,
+      val countryCode: String? = null,
       val locationType: String?,
       val name: String?
   )
